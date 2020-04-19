@@ -14,7 +14,8 @@ class Doctor(models.Model):
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    identifying_number = models.CharField(max_length=30, blank=True)
+    identifying_number = models.CharField(max_length=30)
+    language = models.CharField(max_length=30, default='English')
     phone_number = models.CharField(max_length=30, blank=True)
     last_visit = models.DateField(blank=True)
     email = models.EmailField(blank=True)
