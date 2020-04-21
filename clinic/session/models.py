@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
-import general_models as gm
+import general_models.models as gm
 
 class Session(models.Model):
      doctor = models.ForeignKey(gm.Doctor, on_delete=models.CASCADE)

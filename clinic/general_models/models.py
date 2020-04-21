@@ -1,14 +1,14 @@
 import datetime
 from django.db import models
 from django.utils import timezone
-import session
+
 
 class Doctor(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     specialty = models.CharField(max_length=30)
     email = models.EmailField()
-    license_number = models.CharField(max_length=30)
+    license_number = models.CharField(max_length=30, blank=True)
     def __str__(self):
         return (self.first_name + " " + self.last_name)
 
@@ -21,8 +21,7 @@ class Patient(models.Model):
     last_visit = models.DateField(blank=True)
     email = models.EmailField(blank=True)
     origin_country = models.CharField(max_length=30, blank=True)
-    date_of_birth = models.DateField()
-    # sessions_list = 
+    date_of_birth = models.DateField(null=True)
     # family_members 
     def __str__(self):
         return (self.first_name + " " + self.last_name)
