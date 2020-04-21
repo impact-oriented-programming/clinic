@@ -8,6 +8,7 @@ class Doctor(models.Model):
     last_name = models.CharField(max_length=30)
     specialty = models.CharField(max_length=30)
     email = models.EmailField()
+    license_number = models.CharField(max_length=30)
     def __str__(self):
         return (self.first_name + " " + self.last_name)
 
@@ -19,6 +20,9 @@ class Patient(models.Model):
     phone_number = models.CharField(max_length=30, blank=True)
     last_visit = models.DateField(blank=True)
     email = models.EmailField(blank=True)
+    origin_country = models.CharField(max_length=30, blank=True)
+    date_of_birth = models.DateField()
+    # family_members 
     def __str__(self):
         return (self.first_name + " " + self.last_name)
 
