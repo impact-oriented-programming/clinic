@@ -14,6 +14,7 @@ class Doctor(models.Model):
 
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
+    gender = models.CharField(max_length=1, null=True)
     last_name = models.CharField(max_length=30)
     identifying_number = models.CharField(max_length=30)
     language = models.CharField(max_length=30, default='English')

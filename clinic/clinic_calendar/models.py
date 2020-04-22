@@ -7,5 +7,3 @@ import doctor_time_slot.models as slt
 # link to schedule
 # calendar view of all the scheduled appointments
 # mark a person that showed up to his appointemnt
-
-

@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'session.apps.SessionConfig',
     'clinic_calendar.apps.ClinicCalendarConfig',
     'doctor_interface.apps.DoctorInterfaceConfig',
-    'doctor_time_slit.apps.DoctorTimeSlotConfig',
+    'doctor_time_slot.apps.DoctorTimeSlotConfig',
     'patient_interface.apps.PatientInterfaceConfig',
     'schedule.apps.ScheduleConfig',
     'django.contrib.admin',
