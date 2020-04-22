@@ -1,3 +1,5 @@
 from django.db import models
+import general_models.models as gm
 
-# Create your models here.
+# schedule a new appointment for a patient
+# option to schedule for now for walk-ins
