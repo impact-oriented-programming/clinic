@@ -33,6 +33,11 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'general_models.apps.GeneralModelsConfig',
     'session.apps.SessionConfig',
+    'clinic_calendar.apps.ClinicCalendarConfig',
+    'doctor_interface.apps.DoctorInterfaceConfig',
+    'doctor_time_slit.apps.DoctorTimeSlotConfig',
+    'patient_interface.apps.PatientInterfaceConfig',
+    'schedule.apps.ScheduleConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
