@@ -31,5 +31,6 @@ class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
+    room = models.CharField(max_length=30)
     def __str__(self):
         return ("Appointment scheduled for: " + self.patient + "at: " + self.date + self.time + "with Doctor: " + self.doctor )
