@@ -13,14 +13,14 @@ class Doctor(models.Model):
     def __str__(self):
         return self.user.username
 
-@receiver(post_save, sender=User)
-def create_doctor_profile(sender, instance, created, **kwargs):
-    if created:
-        Doctor.objects.create(user=instance)
+#@receiver(post_save, sender=User)
+#def create_doctor_profile(sender, instance, created, **kwargs):
+ #   if created:
+  #      Doctor.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_doctor_profile(sender, instance, **kwargs):
-    instance.doctor.save()
+#@receiver(post_save, sender=User)
+#def save_doctor_profile(sender, instance, **kwargs):
+ #   instance.doctor.save()
     
 
 class Patient(models.Model):
@@ -39,7 +39,7 @@ class Patient(models.Model):
         return (self.first_name + " " + self.last_name)
 
 class Appointment(models.Model):
-    #doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
