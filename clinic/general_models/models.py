@@ -2,7 +2,6 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-# blah blah 
 class Doctor(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
