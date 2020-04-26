@@ -132,5 +132,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'boot')
     ]
 
-LOGIN_REDIRECT_URL = 'homepage'
-LOGOUT_REDIRECT_URL = 'homepage'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'

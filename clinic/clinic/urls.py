@@ -21,13 +21,14 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('', include('django.contrib.auth.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='homepage'),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('doctor_interface/', include('doctor_interface.urls')),
     path('session/', include('session.urls')),
     path('clinic_calendar/', include('clinic_calendar.urls')),
-    path('doctor_interface/', include('doctor_interface.urls')),
     path('doctor_time_slot/', include('doctor_time_slot.urls')),
     path('patient_interface/', include('patient_interface.urls')),
     path('schedule/', include('schedule.urls')),
-    path('admin/', admin.site.urls),
+    
 ]
