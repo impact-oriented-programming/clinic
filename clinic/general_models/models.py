@@ -2,8 +2,8 @@ import datetime
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-#from django.db.models.signals import post_save
-#from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Doctor(models.Model):
@@ -13,16 +13,15 @@ class Doctor(models.Model):
     def __str__(self):
         return self.user.username
 
-#@receiver(post_save, sender=User)
-#def create_doctor_profile(sender, instance, created, **kwargs):
- #   if created:
-  #      Doctor.objects.create(user=instance)
+@receiver(post_save, sender=User)
+def create_doctor_profile(sender, instance, created, **kwargs):
+    if created:
+        Doctor.objects.create(user=instance)
 
-#@receiver(post_save, sender=User)
-#def save_doctor_profile(sender, instance, **kwargs):
- #   instance.doctor.save()
+@receiver(post_save, sender=User)
+def save_doctor_profile(sender, instance, **kwargs):
+    instance.doctor.save()
     
-
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=1, null=True)
