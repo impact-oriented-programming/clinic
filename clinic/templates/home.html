@@ -1,3 +1,6 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'project_css/style.css' %}">
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,11 +11,15 @@
   <main>
     {% block content %}
     {% if user.is_authenticated %}
-      Hi {{ user.username }}!
-      <p><a href="{% url 'logout' %}">logout</a></p>
+      Hello {{ user.username }}!
+
+      <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
+      <p><a href="{% url 'logout' %}">Logout?</a></p>
+
     {% else %}
-      <p>You are not logged in</p>
-      <a href="{% url 'login' %}">login</a>
+      <p>You have logged out successfuly!</p>
+      <p>Goodbye</p>
+      <a href="{% url 'login' %}">Login Again?</a>
     {% endif %}
     {% endblock %}
   </main>
