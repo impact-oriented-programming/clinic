@@ -12,7 +12,7 @@ def index2(request):
 class index(View):
 
     def get(self, request, *args, **kwargs):
-
+        
         user = request.user
         specialty = user.doctor.specialty
         my_appointments = gm.Appointment.objects.all()
