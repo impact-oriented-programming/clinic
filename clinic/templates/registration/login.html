@@ -1,50 +1,45 @@
-{% load static %}
-
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Home Page{% endblock %}</title>
-      <link rel="stylesheet" type="text/css" href="{% static 'project_css/style.css'%}">
+      <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_login.css'%}">
       <meta charset="UTF-8">
 </head>
 <body>
   <main>
     {% block content %}
+    <div class="wrapper fadeInDown">
     {% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
 
     {% if next %}
-        {% if user.is_authenticated %}
-        <p>Your account doesn't have access to this page. To proceed,
-        please login with an account that has access.</p>
-        {% else %}
-        <p>Please login to see this page.</p>
-        {% endif %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
     {% endif %}
-
-    <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <div class="modal-heading">
-        <h2 class="text-center">TEREM - Refugee Clinic</h2>
-        <p class="text-center">Please sign in with your user name and password</p>
+    {% endif %}
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src = "{% static 'doctor_interface/images/doctor.png' %} " >
     </div>
-    <table>
-    <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-    </tr>
-    <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-    </tr>
-    </table>
 
-    <input type="submit" value="Login">
-    <input type="hidden" name="next" value="{{ next }}">
-    </form>
-    {% endblock %}
-  </main>
+    <div id="formContent">
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <p type="text" class="fadeIn second" placeholder="login">{{ form.username.label_tag }}</p>
+        <p type="text" class="fadeIn second" placeholder="login">{{ form.username }}</p>
+        <p type="text" class="fadeIn third" placeholder="password">{{ form.password.label_tag }}</p>
+        <p type="text" class="fadeIn third" placeholder="password">{{ form.password }}</p>
+        <input type="submit" class="fadeIn fourth" value="Log In">
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+      {% endblock %}
+    </div>
+  </div>
+</main>
 </body>
 </html>
