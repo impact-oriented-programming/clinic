@@ -5,24 +5,35 @@
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Home Page{% endblock %}</title>
-      <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_homepage.css'%}">
+      <link rel="stylesheet" type="text/css" href="{% static 'style_homepage.css'%}">
       <meta charset="UTF-8">
 </head>
 <body>
   <main>
     {% block content %}
+    <div class="wrapper fadeInDown">
     {% if user.is_authenticated %}
+    <div class="fadeIn first">
+      <img src = "{% static 'images/strep.png' %} ", style="width:100px;height:100px" >
+    </div>
+    <div id="formContent">
       Hello {{ user.username }}!
 
       <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
       <p><a href="http://localhost:8000/clinic_calendar/">Go to clinic's calendar</a></p>
       <p><a href="{% url 'logout' %}">Logout?</a></p>
-
+      </div>
     {% else %}
+    <div id="formContent">
+      <p></p>
       <p>You have logged out successfuly!</p>
       <p>Goodbye</p>
+      <p></p>
       <a href="{% url 'login' %}">Login Again?</a>
+      <p></p>
     {% endif %}
+  </div>
+  </div>
     {% endblock %}
   </main>
 </body>
