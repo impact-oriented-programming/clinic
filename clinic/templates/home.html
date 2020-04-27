@@ -1,11 +1,12 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'project_css/style.css' %}">
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Home{% endblock %}</title>
+  <title>{% block title %}Home Page{% endblock %}</title>
+      <link rel="stylesheet" type="text/css" href="{% static 'home/style.css'%}">
+      <meta charset="UTF-8">
 </head>
 <body>
   <main>
@@ -14,6 +15,7 @@
       Hello {{ user.username }}!
 
       <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
+      <p><a href="http://localhost:8000/clinic_calendar/">Go to clinic's calendar</a></p>
       <p><a href="{% url 'logout' %}">Logout?</a></p>
 
     {% else %}
