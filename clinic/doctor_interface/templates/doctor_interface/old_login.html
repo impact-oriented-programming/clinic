@@ -1,0 +1,27 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'scheduling_system/login_style.css'%}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <div class="modal-heading">
+        <h2 class="text-center">TEREM - REFUGEE CLINIC</h2>
+        <h3 class="text-center">Please sign in with your user name and password</h3>
+    </div>
+    <div class="login-page">
+      <div class="form">
+        <form class="login-form" action="/doctor_interface/home/">
+            <label>
+                <input type="text" placeholder="username"/>
+            </label>
+            <label>
+                <input type="password" placeholder="password"/>
+            </label>
+            <button>login</button>
+        </form>
+      </div>
+    </div>
+
+</body>

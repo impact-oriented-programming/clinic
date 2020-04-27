@@ -1,0 +1,27 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'project_css/style.css' %}">
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Home{% endblock %}</title>
+</head>
+<body>
+  <main>
+    {% block content %}
+    {% if user.is_authenticated %}
+      Hello {{ user.username }}!
+
+      <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
+      <p><a href="{% url 'logout' %}">Logout?</a></p>
+
+    {% else %}
+      <p>You have logged out successfuly!</p>
+      <p>Goodbye</p>
+      <a href="{% url 'login' %}">Login Again?</a>
+    {% endif %}
+    {% endblock %}
+  </main>
+</body>
+</html>
