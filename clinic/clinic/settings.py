@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'doctor_time_slot.apps.DoctorTimeSlotConfig',
     'patient_interface.apps.PatientInterfaceConfig',
     'schedule.apps.ScheduleConfig',
+    'create_new_patient.apps.CreateNewPatientConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
