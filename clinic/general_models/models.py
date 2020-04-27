@@ -35,7 +35,7 @@ class Patient(models.Model):
     date_of_birth = models.DateField(null=True)
     # family_members 
     def __str__(self):
-        return (self.first_name + " " + self.last_name)
+        return self.first_name + " " + self.last_name
 
 class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
@@ -43,5 +43,4 @@ class Appointment(models.Model):
     date = models.DateField()
     time = models.TimeField()
     room = models.CharField(max_length=30, null=True)
-    def __str__(self):
-        return ("Appointment scheduled for: " + self.patient + "at: " + self.date + self.time + "with Doctor: " + self.doctor )
+    
