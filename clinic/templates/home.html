@@ -13,11 +13,9 @@
     {% block content %}
     <div class="wrapper fadeInDown">
     {% if user.is_authenticated %}
-    <div class="fadeIn first">
-      <img src = "{% static 'images/strep.png' %} ", style="width:100px;height:100px" >
-    </div>
     <div id="formContent">
-      Hello {{ user.username }}!
+      <p></p>
+      Hello {{ user.first_name }}  {{ user.last_name }}
 
       <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
       <p><a href="http://localhost:8000/clinic_calendar/">Go to clinic's calendar</a></p>
