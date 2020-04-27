@@ -1,5 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
+
 body {
-  background: #a5b8d5; /* fallback for old browsers */
+  background: #ffffe6; /* fallback for old browsers */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Roboto", helvetica, arial, sans-serif;
@@ -32,7 +34,6 @@ div.table-title {
 
 .table-fill {
   background: white;
-  font-family: "Roboto", helvetica, arial, sans-serif;
   border-radius:3px;
   border-collapse: collapse;
   height: 100px;
@@ -43,10 +44,9 @@ div.table-title {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
-
+ 
 th {
   color:#D5DDE5;;
-  font-family: "Roboto", helvetica, arial, sans-serif;
   background:#1b1e24;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
@@ -61,16 +61,15 @@ th {
 th:first-child {
   border-top-left-radius:3px;
 }
-
+ 
 th:last-child {
   border-top-right-radius:3px;
   border-right:none;
 }
-
+  
 tr {
   border-top: 1px solid #C1C3D1;
   border-bottom: 1px solid #C1C3D1;
-  font-family: "Roboto", helvetica, arial, sans-serif;
   color:#666B85;
   font-size:16px;
   font-weight:normal;
@@ -91,7 +90,6 @@ tr:nth-child(odd) td {
 
 td {
   background:#FFFFFF;
-  font-family: "Roboto", helvetica, arial, sans-serif;
   padding:13px;
   text-align:left;
   vertical-align:middle;
