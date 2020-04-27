@@ -17,7 +17,9 @@
       <p></p>
       Hello {{ user.first_name }}  {{ user.last_name }}
 
+      {% if 'Doctors' in user.groups.all.0.name %}
       <p><a href="http://localhost:8000/doctor_interface/">Go to doctor's interface</a></p>
+      {% endif %}
       <p><a href="http://localhost:8000/clinic_calendar/">Go to clinic's calendar</a></p>
       <p><a href="{% url 'logout' %}">Logout?</a></p>
       </div>
