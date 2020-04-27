@@ -4,6 +4,7 @@ from django.views import View
 import general_models.models as gm
 import datetime
 from django.utils import timezone
+import django.contrib.auth
 
 def index2(request):
     return HttpResponse("Hello, world. You're at the CLINIC CALENDAR index.")
@@ -12,6 +13,10 @@ def index2(request):
 class index(View):
 
     def get(self, request, *args, **kwargs):
+        if not(request.user.is_authenticated):
+            return render(request, 'doctor_interface/not_logged_in.html')
+        if not(request.user.groups.filter(name = 'Doctors').exists()):
+            return render(request, 'doctor_interface/not_a_doctor.html')
         
         user = request.user
         specialty = user.doctor.specialty
