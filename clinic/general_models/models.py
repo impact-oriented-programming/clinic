@@ -43,4 +43,5 @@ class Appointment(models.Model):
     date = models.DateField()
     time = models.TimeField()
     room = models.CharField(max_length=30, null=True)
+    done = models.BooleanField( default=False)
     
