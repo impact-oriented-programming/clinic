@@ -21,6 +21,7 @@ class index(View):
         user = request.user
         specialty = user.doctor.specialty
         my_appointments = gm.Appointment.objects.all()
+        my_appointments = my_appointments.filter(assigned = True)
         my_appointments = my_appointments.filter(doctor = user.doctor)
         my_appointments = my_appointments.filter(done = False)
         today_appointments = my_appointments.filter(date = str(datetime.date.today())).order_by("time")
