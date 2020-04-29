@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'patient_interface.apps.PatientInterfaceConfig',
     'schedule.apps.ScheduleConfig',
     'create_new_patient.apps.CreateNewPatientConfig',
+    'crispy_forms', #used for forms
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -137,3 +138,5 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
