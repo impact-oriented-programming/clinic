@@ -4,6 +4,7 @@ from django.views import View
 import general_models.models as gm
 from django.utils import timezone
 from datetime import datetime
+import datetime as dt
 from django.views import generic
 from django.utils.safestring import mark_safe
 from .models import *
@@ -28,6 +29,7 @@ class CalendarView(generic.ListView):
         context['calendar'] = mark_safe(html_cal)
     
         d = get_date(self.request.GET.get('month', None))
+        
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         
@@ -36,7 +38,7 @@ class CalendarView(generic.ListView):
 def get_date(req_day):
     if req_day:
         year, month = (int(x) for x in req_day.split('-'))
-        return date(year, month, day=1)
+        return dt.date(year, month, day=1)
     return datetime.today()
 
 def prev_month(d):

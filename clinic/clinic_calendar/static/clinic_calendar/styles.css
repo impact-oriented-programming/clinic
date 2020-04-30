@@ -28,15 +28,6 @@
   font-size: 16px;
 }
 
-ul {
-  height: 100%;
-  padding: 0px 5px 0px 20px;
-}
-
-a {
-  color: #17a2b8;
-}
-
 .left {
   float: left;
 }
@@ -54,4 +45,14 @@ a {
 
 .clearfix {
   margin: 15px;
+}
+
+
+ul {
+  height: 100%;
+  padding: 0px 5px 0px 20px;
+}
+
+a {
+  color: #17a2b8;
 }
