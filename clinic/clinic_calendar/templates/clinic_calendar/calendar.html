@@ -14,14 +14,14 @@
   <title>Clinic Calendar</title>
 </head>
 <body>
-
-  {% block content %}
+  <h1 class="title", style="text-align:center;">Clinic's Calendar</h1>
+  <hr>
   <div class="clearfix">
-    <a class="btn btn-info left" href="{{ clinic_calendar}} ?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-info right" href="{{ clinic_calendar }}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-info left" href="{% url 'clinic_calendar:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-info right" href="{% url 'clinic_calendar:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
-  {% endblock %}
+
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
