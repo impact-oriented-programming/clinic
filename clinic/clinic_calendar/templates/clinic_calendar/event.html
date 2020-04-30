@@ -14,13 +14,19 @@
   <title>Clinic Calendar</title>
 </head>
 <body>
-  <h1 class="title", style="text-align:center; color:#197d8c"> Clinic's Calendar</h1>
-  <hr>
+  <h1 class="title", style="text-align:center;">Event</h1>
   <div class="clearfix">
-    <a class="btn btn-info left" href="{% url 'clinic_calendar:calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-info right" href="{% url 'clinic_calendar:calendar' %}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-info left" href="{% url 'cal:calendar' %}"> Calendar </a>
   </div>
-  {{ calendar }}
+
+  <form method="post">
+    {% csrf_token %}
+    <table class="form form-table">
+      {{ form }}
+      <tr><td colspan="2"><button type="submit" class="btn btn-info right"> Submit </button></td></tr>
+    </table>
+  </form>
+
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
