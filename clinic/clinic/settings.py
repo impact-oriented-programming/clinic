@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'patient_interface.apps.PatientInterfaceConfig',
     'schedule.apps.ScheduleConfig',
     'create_new_patient.apps.CreateNewPatientConfig',
-    'crispy_forms', #used for forms
+    #'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
