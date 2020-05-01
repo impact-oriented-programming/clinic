@@ -12,8 +12,8 @@ body {
 
 .center {
   position: absolute;
-  left: 50%;
-  margin-left: -50px;
+  left: 40%;
+  right: 40%;
 }
 
 .btn {
