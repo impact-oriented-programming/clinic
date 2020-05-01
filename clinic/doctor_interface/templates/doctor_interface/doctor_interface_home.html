@@ -1,14 +1,26 @@
 {% load static %}
+<!doctype html>
+<html lang="en">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
-    <meta charset="UTF-8">
-    <title>{{ user.first_name}} {{user.last_name}}</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+
+  <meta charset="UTF-8">
+  <title>{{ user.first_name}} {{user.last_name}}</title>
 </head>
 <body>
-  <div class="table-title">
-    <h3 style="text-align: center;">Welcome {{ user.first_name }} {{ user.last_name }}</h3>
+  <h1 class="title", style="text-align:center"> Welcome {{ user.first_name }} {{ user.last_name }}</h1>
+  <hr>
+  <div class="btn-group clearfix" style="width: 99%">
+    <a class="btn btn-info left clearfix" style="width:33.3%" href="http://localhost:8000/home/">Home Page</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%"  href="http://localhost:8000/clinic_calendar/" >Clinic's Calendar</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%" href="{% url 'logout' %}" >Logout</a>
   </div>
+  <hr>
   <div class="table-title">
     <h2>Today's Appointments:</h2>
     <p>click on patient to view their profile</p>
@@ -36,15 +48,10 @@
     <div class="table-title">
       <p>No Appointments for today!</p>
     </div>
-      {% endif %}
+    {% endif %}
 
   <div class="table-title">
     <h2>Search Patients</h2>
   </div>
 
-  <div class="table-title">
-    <h4><a href="http://localhost:8000/home/" style="text-decoration: none" >Go to home page</a></h4>
-    <h4><a href="http://localhost:8000/clinic_calendar/" style="text-decoration: none">Go to clinic's calendar</a></h4>
-    <h4><a href="{% url 'logout' %}" style="text-decoration: none">Logout?</a></h4>
-  </div>
   </body>

@@ -1,11 +1,5 @@
 body {
-  background: #a5b8d5; /* fallback for old browsers */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Roboto", helvetica, arial, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  text-rendering: optimizeLegibility;
+  font-family: "Roboto", "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 
@@ -27,8 +21,6 @@ div.table-title {
    text-transform:uppercase;
 }
 
-
-
 /*** Table Styles **/
 
 .table-fill {
@@ -46,9 +38,9 @@ div.table-title {
 }
 
 th {
-  color:#D5DDE5;;
+  color:#D5DDE5;
   font-family: "Roboto", helvetica, arial, sans-serif;
-  background:#1b1e24;
+  background: #1f2940;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
   font-size:18px;
@@ -120,4 +112,95 @@ td {
 .missing-files{
    color:#ff3333;
    font-weight: bold;
+}
+
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.center {
+  position: absolute;
+  left: 40%;
+  right: 40%;
+}
+
+.btn {
+  outline: none;
+  color: black;
+  background-color: transparent;
+  box-shadow: 0 0 0 0;
+  margin-right: 3px;
+}
+
+.clearfix {
+  margin: 15px;
+}
+
+/* App styles */
+.title {
+  text-align: center;
+  margin: 10px;
+  color: #197d8c
+}
+
+.form {
+  margin: auto;
+}
+
+.form input, .form select, .form textarea {
+  border-radius: 5px;
+  border: 1px solid #17a2b8;
+  outline: none;
+  background: none;
+  padding: 5px;
+  width: 100%;
+}
+
+
+.calendar {
+  width: 98%;
+  margin: auto;
+  font-size: 13px;
+}
+
+.calendar tr, .calendar td {
+  border: 1px solid black;
+}
+
+.calendar th {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.calendar td {
+  width: 200px;
+  height: 150px;
+  padding: 20px 0px 0px 5px;
+}
+
+.month {
+  font-size: 25px;
+}
+
+.date {
+  font-size: 16px;
+}
+
+ul {
+  height: 100%;
+  padding: 0px 5px 0px 20px;
+}
+
+a {
+  color: #17a2b8;
+}
+
+.btn-group button {
+  float: left; /* Float the buttons side by side */
 }
