@@ -30,5 +30,5 @@ urlpatterns = [
     path('doctor_time_slot/', include('doctor_time_slot.urls')),
     path('patient_interface/', include('patient_interface.urls')),
     path('schedule/', include('schedule.urls')),
-    path('create_new_patient', include('create_new_patient.urls')),
+    path('create_new_patient/', include('create_new_patient.urls')),
 ]
