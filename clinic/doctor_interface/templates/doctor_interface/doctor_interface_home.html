@@ -22,9 +22,10 @@
   </div>
   <hr>
   <div class="table-title">
-    <h2>Today's Appointments:</h2>
-    <p>click on patient to view their profile</p>
+    <h2 style="color: #283955;">Today's Appointments</h2>
+    <p style="color: #283955;">Click on patient to view their profile</p>
   </div>
+
   {% if today_appointments %}
           <table class="table-fill">
             <thead>
@@ -46,12 +47,14 @@
           </table>
     {% else %}
     <div class="table-title">
-      <p>No Appointments for today!</p>
+      <p style="color: #283955;">No Appointments for today!</p>
     </div>
     {% endif %}
 
   <div class="table-title">
-    <h2>Search Patients</h2>
+    <p></p>
+    <h2 style="color: #283955;">Browse Patients</h2>
+    <p style="color: #283955;">Enter patient clinic ID or visa number:</p>
   </div>
 
   </body>
