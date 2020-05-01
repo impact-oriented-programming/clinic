@@ -40,7 +40,7 @@ div.table-title {
 th {
   color:#D5DDE5;
   font-family: "Roboto", helvetica, arial, sans-serif;
-  background: #1f2940;
+  background: #304566;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
   font-size:18px;
@@ -137,6 +137,8 @@ td {
   margin-right: 3px;
 }
 
+.btn:hover { background-color: #718fbd; }
+
 .clearfix {
   margin: 15px;
 }
@@ -145,7 +147,7 @@ td {
 .title {
   text-align: center;
   margin: 10px;
-  color: #197d8c
+  color: #718fbd;
 }
 
 .form {
@@ -154,7 +156,7 @@ td {
 
 .form input, .form select, .form textarea {
   border-radius: 5px;
-  border: 1px solid #17a2b8;
+  border: 1px solid  #718fbd;
   outline: none;
   background: none;
   padding: 5px;
@@ -162,43 +164,13 @@ td {
 }
 
 
-.calendar {
-  width: 98%;
-  margin: auto;
-  font-size: 13px;
-}
-
-.calendar tr, .calendar td {
-  border: 1px solid black;
-}
-
-.calendar th {
-  padding: 10px;
-  text-align: center;
-  font-size: 18px;
-}
-
-.calendar td {
-  width: 200px;
-  height: 150px;
-  padding: 20px 0px 0px 5px;
-}
-
-.month {
-  font-size: 25px;
-}
-
-.date {
-  font-size: 16px;
-}
-
 ul {
   height: 100%;
   padding: 0px 5px 0px 20px;
 }
 
 a {
-  color: #17a2b8;
+  color:  #718fbd;
 }
 
 .btn-group button {
