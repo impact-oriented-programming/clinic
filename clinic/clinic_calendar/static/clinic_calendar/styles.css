@@ -10,6 +10,12 @@ body {
   float: right;
 }
 
+.center {
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+}
+
 .btn {
   outline: none;
   color: black;

@@ -17,13 +17,15 @@
   <h1 class="title", style="text-align:center; color:#17a2b8"> Clinic's Calendar</h1>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <button class="btn btn-info left clearfix" style="width:33.3%">Create New Patient</button>
-    <button class="btn btn-info left clearfix" style="width:33.3%">Edit existing Patient</button>
-    <button class="btn btn-info left clearfix" style="width:33.3%">Add Available Doctor Slot</button>
+    <button class="btn btn-info left clearfix" style="width:25%">Create New Patient</button>
+    <button class="btn btn-info left clearfix" style="width:25%">Edit Existing Patient</button>
+    <button class="btn btn-info left clearfix" style="width:25%">Add New Appointment</button>
+    <button class="btn btn-info left clearfix" style="width:25%">Add Available Doctor Slot</button>
   </div>
   <hr>
   <div class="clearfix">
     <a class="btn btn-info left" href="{% url 'clinic_calendar:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-info center"> Today </a>
     <a class="btn btn-info right" href="{% url 'clinic_calendar:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
