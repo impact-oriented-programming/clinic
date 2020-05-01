@@ -1,0 +1,44 @@
+
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'clinic_calendar/styles.css'%}">
+  <title>Clinic Calendar</title>
+</head>
+<body>
+  <h1 class="title", style="text-align:center; color:#17a2b8"> Clinic's Calendar</h1>
+  <hr>
+  <div class="btn-group clearfix" style="width: 99%">
+    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/create_new_patient/">Create New Patient</a>
+    <a class="btn btn-info left clearfix" style="width:25%">Edit Existing Patient</a>
+    <a class="btn btn-info left clearfix" style="width:25%">Add New Appointment</a>
+    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/doctor_time_slot/">Add Available Doctor Slot</a>
+  </div>
+  <hr>
+  <div class="clearfix">
+    <a class="btn btn-info left" href="{% url 'clinic_calendar:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-info center">Today's Appointments</a>
+    <a class="btn btn-info right" href="{% url 'clinic_calendar:calendar' %}?{{ next_month }}"> Next Month </a>
+  </div>
+  {{ calendar }}
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  {% block script %}
+  {% endblock %}
+</body>
+</html>

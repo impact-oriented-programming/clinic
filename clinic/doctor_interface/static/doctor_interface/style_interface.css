@@ -1,11 +1,6 @@
 body {
-  background: #a5b8d5; /* fallback for old browsers */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Roboto", helvetica, arial, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  text-rendering: optimizeLegibility;
+  font-family: "Roboto", "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #fafafa;
 }
 
 
@@ -18,7 +13,7 @@ div.table-title {
 }
 
 .table-title h3{
-   color: #000000;
+   color: #283955;
    font-size: 30px;
    font-weight: 400;
    font-style:normal;
@@ -26,8 +21,6 @@ div.table-title {
    text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
    text-transform:uppercase;
 }
-
-
 
 /*** Table Styles **/
 
@@ -46,9 +39,9 @@ div.table-title {
 }
 
 th {
-  color:#D5DDE5;;
+  color:#D5DDE5;
   font-family: "Roboto", helvetica, arial, sans-serif;
-  background:#1b1e24;
+  background: #304566;
   border-bottom:4px solid #9ea7af;
   border-right: 1px solid #343a45;
   font-size:18px;
@@ -120,4 +113,67 @@ td {
 .missing-files{
    color:#ff3333;
    font-weight: bold;
+}
+
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.center {
+  position: absolute;
+  left: 40%;
+  right: 40%;
+}
+
+.btn {
+  outline: none;
+  color: #283955;
+  background-color: transparent;
+  box-shadow: 0 0 0 0;
+  margin-right: 3px;
+}
+
+.btn:hover { background-color: #718fbd; }
+
+.clearfix {
+  margin: 15px;
+}
+
+/* App styles */
+.title {
+  text-align: center;
+  margin: 10px;
+  color: #718fbd;
+}
+
+.form {
+  margin: auto;
+}
+
+.form input, .form select, .form textarea {
+  border-radius: 5px;
+  border: 1px solid  #718fbd;
+  outline: none;
+  background: none;
+  padding: 5px;
+  width: 100%;
+}
+
+
+ul {
+  height: 100%;
+  padding: 0px 5px 0px 20px;
+}
+
+a {
+  color:  #718fbd;
+}
+
+.btn-group button {
+  float: left; /* Float the buttons side by side */
 }

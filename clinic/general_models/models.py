@@ -24,16 +24,16 @@ def save_doctor_profile(sender, instance, **kwargs):
     
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
-    gender = models.CharField(max_length=1, null=True)
     last_name = models.CharField(max_length=30)
-    identifying_number = models.CharField(max_length=30)
+    gender = models.CharField(max_length=1, null=True)
+    clinic_identifying_number = models.CharField(max_length=30)
+    visa_number = models.CharField(max_length=30)
     language = models.CharField(max_length=30, default='English')
     phone_number = models.CharField(max_length=30, blank=True)
-    last_visit = models.DateField(blank=True)
-    email = models.EmailField(blank=True)
     origin_country = models.CharField(max_length=30, blank=True)
     date_of_birth = models.DateField(null=True)
     # family_members 
+    # sessions
     def __str__(self):
         return self.first_name + " " + self.last_name
 
