@@ -6,7 +6,7 @@ import datetime
 
 
 class CreatePatientForm(ModelForm):
-    origin_country = forms.ChoiceField(label = "Origin country",
+    origin_country = forms.ChoiceField(
         choices = sorted(((country.name, country.name) for country in pycountry.countries)),
         widget=forms.Select,
         required = True)
@@ -15,6 +15,14 @@ class CreatePatientForm(ModelForm):
         widget=forms.SelectDateWidget(years = list(range(datetime.datetime.now().year, 1900, -1))),
         required= True
     )
+
+    gender = forms.ChoiceField(
+        choices=(("f", "f"), ("m", "m")),
+        widget=forms.Select,
+        required=True
+    )
+
+
 
     class Meta:
         model = gm.Patient
