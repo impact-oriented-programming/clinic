@@ -6,7 +6,6 @@ def index(request):
     if request.method == 'POST':
         form = CreatePatientForm(request.POST)
         if form.is_valid():
-            form.save()
             return redirect('home')
     else:
         form = CreatePatientForm()

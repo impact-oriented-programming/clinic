@@ -2,25 +2,26 @@
 
 {% load crispy_forms_tags %}
 
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'style_login.css'%}">
     <meta charset="UTF-8">
     <title>Create New Patient</title>
 </head>
 <body>
-    <div class="content-section">
+    <div id="formContent">
         <form method="POST">
             {% csrf_token %}
-            <fieldset class="form-group">
+            <fieldset >
                 <legend class="border-bottom mb-4">Please Enter The Patient's Details</legend>
                 {{ form|crispy }}
             </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            <div>
+               <input type="submit" value="Sign Up">
             </div>
         </form>
-        <div class="border-top pt-3">
+        <div>
         </div>
     </div>
 </body>
