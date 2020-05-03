@@ -1,28 +1,16 @@
-{% load static %}
-
+{% extends "create_new_patient/base.html" %}
 {% load crispy_forms_tags %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="{% static 'style_login.css'%}">
-    <meta charset="UTF-8">
-    <title>Create New Patient</title>
-</head>
-<body>
-    <div id="formContent">
+{% block content %}
+    <div class="content-section">
         <form method="POST">
             {% csrf_token %}
-            <fieldset >
+            <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Please Enter The Patient's Details</legend>
                 {{ form|crispy }}
             </fieldset>
-            <div>
-               <input type="submit" value="Sign Up">
+            <div class="form-group">
+               <input class="btn btn-outline-info" type="submit" value="Sign Up">
             </div>
         </form>
-        <div>
-        </div>
     </div>
-</body>
-</html>
+{% endblock content %}
