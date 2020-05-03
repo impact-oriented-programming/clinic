@@ -1,6 +1,6 @@
 # clinic
 ###### Refugee Clinic Management System
-includes two main modules (which are not complete yet!):
+Includes two main modules (which are not complete yet):
 1. **Clinic calendar:** To be used in the reception desk
   - Shows scheduled appointments
   - Query a day and view it's scheduled appointments
