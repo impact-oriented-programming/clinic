@@ -23,7 +23,7 @@ Includes two main modules (which are not complete yet):
 ## Installation:
 1. Download / clone project:
 ```
-git clone https://github.com/impact-oriented-programming/meat-is-murder.git
+git clone https://github.com/impact-oriented-programming/clinic.git
 ```
 2. Install Django and other required libraries:
 ```
