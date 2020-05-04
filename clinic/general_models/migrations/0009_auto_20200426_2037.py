@@ -6,7 +6,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('session', '0002_remove_session_doctor'),
         ('general_models', '0008_delete_trydoctor'),
     ]
 

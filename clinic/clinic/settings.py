@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'general_models.apps.GeneralModelsConfig',
-    'session.apps.SessionConfig',
     'clinic_calendar.apps.ClinicCalendarConfig',
     'doctor_interface.apps.DoctorInterfaceConfig',
     'doctor_time_slot.apps.DoctorTimeSlotConfig',
