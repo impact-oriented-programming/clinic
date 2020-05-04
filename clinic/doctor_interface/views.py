@@ -10,18 +10,7 @@ class index_patient(View):
     
     def get(self, request, *args, **kwargs):
         
-        all_patients = gm.Patient.objects.all()
-        testing_patient = all_patients[0]
-        all_patient_appointments = gm.Appointment.objects.all()
-        all_patient_appointments = all_patient_appointments.filter(patient = testing_patient).order_by("date")
-        
-        context = {
-            'patient': testing_patient, 
-            'last_visits': all_patient_appointments
-            }
-        return render(request, 'doctor_interface/patient_interface_home.html', context)
-        
-
+        return render(request, 'doctor_interface/patient_interface_home.html')
 
 
 class index(View):

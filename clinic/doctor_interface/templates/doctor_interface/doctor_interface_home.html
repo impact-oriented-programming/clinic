@@ -38,7 +38,7 @@
             <tbody class="table-hover">
         {% for appointment in today_appointments %}
             <tr>
-                <td>{{ appointment.patient }}</td>
+                <td><a href="{% url 'patient_interface' %}?patient_id={{appointment.patient.clinic_identifying_number}}">{{ appointment.patient }}</a></td>
                 <td>{{ appointment.time }}</td>
                 <td>{{ appointment.room }}</td>
             </tr>
