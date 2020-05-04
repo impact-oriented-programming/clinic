@@ -1,0 +1,52 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'patient_interface/style_interface.css'%}">
+    <meta charset="UTF-8">
+    <title>{{ patient.first_name }} {{ patient.last_name }}</title>
+</head>
+<body>
+  <div class="table-title">
+  <h2>Patient Details</h2>
+  <p> Name: {{ patient.first_name }} {{ patient.last_name }} </p>
+  <p> ID: {{ patient.identifying_number}} </p>
+  <p> Date Of Birth: {{ patient.date_of_birth}} </p>
+  <p> Gender: {{ patient.gender }} </p>
+  <p> Origin Country: {{ patient.origin_country }} </p>
+  </div>
+  <div class="table-title">
+    <h2>Last Visits</h2>
+    <p>click on appointment to see full details</p>
+  </div>
+  {% if last_visits %}
+          <table class="table-fill">
+            <thead>
+              <tr>
+                <th>Session Details</th>
+                <th>Date</th>
+                <th>Doctor</th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+        {% for appointment in last_visits %}
+            <tr>
+                <td>To do (add icon)</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.doctor }}</td>
+            </tr>
+        {% endfor %}
+            </tbody>
+          </table>
+    {% else %}
+    <div class="table-title">
+      <p>No previous visits available</p>
+    </div>
+      {% endif %}
+
+
+  <div class="table-title">
+    <h4><a href="http://localhost:8000/session/" style="text-decoration: none">+Start New Session</a></h4>
+    <h4><a href="http://localhost:8000/blood_tests/" style="text-decoration: none">+Ask For Blood Test</a></h4>
+    <h4><a href="http://localhost:8000/doctor_interface/" style="text-decoration: none" >Go Back to Doctor's Interface</a></h4>
+  </div>
+  </body>
