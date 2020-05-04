@@ -19,7 +19,7 @@ class index_patient(View):
             'patient': testing_patient, 
             'last_visits': all_patient_appointments
             }
-        return render(request, 'patient_interface/patient_interface_home.html', context)
+        return render(request, 'doctor_interface/patient_interface_home.html', context)
         
 
 

@@ -1,11 +1,20 @@
 {% load static %}
 
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'patient_interface/style_interface.css'%}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
     <meta charset="UTF-8">
     <title>{{ patient.first_name }} {{ patient.last_name }}</title>
 </head>
 <body>
+  <div class="btn-group clearfix" style="width: 99%">
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="http://localhost:8000/doctor_interface/">Go back to doctor interface</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;">+ Ask for blood test</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;">+ Session</a>
+  </div>
+
   <div class="table-title">
   <h2>Patient Details</h2>
   <p> Name: {{ patient.first_name }} {{ patient.last_name }} </p>
@@ -28,25 +37,19 @@
               </tr>
             </thead>
             <tbody class="table-hover">
-        {% for appointment in last_visits %}
-            <tr>
+              {% for appointment in last_visits %}
+              <tr>
                 <td>To do (add icon)</td>
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.doctor }}</td>
-            </tr>
-        {% endfor %}
-            </tbody>
+              </tr>
+            {% endfor %}
+          </tbody>
           </table>
-    {% else %}
-    <div class="table-title">
-      <p>No previous visits available</p>
-    </div>
-      {% endif %}
-
-
-  <div class="table-title">
-    <h4><a href="http://localhost:8000/session/" style="text-decoration: none">+Start New Session</a></h4>
-    <h4><a href="http://localhost:8000/blood_tests/" style="text-decoration: none">+Ask For Blood Test</a></h4>
-    <h4><a href="http://localhost:8000/doctor_interface/" style="text-decoration: none" >Go Back to Doctor's Interface</a></h4>
-  </div>
+          {% else %}
+          <div class="table-title">
+            <p>No previous visits available</p>
+          </div>
+          {% endif %}
+          <hr>
   </body>
