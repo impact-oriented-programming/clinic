@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'doctor_interface.apps.DoctorInterfaceConfig',
     'doctor_time_slot.apps.DoctorTimeSlotConfig',
     'patient_interface.apps.PatientInterfaceConfig',
-    'schedule.apps.ScheduleConfig',
     'create_new_patient.apps.CreateNewPatientConfig',
     'crispy_forms',
     'django.contrib.admin',
