@@ -5,7 +5,7 @@ from django.views import generic
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
-from .forms import CreatePatientForm
+from .forms import CreatePatientForm, DoctorSlotForm
 from django.contrib import messages
 import general_models.models as gm
 
@@ -67,3 +67,24 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+
+def doctor_slot_view(request):
+    form = DoctorSlotForm(request.POST or None)
+    if form.is_valid():
+        slot_instance = form.save(commit=False)
+        start = slot_instance.start_time
+        delta = datetime.timedelta(minutes=slot_instance.appointment_duration)
+        # generate appointments
+        while start < slot_instance.end_time:
+            appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None, date=slot_instance.date,
+                                                     time=start, room=slot_instance.room, assigned=False, done=False)
+            appointment.save()
+            start = add_delta_to_time(start, delta)
+        form = DoctorSlotForm()  # redirect instead to calendar with message
+    context = {'form': form, 'title': "Doctor time slot"}
+    return render(request, 'clinic_calendar/doctor_time_slot.html', context)
+
+
+def add_delta_to_time(time, delta):
+    return (datetime.combine(datetime.date(1, 1, 1), time) + delta).time()

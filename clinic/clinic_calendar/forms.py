@@ -3,6 +3,7 @@ from django.forms import ModelForm
 import general_models.models as gm
 import pycountry
 import datetime
+from .models import DoctorSlot
 
 
 class CreatePatientForm(ModelForm):
@@ -28,3 +29,35 @@ class CreatePatientForm(ModelForm):
         model = gm.Patient
         fields = '__all__'
 
+
+class DoctorSlotForm(forms.ModelForm):
+    class Meta:
+        model = DoctorSlot
+        fields = '__all__'
+
+    def clean_date(self):
+        date = self.cleaned_data.get('date')
+        if date < datetime.date.today():
+            raise forms.ValidationError("Can'd add Doctor slot for passed Dates")
+        return date
+
+    def clean_end_time(self):
+        start = self.cleaned_data.get('start_time')
+        end = self.cleaned_data.get('end_time')
+        if end <= start:
+            raise forms.ValidationError("End Time must be after Start Time")
+        return end
+
+    def clean_appointment_duration(self):
+        appointment_duration = self.cleaned_data.get('appointment_duration')
+        start = self.cleaned_data.get('start_time')
+        end = self.cleaned_data.get('end_time')
+        if start is None or end is None:
+            raise forms.ValidationError("")
+        if doctor_slot_in_minutes(start, end) % appointment_duration != 0:
+            raise forms.ValidationError("Doctor shift must divide in appointment duration")
+        return appointment_duration
+
+
+def doctor_slot_in_minutes(start, end):
+    return (end.hour * 60 + end.minute) - (start.hour * 60 + start.minute)

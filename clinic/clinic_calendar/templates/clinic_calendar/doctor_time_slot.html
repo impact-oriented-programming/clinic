@@ -1,0 +1,20 @@
+{% extends "clinic_calendar/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div id="formContent">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset >
+            <legend class="border-bottom mb-4">Add Doctor Time Slot</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div>
+           <input type="submit" value="add slot">
+        </div>
+    </form>
+    <div>
+    </div>
+</div>
+
+{% endblock content %}
