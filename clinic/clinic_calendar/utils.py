@@ -16,10 +16,10 @@ class Calendar(HTMLCalendar):
         d = ''
         # print number of events when there is more than one event that day
         if len(events_per_day)>0:
-            d = f'<li>  {len(events_per_day)} events</li>'
-        # print all patient's names for that day - currently deleted
+            d +=f'<li>  {len(events_per_day)} appointments</li>'
+        #print all patient's names for that day - currently deleted
         #for event in events_per_day:
-         #   d += f'<li>  {event.patient} </li>'
+         #   d += f'<a> {event.patient} </a>'
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'

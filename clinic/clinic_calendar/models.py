@@ -1,6 +1,5 @@
 from django.db import models
 import general_models.models as gm
-import doctor_time_slot.models as slt
 from django.urls import reverse
 
 # view and manage all the appointments
