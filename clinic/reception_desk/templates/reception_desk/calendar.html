@@ -10,23 +10,23 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'clinic_calendar/styles.css'%}">
+  <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/styles.css'%}">
   <title>Clinic Calendar</title>
 </head>
 <body>
   <h1 class="title", style="text-align:center; color:#17a2b8"> Clinic's Calendar</h1>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/create_new_patient/">Create New Patient</a>
+    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/reception_desk/create-patient/">Create New Patient</a>
     <a class="btn btn-info left clearfix" style="width:25%">Edit Existing Patient</a>
     <a class="btn btn-info left clearfix" style="width:25%">Add New Appointment</a>
-    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/doctor_time_slot/">Add Available Doctor Slot</a>
+    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/reception_desk/doctor-time-slot/">Add Available Doctor Slot</a>
   </div>
   <hr>
   <div class="clearfix">
-    <a class="btn btn-info left" href="{% url 'clinic_calendar:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-info left" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
     <a class="btn btn-info center">Today's Appointments</a>
-    <a class="btn btn-info right" href="{% url 'clinic_calendar:calendar' %}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-info right" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
 

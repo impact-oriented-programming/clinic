@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'general_models.apps.GeneralModelsConfig',
-    'clinic_calendar.apps.ClinicCalendarConfig',
+    'reception_desk.apps.ClinicCalendarConfig',
     'doctor_interface.apps.DoctorInterfaceConfig',
     'crispy_forms',
     'django.contrib.admin',
