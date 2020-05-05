@@ -10,10 +10,11 @@ class Calendar(HTMLCalendar):
         self.month = month
         super(Calendar, self).__init__()
         self.setfirstweekday(6)
+        
     # formats a day as a td
     # filter events by day
     def formatday(self, day, events):
-        events_per_day = gm.Appointment.objects.filter(date__day = day)
+        events_per_day = events.filter(date__day = day)
         d = ''
         # print number of events when there is more than one event that day
         if len(events_per_day)>0:
