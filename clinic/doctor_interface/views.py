@@ -14,11 +14,11 @@ def index_patient(request, clinic_id):
     patient = gm.Patient.objects.all()
     patient = patient.filter(clinic_identifying_number = clinic_id)
     patient = patient[0] # was list of length 1. we want the patient itselfs
-    
+    age = datetime.datetime.now().year
     last_visits = gm.Appointment.objects.all()
     last_visits = last_visits.filter(patient = patient)
     
-    context = {'patient':patient, 'last_visits':last_visits}
+    context = {'patient':patient, 'last_visits':last_visits, "age":str(age)}
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 class index(View):
