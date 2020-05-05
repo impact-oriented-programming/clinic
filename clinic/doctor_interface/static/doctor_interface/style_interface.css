@@ -1,5 +1,7 @@
 body {
-  font-family: "Roboto", "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style:normal;
+  font-family: "Roboto", helvetica, arial, sans-serif;
   background: #fafafa;
 }
 
@@ -149,6 +151,10 @@ td {
   text-align: center;
   margin: 10px;
   color: #718fbd;
+  font-weight: 400;
+  font-style:normal;
+  font-family: "Roboto", helvetica, arial, sans-serif;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .form {
