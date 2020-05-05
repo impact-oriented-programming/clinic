@@ -49,6 +49,6 @@ class Appointment(models.Model):
     """
     @property
     def get_html_url(self):
-        url = reverse('clinic_calendar:event_edit', args=(self.id,))
+        url = reverse('reception_desk:event_edit', args=(self.id,))
         return f'<a href="{url}"> {self.title} </a>'
     """

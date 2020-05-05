@@ -17,10 +17,10 @@
   <h1 class="title", style="text-align:center; color:#17a2b8"> Clinic's Calendar</h1>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/reception_desk/create-patient/">Create New Patient</a>
+    <a class="btn btn-info left clearfix" style="width:25%" href="{% url 'reception_desk:create-patient' %}">Create New Patient</a>
     <a class="btn btn-info left clearfix" style="width:25%">Edit Existing Patient</a>
     <a class="btn btn-info left clearfix" style="width:25%">Add New Appointment</a>
-    <a class="btn btn-info left clearfix" style="width:25%" href="http://localhost:8000/reception_desk/doctor-time-slot/">Add Available Doctor Slot</a>
+    <a class="btn btn-info left clearfix" style="width:25%" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a>
   </div>
   <hr>
   <div class="clearfix">

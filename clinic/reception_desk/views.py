@@ -20,10 +20,10 @@ def create_patient(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             messages.success(request, f'Account created for {first_name} {last_name}!')
-            return redirect('clinic_calendar:calendar')
+            return redirect('reception_desk:calendar')
     else:
         form = CreatePatientForm()
-    return render(request, 'clinic_calendar/create_new_patient.html', {'form': form, 'title': 'Create New Patient'})
+    return render(request, 'reception_desk/create_new_patient.html', {'form': form, 'title': 'Create New Patient'})
 
 
 
@@ -31,7 +31,7 @@ def create_patient(request):
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
-    template_name = 'clinic_calendar/calendar.html'
+    template_name = 'reception_desk/calendar.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -83,7 +83,7 @@ def doctor_slot_view(request):
             start = add_delta_to_time(start, delta)
         form = DoctorSlotForm()  # redirect instead to calendar with message
     context = {'form': form, 'title': "Doctor time slot"}
-    return render(request, 'clinic_calendar/doctor_time_slot.html', context)
+    return render(request, 'reception_desk/doctor_time_slot.html', context)
 
 
 def add_delta_to_time(time, delta):
