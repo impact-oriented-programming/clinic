@@ -9,26 +9,8 @@ import datetime as dt
 from .forms import CreatePatientForm, DoctorSlotForm
 from django.contrib import messages
 import general_models.models as gm
-
 from .models import *
 from .utils import Calendar
-
-def create_patient(request):
-    if request.method == 'POST':
-        form = CreatePatientForm(request.POST)
-        if form.is_valid():
-            form.save()
-            first_name = form.cleaned_data.get('first_name')
-            last_name = form.cleaned_data.get('last_name')
-            messages.success(request, f'Account created for {first_name} {last_name}!')
-            return redirect('reception_desk:calendar')
-    else:
-        form = CreatePatientForm()
-    return render(request, 'reception_desk/create_new_patient.html', {'form': form, 'title': 'Create New Patient'})
-
-
-
-
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
@@ -68,6 +50,20 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
+
+
+def create_patient(request):
+    if request.method == 'POST':
+        form = CreatePatientForm(request.POST)
+        if form.is_valid():
+            form.save()
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            messages.success(request, f'Account created for {first_name} {last_name}!')
+            return redirect('reception_desk:calendar')
+    else:
+        form = CreatePatientForm()
+    return render(request, 'reception_desk/create_new_patient.html', {'form': form, 'title': 'Create New Patient'})
 
 
 def doctor_slot_view(request):
