@@ -4,5 +4,6 @@ from . import views
 
 app_name = 'clinic_calendar'
 urlpatterns = [
-    path('', views.CalendarView.as_view(), name='calendar'),
+    path('calendar', views.CalendarView.as_view(), name='calendar'),
+    path('create-patient', views.create_patient, name='create-patient'),
 ]

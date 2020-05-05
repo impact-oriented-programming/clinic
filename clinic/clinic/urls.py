@@ -26,5 +26,4 @@ urlpatterns = [
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
     path('doctor_interface/', include('doctor_interface.urls'), name='doctor_interface'),
     path('clinic_calendar/', include('clinic_calendar.urls'), name='clinic_calendar'),
-    path('create_new_patient/', include('create_new_patient.urls')),
 ]
