@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from datetime import datetime, timedelta, date
 
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -50,5 +51,7 @@ class Appointment(models.Model):
     def get_html_url(self):
         url = reverse('reception_desk:date-view', args=(str(self.date),)) # will sent the link to date view with argument - the appointment's date as string
         num_appointments = len(Appointment.objects.filter(date = self.date)) # we want th ecell in the calendar to say how many appointments are there for that day
-        return f'<a href="{url}">{num_appointments} scheduled appointments </a>'
+        if(date.today() == self.date):
+            return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} scheduled appointments </a>'
+        return f'<a style="text-decoration:none; font-size:16px" href="{url}">{num_appointments} scheduled appointments </a>'
     

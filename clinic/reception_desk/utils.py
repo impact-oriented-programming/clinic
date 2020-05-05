@@ -1,4 +1,5 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from datetime import datetime as dt
 from calendar import HTMLCalendar
 import general_models.models as gm
 import datetime
@@ -16,6 +17,7 @@ class Calendar(HTMLCalendar):
     def formatday(self, day, events):
         events_per_day = events.filter(assigned = True ,date__day = day)
         d = ''
+        my_day = day
         date_str = str(self.year) + str(self.month) + str(day)
         # print number of events when there is more than one event that day
         if len(events_per_day)>0:
@@ -23,6 +25,8 @@ class Calendar(HTMLCalendar):
             d += f'<li> {events_per_day[0].get_html_url}</li>'
  
         if day != 0:
+            if(date.today() == date(int(self.year), int(self.month), my_day)): # catch today to change it's background color
+                return f"<td style='background: #8fb3cf; color:white;'><span class='date'>{day}</span><ul> {d} </ul></td>"
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
     # formats a week as a tr
