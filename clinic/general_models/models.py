@@ -6,7 +6,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 
-
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     specialty = models.CharField(max_length=30)
@@ -22,7 +21,7 @@ def create_doctor_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_doctor_profile(sender, instance, **kwargs):
     instance.doctor.save()
-    
+
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
@@ -33,7 +32,7 @@ class Patient(models.Model):
     phone_number = models.CharField(max_length=30, blank=True)
     origin_country = models.CharField(max_length=30, blank=True)
     date_of_birth = models.DateField(null=True)
-    # family_members 
+    # family_members
     def __str__(self):
         return self.first_name + " " + self.last_name + "\n"
 
@@ -45,7 +44,7 @@ class Appointment(models.Model):
     room = models.CharField(max_length=30, null=True)
     assigned = models.BooleanField( default=False)
     done = models.BooleanField( default=False)
-    
+
     """
     @property
     def get_html_url(self):
