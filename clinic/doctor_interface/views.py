@@ -7,6 +7,10 @@ from django.utils import timezone
 import django.contrib.auth
 
 def index_patient(request, clinic_id):
+    if not(request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+    if not(request.user.groups.filter(name = 'Doctors').exists()):
+        return render(request, 'doctor_interface/not_a_doctor.html')
     patient = gm.Patient.objects.all()
     patient = patient.filter(clinic_identifying_number = clinic_id)
     patient = patient[0] # was list of length 1. we want the patient itselfs
