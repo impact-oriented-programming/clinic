@@ -38,7 +38,7 @@ class Patient(models.Model):
 
 class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     date = models.DateField()
     time = models.TimeField()
     room = models.CharField(max_length=30, null=True)
