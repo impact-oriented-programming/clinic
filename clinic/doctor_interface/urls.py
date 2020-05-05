@@ -7,5 +7,5 @@ from . import views
 app_name = 'doctor_interface'
 urlpatterns = [
     path('', views.index.as_view() , name='homepage'),
-    path('patient_interface/', views.index_patient.as_view() , name='patient_interface'),
+    path('patient_interface/<str:clinic_id>', views.index_patient , name='patient_interface'),
     ]

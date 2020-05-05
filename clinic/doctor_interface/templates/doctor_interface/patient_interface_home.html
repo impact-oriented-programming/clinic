@@ -39,7 +39,7 @@
             <tbody class="table-hover">
               {% for appointment in last_visits %}
               <tr>
-                <td>To do (add icon)</td>
+                <td>To do (add icon) {{ appointment.patient }}</td>
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.doctor }}</td>
               </tr>

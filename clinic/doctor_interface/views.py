@@ -6,14 +6,18 @@ import datetime
 from django.utils import timezone
 import django.contrib.auth
 
-class index_patient(View):
+def index_patient(request, clinic_id):
+    patient = gm.Patient.objects.all()
+    patient = patient.filter(clinic_identifying_number = clinic_id)
+    patient = patient[0] # was list of length 1. we want the patient itselfs
     
-    def get(self, request, *args, **kwargs):
-        
-        return render(request, 'doctor_interface/patient_interface_home.html')
+    last_visits = gm.Appointment.objects.all()
+    last_visits = last_visits.filter(patient = patient)
+    
+    context = {'patient':patient, 'last_visits':last_visits}
+    return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 class index(View):
-
     def get(self, request, *args, **kwargs):
         if not(request.user.is_authenticated):
             return render(request, 'doctor_interface/not_logged_in.html')
