@@ -5,13 +5,13 @@ from django.views import generic
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
+import general_models.models as gm
 
 from .models import *
 from .utils import Calendar
-from .forms import EventForm
 
 class CalendarView(generic.ListView):
-    model = Event
+    model = gm.Appointment
     template_name = 'clinic_calendar/calendar.html'
 
     def get_context_data(self, **kwargs):
@@ -48,17 +48,3 @@ def next_month(d):
     next_month = last + timedelta(days=1)
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
-
-
-def event(request, event_id=None):
-    instance = Event()
-    if event_id:
-        instance = get_object_or_404(Event, pk=event_id)
-    else:
-        instance = Event()
-    
-    form = EventForm(request.POST or None, instance=instance)
-    if request.POST and form.is_valid():
-        form.save()
-        return HttpResponseRedirect(reverse('clinic_calendar:calendar'))
-    return render(request, 'clinic_calendar/event.html', {'form': form})

@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from calendar import HTMLCalendar
-from .models import Event
+import general_models.models as gm
+import datetime
+from django.utils import timezone
 
 class Calendar(HTMLCalendar):
 	def __init__(self, year=None, month=None):
@@ -11,18 +13,16 @@ class Calendar(HTMLCalendar):
 	# formats a day as a td
 	# filter events by day
 	def formatday(self, day, events):
-		events_per_day = events.filter(start_time__day=day)
+		events_per_day = gm.Appointment.objects.filter(date__day = day)
 		d = ''
 		for event in events_per_day:
-			d += f'<li> {event.get_html_url} </li>'
+			d += f'<li>  {event.patient} </li>'
 
 		if day != 0:
 			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
 		return '<td></td>'
 
-
-
-	# formats a week as a tr 
+	# formats a week as a tr
 	def formatweek(self, theweek, events):
 		week = ''
 		for d, weekday in theweek:
@@ -32,7 +32,7 @@ class Calendar(HTMLCalendar):
 	# formats a month as a table
 	# filter events by year and month
 	def formatmonth(self, withyear=True):
-		events = Event.objects.filter(start_time__year=self.year, start_time__month=self.month)
+		events = gm.Appointment.objects.filter(assigned = True, date__year=self.year, date__month=self.month)
 
 		cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
 		cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'

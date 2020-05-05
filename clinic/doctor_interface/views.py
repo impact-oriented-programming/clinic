@@ -21,7 +21,7 @@ class index(View):
             return render(request, 'doctor_interface/not_a_doctor.html')
         
         user = request.user
-        specialty = user.doctor.specialty
+        #specialty = user.doctor.specialty
         my_appointments = gm.Appointment.objects.all()
         my_appointments = my_appointments.filter(assigned = True)
         my_appointments = my_appointments.filter(doctor = user.doctor)

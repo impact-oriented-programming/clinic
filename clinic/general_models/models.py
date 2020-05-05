@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 
 class Doctor(models.Model):
@@ -45,3 +46,9 @@ class Appointment(models.Model):
     assigned = models.BooleanField( default=False)
     done = models.BooleanField( default=False)
     
+    """
+    @property
+    def get_html_url(self):
+        url = reverse('clinic_calendar:event_edit', args=(self.id,))
+        return f'<a href="{url}"> {self.title} </a>'
+    """
