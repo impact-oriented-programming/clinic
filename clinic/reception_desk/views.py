@@ -30,6 +30,7 @@ class CalendarView(generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        context['today_date'] = str(date.today()) #to be used by today's appointments button
         return context
 
 def get_date(req_day):
@@ -87,7 +88,7 @@ def add_delta_to_time(time, delta):
     return (dt.datetime.combine(dt.date(1, 1, 1), time) + delta).time()
 
 
-def date_view(request, my_date):
+def date_view(request, my_date=''):
     # first parse wanted datr from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])

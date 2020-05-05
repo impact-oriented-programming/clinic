@@ -25,7 +25,7 @@
   <hr>
   <div class="clearfix">
     <a class="btn btn-info left" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-info center">Today's Appointments</a>
+    <a class="btn btn-info center"href="{% url 'reception_desk:date-view' today_date %}">Today's Appointments</a>
     <a class="btn btn-info right" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}

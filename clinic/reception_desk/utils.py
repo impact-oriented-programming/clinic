@@ -21,9 +21,7 @@ class Calendar(HTMLCalendar):
         if len(events_per_day)>0:
             my_text = str({len(events_per_day)}) + 'scheduled appointments'
             d += f'<li> {events_per_day[0].get_html_url}</li>'
-        #print all patient's names for that day - currently deleted
-        #for event in events_per_day:
-         #   d += f'<a> {event.patient} </a>'
+ 
         if day != 0:
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
