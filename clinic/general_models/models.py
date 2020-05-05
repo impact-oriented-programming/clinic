@@ -45,9 +45,11 @@ class Appointment(models.Model):
     assigned = models.BooleanField( default=False)
     done = models.BooleanField( default=False)
 
-    """
+    
     @property
     def get_html_url(self):
-        url = reverse('reception_desk:event_edit', args=(self.id,))
-        return f'<a href="{url}"> {self.title} </a>'
-    """
+        url = reverse('reception_desk:date-view', args=(str(self.date),))
+        num_appointments = len(Appointment.objects.filter(date = self.date))
+        
+        return f'<a href="{url}">{num_appointments} scheduled appointments </a>'
+    

@@ -85,3 +85,9 @@ def doctor_slot_view(request):
 
 def add_delta_to_time(time, delta):
     return (dt.datetime.combine(dt.date(1, 1, 1), time) + delta).time()
+
+
+def date_view(request, my_date):
+    today_date = date.today()
+    context = {'date':my_date, 'today_date':today_date}
+    return render(request, 'reception_desk/date.html', context)

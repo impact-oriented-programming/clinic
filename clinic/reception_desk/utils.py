@@ -16,10 +16,11 @@ class Calendar(HTMLCalendar):
     def formatday(self, day, events):
         events_per_day = events.filter(assigned = True ,date__day = day)
         d = ''
+        date_str = str(self.year) + str(self.month) + str(day)
         # print number of events when there is more than one event that day
         if len(events_per_day)>0:
-            d +=f'<li>  {len(events_per_day)} scheduled appointments</li>'
-            
+            my_text = str({len(events_per_day)}) + 'scheduled appointments'
+            d += f'<li> {events_per_day[0].get_html_url}</li>'
         #print all patient's names for that day - currently deleted
         #for event in events_per_day:
          #   d += f'<a> {event.patient} </a>'
