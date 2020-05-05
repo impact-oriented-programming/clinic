@@ -24,8 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('doctor_interface/', include('doctor_interface.urls')),
-    path('clinic_calendar/', include('clinic_calendar.urls')),
+    path('doctor_interface/', include('doctor_interface.urls'), name='doctor_interface'),
+    path('clinic_calendar/', include('clinic_calendar.urls'), name='clinic_calendar'),
     path('doctor_time_slot/', include('doctor_time_slot.urls')),
     path('create_new_patient/', include('create_new_patient.urls')),
 ]

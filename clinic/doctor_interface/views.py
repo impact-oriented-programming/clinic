@@ -12,7 +12,6 @@ class index_patient(View):
         
         return render(request, 'doctor_interface/patient_interface_home.html')
 
-
 class index(View):
 
     def get(self, request, *args, **kwargs):

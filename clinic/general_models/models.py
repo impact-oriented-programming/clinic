@@ -33,7 +33,6 @@ class Patient(models.Model):
     origin_country = models.CharField(max_length=30, blank=True)
     date_of_birth = models.DateField(null=True)
     # family_members 
-    # sessions
     def __str__(self):
         return self.first_name + " " + self.last_name
 
