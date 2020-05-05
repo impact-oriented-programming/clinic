@@ -88,6 +88,13 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
-    today_date = date.today()
-    context = {'date':my_date, 'today_date':today_date}
+    # first parse wanted datr from given my_date string of form yyyy-mm-dd
+    wanted_year = int(my_date[0:4])
+    wanted_month = int(my_date[5:7])
+    wanted_day = int(my_date[8:10])
+    # make it a datetime.date instance
+    wanted_date = date(wanted_year, wanted_month, wanted_day)
+    # list all the appointments of that given day
+    appointment_list = gm.Appointment.objects.filter(date = wanted_date)
+    context = {'appointment_list':appointment_list,'wanted_date':wanted_date, 'wanted_year': wanted_year,'wanted_month': wanted_month, 'wanted_day': wanted_day,}
     return render(request, 'reception_desk/date.html', context)
