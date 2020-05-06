@@ -45,10 +45,11 @@ class Appointment(models.Model):
     date = models.DateField()
     time = models.TimeField()
     room = models.CharField(max_length=30, null=True)
-    assigned = models.BooleanField( default=False)
-    done = models.BooleanField( default=False)
-
+    assigned = models.BooleanField( default=False) #is there a patient?
+    arrived = models.BooleanField( default=False) # did the patient arrive to the reception desk at the scheduled day?
+    done = models.BooleanField( default=False) # is the session done?
     
+
     @property
     def get_html_url(self):
         url = reverse('reception_desk:date-view', args=(str(self.date),)) # will sent the link to date view with argument - the appointment's date as string
