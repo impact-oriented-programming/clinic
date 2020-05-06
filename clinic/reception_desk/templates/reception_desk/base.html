@@ -21,21 +21,8 @@
 <header class="site-header">
      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'reception_desk:calendar' %}">Calendar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-                <ul class="navbar-nav">
-                    <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="{% url 'home' %}">Home 1</a>
-                        <a class="nav-item nav-link" href="{% url 'home' %}">Home 2</a>
-                    </div>
-                    <div class="navbar-nav">
-                        <a class="nav-item nav-link" href="#">Login</a>
-                        <a class="nav-item nav-link" href="#">Register</a>
-                    </div>
-                </ul>
+            <a class="navbar-brand" href="{% url 'reception_desk:calendar' %}">Back To Calendar</a>
+             <a class="navbar-brand" href="{% url 'home' %}">Back To Home</a>
             </div>
         </div>
      </nav>
@@ -55,14 +42,13 @@
         </div>
         <div class="col-md-4">
           <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
-              </ul>
+            <h3>Other Options</h3>
+              <div class="list-group">
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:create-patient' %}">Create New Patient</a>
+                <a class="list-group-item list-group-item-action" href="#">Edit Existing Patient</a>
+                <a class="list-group-item list-group-item-action" href="#">Add New Appointment</a>
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a>
+              </div>
           </div>
         </div>
       </div>
