@@ -80,7 +80,8 @@ def doctor_slot_view(request):
                                                      time=start, room=slot_instance.room, assigned=False, done=False)
             appointment.save()
             start = add_delta_to_time(start, delta)
-        form = DoctorSlotForm()  # redirect instead to calendar with message
+        messages.success(request, f'Doctor time slot added successfully!')
+        return redirect('reception_desk:calendar')
     context = {'form': form, 'title': "Doctor time slot"}
     return render(request, 'reception_desk/doctor_time_slot.html', context)
 

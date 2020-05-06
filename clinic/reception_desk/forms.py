@@ -1,29 +1,31 @@
 from django import forms
+from django.contrib.admin import widgets
 from django.forms import ModelForm
 import general_models.models as gm
 import pycountry
 import datetime
 from .models import DoctorSlot
 
+HOUR_CHOICES = (
+    [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
+
 
 class CreatePatientForm(ModelForm):
     origin_country = forms.ChoiceField(
-        choices = sorted(((country.name, country.name) for country in pycountry.countries)),
+        choices=sorted(((country.name, country.name) for country in pycountry.countries)),
         widget=forms.Select,
-        required = True)
+        required=True)
 
     date_of_birth = forms.DateField(
-        widget=forms.SelectDateWidget(years = list(range(datetime.datetime.now().year, 1900, -1))),
-        required= True
-    )
-
-    gender = forms.ChoiceField(
-        choices=(("f", "f"), ("m", "m")),
-        widget=forms.Select,
+        widget=forms.SelectDateWidget(years=list(range(datetime.datetime.now().year, 1900, -1))),
         required=True
     )
 
-
+    gender = forms.ChoiceField(
+        choices=(("f", "Female"), ("m", "Male"), ("o", "Other")),
+        widget=forms.Select,
+        required=True
+    )
 
     class Meta:
         model = gm.Patient
@@ -31,8 +33,13 @@ class CreatePatientForm(ModelForm):
 
 
 class DoctorSlotForm(forms.ModelForm):
-
     doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
+
+    date = forms.DateField(widget=forms.SelectDateWidget())
+
+    start_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+
+    end_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
 
     class Meta:
         model = DoctorSlot
@@ -41,7 +48,7 @@ class DoctorSlotForm(forms.ModelForm):
     def clean_date(self):
         date = self.cleaned_data.get('date')
         if date < datetime.date.today():
-            raise forms.ValidationError("Can'd add doctor slot for passed dates")
+            raise forms.ValidationError("Can't add doctor time slot for passed dates")
         return date
 
     def clean_end_time(self):
@@ -55,10 +62,13 @@ class DoctorSlotForm(forms.ModelForm):
         appointment_duration = self.cleaned_data.get('appointment_duration')
         start = self.cleaned_data.get('start_time')
         end = self.cleaned_data.get('end_time')
+        slot_gap = doctor_slot_in_minutes(start, end) % appointment_duration
         if start is None or end is None:
             raise forms.ValidationError("")
-        if doctor_slot_in_minutes(start, end) % appointment_duration != 0:
-            raise forms.ValidationError("Doctor shift must divide in appointment duration")
+        if slot_gap != 0:
+            raise forms.ValidationError("Doctor shift must divide in appointment duration\n" +
+                                        "(ending " + str(slot_gap) + " minutes earlier or " +
+                                        str(appointment_duration-slot_gap) + " minutes later will work)")
         return appointment_duration
 
 
