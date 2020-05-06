@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm
+from .forms import CreatePatientForm, DoctorSlotForm , BoolForm
 from django.contrib import messages
 import general_models.models as gm
 from .models import *
@@ -117,6 +117,16 @@ def date_view(request, my_date):
     for appointment in appointment_list:
         drooms[appointment.room ].append(appointment)
         ddocs[appointment.doctor].append(appointment)
-
-    context = {'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
+        
+    #for each appointment, set a form. in a dictionary of appointment -->form
+    dforms = OrderedDict()
+    for appointment in appointment_list:
+        form = BoolForm(request.GET, instance=appointment)
+        dforms[appointment] = form
+        if form.is_valid():
+           form.save()
+    
+    context = {'dforms':dforms,'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
     return render(request, 'reception_desk/date.html', context)
+
+    

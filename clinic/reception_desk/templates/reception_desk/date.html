@@ -40,7 +40,11 @@
         <td>{{ appointment.patient}}</td>
         <td>{{ appointment.time }}</td>
         <td>{{ appointment.room }}</td>
-        <td></td>
+        <td><form method="GET">
+          {% csrf_token %}
+          {{ dforms.appointment}}
+          <input type="checkbox">
+        </form></td>
       </tr>
       {% endfor %}
     </tbody>
