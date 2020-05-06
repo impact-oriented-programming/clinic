@@ -11,6 +11,7 @@ from django.contrib import messages
 import general_models.models as gm
 from .models import *
 from .utils import Calendar
+from collections import OrderedDict 
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
@@ -101,9 +102,12 @@ def date_view(request, my_date):
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
     # list all rooms
-    # rooms = set(appointment.room for appointment in  appointment_list)
+    rooms = sorted(set(appointment.room for appointment in  appointment_list))
     # crate a dictionary of room-->appointments list in that room
-    drooms={}
+    drooms = OrderedDict()
+    for room in rooms:
+        drooms[room]=[]
+        
     for appointment in appointment_list:
         if appointment.room not in drooms:
             drooms[appointment.room] = [appointment]
