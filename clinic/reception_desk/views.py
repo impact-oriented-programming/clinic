@@ -91,7 +91,7 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
-    # first parse wanted datr from given my_date string of form yyyy-mm-dd
+    # first parse wanted date from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
     wanted_day = int(my_date[8:10])
@@ -102,6 +102,7 @@ def date_view(request, my_date):
         return render(request,'reception_desk/date_error.html') #case the given date is not valid
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
+    appointment_list = appointment_list.filter(assigned = True)
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in  appointment_list))
     # list all doctors

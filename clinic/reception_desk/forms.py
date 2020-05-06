@@ -1,12 +1,12 @@
 from django import forms
-<<<<<<< HEAD
+
 from django.forms import ModelForm, fields, CheckboxInput
-||||||| merged common ancestors
+
 from django.forms import ModelForm
-=======
+
 from django.contrib.admin import widgets
 from django.forms import ModelForm
->>>>>>> 79dbf876b924f3f34624ddeee5b0f66c136d1c0c
+
 import general_models.models as gm
 import pycountry
 import datetime
