@@ -11,10 +11,41 @@
 
   <meta charset="UTF-8">
   <title>Date View</title>
-  <p>{{wanted_date}}</p>
 </head>
 <body>
-  <h1 class="title", style="text-align:center"> Welcome To date viewwww</h1>
+  <h1 class="title", style="text-align:center"> Date View: {{ wanted_date }}</h1>
   <hr>
+  <div class="btn-group clearfix" style="width: 99%">
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'home' %}">Home Page</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Clinic's Calendar</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
+  </div>
   <hr>
-  </body>
+  {% if appointment_list %}
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Doctor</th>
+        <th>Patient</th>
+        <th>Time</th>
+        <th>Room</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for appointment in appointment_list %}
+      <tr>
+        <td>{{ appointment.doctor}}</td>
+        <td>{{ appointment.patient}}</td>
+        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.room }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="table-title">
+    <p style="color: #283955;">No Appointments for today!</p>
+  </div>
+  {% endif %}
+  <hr>
+</body>

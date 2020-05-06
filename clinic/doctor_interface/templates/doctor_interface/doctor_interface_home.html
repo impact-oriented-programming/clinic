@@ -25,37 +25,35 @@
     <h3 style="color: #283955;">Today's Appointments</h3>
     <p style="color: #283955;">Click on patient to view their profile</p>
   </div>
-
   {% if today_appointments %}
-          <table class="table-fill">
-            <thead>
-              <tr>
-                <th>Patient</th>
-                <th>Time</th>
-                <th>Room</th>
-              </tr>
-            </thead>
-            <tbody class="table-hover">
-        {% for appointment in today_appointments %}
-            <tr>
-              <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
-              <td>{{ appointment.time }}</td>
-              <td>{{ appointment.room }}</td>
-            </tr>
-        {% endfor %}
-            </tbody>
-          </table>
-    {% else %}
-    <div class="table-title">
-      <p style="color: #283955;">No Appointments for today!</p>
-    </div>
-    {% endif %}
-    <hr>
-
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Time</th>
+        <th>Room</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for appointment in today_appointments %}
+      <tr>
+        <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
+        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.room }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="table-title">
+    <p style="color: #283955;">No Appointments for today!</p>
+  </div>
+  {% endif %}
+  <hr>
   <div class="table-title">
     <p></p>
     <h3 style="color: #283955;">Browse Patients</h3>
     <p style="color: #283955;">Enter patient clinic ID or visa number:</p>
   </div>
   <hr>
-  </body>
+</body>
