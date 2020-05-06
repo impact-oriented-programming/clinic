@@ -31,6 +31,9 @@ class CreatePatientForm(ModelForm):
 
 
 class DoctorSlotForm(forms.ModelForm):
+
+    doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
+
     class Meta:
         model = DoctorSlot
         fields = '__all__'
@@ -38,14 +41,14 @@ class DoctorSlotForm(forms.ModelForm):
     def clean_date(self):
         date = self.cleaned_data.get('date')
         if date < datetime.date.today():
-            raise forms.ValidationError("Can'd add Doctor slot for passed Dates")
+            raise forms.ValidationError("Can'd add doctor slot for passed dates")
         return date
 
     def clean_end_time(self):
         start = self.cleaned_data.get('start_time')
         end = self.cleaned_data.get('end_time')
         if end <= start:
-            raise forms.ValidationError("End Time must be after Start Time")
+            raise forms.ValidationError("End time must be after start time")
         return end
 
     def clean_appointment_duration(self):
