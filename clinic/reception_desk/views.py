@@ -100,6 +100,14 @@ def date_view(request, my_date):
         return render(request,'reception_desk/date_error.html') #case the given date is not valid
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
-    rooms = set(appointment.room for appointment in  appointment_list)
-    context = {'rooms':rooms,'appointment_list':appointment_list,'wanted_date':wanted_date, 'wanted_year': wanted_year,'wanted_month': wanted_month, 'wanted_day': wanted_day,}
+    # list all rooms
+    # rooms = set(appointment.room for appointment in  appointment_list)
+    # crate a dictionary of room-->appointments list in that room
+    drooms={}
+    for appointment in appointment_list:
+        if appointment.room not in drooms:
+            drooms[appointment.room] = [appointment]
+        else:
+            drooms[appointment.room ].append(appointment)
+    context = {'drooms':drooms,'wanted_date':wanted_date,'appointment_list':appointment_list}
     return render(request, 'reception_desk/date.html', context)

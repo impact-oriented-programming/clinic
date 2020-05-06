@@ -21,31 +21,28 @@
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
   </div>
   <hr>
-  {% if appointment_list %}
+  {% for room, app_list  in drooms.items %}
+  <div class="table-title">
+    <h3 style="color: #283955;">{{room}}</h3>
+  </div>
   <table class="table-fill">
     <thead>
       <tr>
         <th>Doctor</th>
         <th>Patient</th>
         <th>Time</th>
-        <th>Room</th>
       </tr>
     </thead>
     <tbody class="table-hover">
-      {% for appointment in appointment_list %}
+      {% for appointment in app_list %}
       <tr>
         <td>{{ appointment.doctor}}</td>
         <td>{{ appointment.patient}}</td>
         <td>{{ appointment.time }}</td>
-        <td>{{ appointment.room }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% else %}
-  <div class="table-title">
-    <p style="color: #283955;">No Appointments for today!</p>
-  </div>
-  {% endif %}
+  {% endfor %}
   <hr>
 </body>
