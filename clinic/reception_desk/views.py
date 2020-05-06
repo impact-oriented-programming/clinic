@@ -88,13 +88,16 @@ def add_delta_to_time(time, delta):
     return (dt.datetime.combine(dt.date(1, 1, 1), time) + delta).time()
 
 
-def date_view(request, my_date=''):
+def date_view(request, my_date):
     # first parse wanted datr from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
     wanted_day = int(my_date[8:10])
     # make it a datetime.date instance
-    wanted_date = date(wanted_year, wanted_month, wanted_day)
+    try:
+        wanted_date = date(wanted_year, wanted_month, wanted_day)
+    except:
+        return render(request,'reception_desk/date_error.html')
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date)
     context = {'appointment_list':appointment_list,'wanted_date':wanted_date, 'wanted_year': wanted_year,'wanted_month': wanted_month, 'wanted_day': wanted_day,}
