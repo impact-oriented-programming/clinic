@@ -2,18 +2,16 @@ body {
   font-family: "ptsans", "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.center {
+  padding-left: 70px;
+}
+
 .left {
   float: left;
 }
 
 .right {
   float: right;
-}
-
-.center {
-  position: absolute;
-  right: 34%;
-
 }
 
 .centerleft {
