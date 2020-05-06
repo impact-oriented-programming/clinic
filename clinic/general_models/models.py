@@ -51,7 +51,10 @@ class Appointment(models.Model):
     def get_html_url(self):
         url = reverse('reception_desk:date-view', args=(str(self.date),)) # will sent the link to date view with argument - the appointment's date as string
         num_appointments = len(Appointment.objects.filter(date = self.date)) # we want th ecell in the calendar to say how many appointments are there for that day
+        msg = 'scheduled appointment'
+        if (num_appointments > 1): #plural in case of more than one appointment that day
+            msg = msg + 's'
         if(date.today() == self.date):
-            return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} scheduled appointments </a>'
-        return f'<a style="text-decoration:none; font-size:16px" href="{url}">{num_appointments} scheduled appointments </a>'
+            return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
+        return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
     
