@@ -97,7 +97,7 @@ def date_view(request, my_date):
     try:
         wanted_date = date(wanted_year, wanted_month, wanted_day)
     except:
-        return render(request,'reception_desk/date_error.html')
+        return render(request,'reception_desk/date_error.html') #case the given date is not valid
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date)
     context = {'appointment_list':appointment_list,'wanted_date':wanted_date, 'wanted_year': wanted_year,'wanted_month': wanted_month, 'wanted_day': wanted_day,}
