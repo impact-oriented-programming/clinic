@@ -103,15 +103,20 @@ def date_view(request, my_date):
     appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in  appointment_list))
+    # list all doctors
+    docs = sorted(set(appointment.doctor for appointment in  appointment_list))
     # crate a dictionary of room-->appointments list in that room
     drooms = OrderedDict()
     for room in rooms:
         drooms[room]=[]
+    
+    ddocs = OrderedDict()
+    for doc in docs:
+        ddocs[doc]=[]
         
     for appointment in appointment_list:
-        if appointment.room not in drooms:
-            drooms[appointment.room] = [appointment]
-        else:
-            drooms[appointment.room ].append(appointment)
-    context = {'drooms':drooms,'wanted_date':wanted_date,'appointment_list':appointment_list}
+        drooms[appointment.room ].append(appointment)
+        ddocs[appointment.doctor].append(appointment)
+
+    context = {'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
     return render(request, 'reception_desk/date.html', context)

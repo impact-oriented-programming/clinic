@@ -21,25 +21,25 @@
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
   </div>
   <hr>
-  {% for doc, app_list  in ddocs.items %}
+  {% for room, app_list  in drooms.items %}
   <div class="table-title">
-    <h3 style="color: #283955;">{{doc}}</h3>
+    <h3 style="color: #283955;">{{room}}</h3>
   </div>
   <table class="table-fill" style="width:100%">
     <thead>
       <tr>
+        <th style="width:25%">Doctor</th>
         <th style="width:25%">Patient</th>
         <th style="width:25%">Time</th>
-        <th style="width:25%">Room</th>
         <th style="width:5%">Arrived?</th>
       </tr>
     </thead>
     <tbody class="table-hover">
       {% for appointment in app_list %}
       <tr>
+        <td>{{ appointment.doctor}}</td>
         <td>{{ appointment.patient}}</td>
         <td>{{ appointment.time }}</td>
-        <td>{{ appointment.room }}</td>
         <td></td>
       </tr>
       {% endfor %}

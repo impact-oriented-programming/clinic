@@ -12,7 +12,9 @@ class Doctor(models.Model):
     specialty = models.CharField(max_length=30)
     license_number = models.CharField(max_length=30, blank=True)
     def __str__(self):
-        return self.user.username
+        return self.user.first_name +' ' + self.user.last_name
+    def __lt__(self, other):
+        return str(self)<str(other)
 
 @receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
