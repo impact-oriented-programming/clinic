@@ -6,12 +6,13 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm , BoolForm
+from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm
 from django.contrib import messages
 import general_models.models as gm
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict 
+
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
@@ -34,17 +35,20 @@ class CalendarView(generic.ListView):
         context['today_date'] = str(date.today()) #to be used by today's appointments button
         return context
 
+
 def get_date(req_day):
     if req_day:
         year, month = (int(x) for x in req_day.split('-'))
         return date(year, month, day=1)
     return datetime.today()
 
+
 def prev_month(d):
     first = d.replace(day=1)
     prev_month = first - timedelta(days=1)
     month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
     return month
+
 
 def next_month(d):
     days_in_month = calendar.monthrange(d.year, d.month)[1]
@@ -66,6 +70,36 @@ def create_patient(request):
     else:
         form = CreatePatientForm()
     return render(request, 'reception_desk/create_new_patient.html', {'form': form, 'title': 'Create New Patient'})
+
+
+def edit_patient(request, id_number):
+    patients = gm.Patient.objects.all()
+    patients_filter = patients.filter(clinic_identifying_number=id_number)
+    if len(patients_filter) == 0:
+        patients_filter = patients.filter(visa_number=id_number)
+    patient = patients_filter.first()
+    if request.method == 'POST':
+        form = EditPatientForm(request.POST, instance=patient)
+        if form.is_valid():
+            form.save()
+            first_name = form.cleaned_data.get('first_name')
+            last_name = form.cleaned_data.get('last_name')
+            messages.success(request, f'Information updated for {first_name} {last_name}!')
+            return redirect('reception_desk:calendar')
+    else:
+        form = EditPatientForm(instance=patient)
+    return render(request, 'reception_desk/edit_patient.html',  {'form': form, 'title': 'Edit Patient'})
+
+
+def edit_existing_patient(request):
+    if request.method == 'POST':
+        form = PatientInputForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+            return redirect('reception_desk:edit-patient', id_number=id_number)
+    else:
+        form = PatientInputForm()
+    return render(request, 'reception_desk/edit_existing_patient.html', {'form': form, 'title': 'Edit Patient Input'})
 
 
 def doctor_slot_view(request):
