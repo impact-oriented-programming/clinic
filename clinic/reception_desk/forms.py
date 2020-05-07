@@ -1,6 +1,12 @@
 from django import forms
+
+from django.forms import ModelForm, fields, CheckboxInput
+
+from django.forms import ModelForm
+
 from django.contrib.admin import widgets
 from django.forms import ModelForm
+
 import general_models.models as gm
 import pycountry
 import datetime
@@ -82,3 +88,12 @@ class DoctorSlotForm(forms.ModelForm):
 
 def doctor_slot_in_minutes(start, end):
     return (end.hour * 60 + end.minute) - (start.hour * 60 + start.minute)
+
+
+class BoolForm(forms.ModelForm):
+    # create meta class 
+    class Meta: 
+        # specify model to be used 
+        model = gm.Appointment 
+        # specify fields to be used 
+        fields = ["arrived"]
