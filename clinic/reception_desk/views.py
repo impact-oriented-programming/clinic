@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm
+from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm
 from django.contrib import messages
 import general_models.models as gm
 from .models import *
@@ -114,7 +114,8 @@ def doctor_slot_view(request):
                                                      time=start, room=slot_instance.room, assigned=False, done=False)
             appointment.save()
             start = add_delta_to_time(start, delta)
-        form = DoctorSlotForm()  # redirect instead to calendar with message
+        messages.success(request, f'Doctor time slot added successfully!')
+        return redirect('reception_desk:calendar')
     context = {'form': form, 'title': "Doctor time slot"}
     return render(request, 'reception_desk/doctor_time_slot.html', context)
 
@@ -124,7 +125,7 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
-    # first parse wanted datr from given my_date string of form yyyy-mm-dd
+    # first parse wanted date from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
     wanted_day = int(my_date[8:10])
@@ -135,6 +136,7 @@ def date_view(request, my_date):
         return render(request,'reception_desk/date_error.html') #case the given date is not valid
     # list all the appointments of that given day
     appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
+    appointment_list = appointment_list.filter(assigned = True)
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in  appointment_list))
     # list all doctors
@@ -151,6 +153,16 @@ def date_view(request, my_date):
     for appointment in appointment_list:
         drooms[appointment.room ].append(appointment)
         ddocs[appointment.doctor].append(appointment)
-
-    context = {'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
+        
+    #for each appointment, set a form. in a dictionary of appointment -->form
+    dforms = OrderedDict()
+    for appointment in appointment_list:
+        form = BoolForm(request.GET, instance=appointment)
+        dforms[appointment] = form
+        if form.is_valid():
+           form.save()
+    
+    context = {'dforms':dforms,'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
     return render(request, 'reception_desk/date.html', context)
+
+    

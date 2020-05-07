@@ -15,7 +15,7 @@ class Calendar(HTMLCalendar):
     # formats a day as a td
     # filter events by day
     def formatday(self, day, events):
-        events_per_day = events.filter(assigned = True ,date__day = day)
+        events_per_day = events.filter(assigned = True ,date__day = day) # only show appointemtns where assigned =true
         d = ''
         my_day = day
         date_str = str(self.year) + str(self.month) + str(day)
@@ -26,7 +26,7 @@ class Calendar(HTMLCalendar):
  
         if day != 0:
             if(date.today() == date(int(self.year), int(self.month), my_day)): # catch today to change it's background color
-                return f"<td style='background:#1d3a39; color:white;'><span class='date'>{day}</span><ul> {d} </ul></td>"
+                return f"<td style='background:#366d6b; color:white;'><span class='date'>{day}</span><ul> {d} </ul></td>"
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
     # formats a week as a tr
@@ -40,7 +40,7 @@ class Calendar(HTMLCalendar):
     # filter events by year and month
     def formatmonth(self, withyear=True):
         events = gm.Appointment.objects.filter(date__year=self.year, date__month=self.month)
-        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar" style="color: white; background: #366d6b;">\n'
+        cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar" style="color: #1d3a39; background: white;">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year, self.month):

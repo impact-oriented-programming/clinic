@@ -16,3 +16,4 @@ class DoctorSlot(models.Model):
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
     appointment_duration = models.IntegerField()
+

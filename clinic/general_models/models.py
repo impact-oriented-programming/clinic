@@ -45,18 +45,19 @@ class Appointment(models.Model):
     date = models.DateField()
     time = models.TimeField()
     room = models.CharField(max_length=30, null=True)
-    assigned = models.BooleanField( default=False)
-    done = models.BooleanField( default=False)
-
+    assigned = models.BooleanField( default=False) #is there a patient?
+    arrived = models.BooleanField( default=False) # did the patient arrive to the reception desk at the scheduled day?
+    done = models.BooleanField( default=False) # is the session done?
     
+
     @property
     def get_html_url(self):
         url = reverse('reception_desk:date-view', args=(str(self.date),)) # will sent the link to date view with argument - the appointment's date as string
-        num_appointments = len(Appointment.objects.filter(date = self.date)) # we want th ecell in the calendar to say how many appointments are there for that day
+        num_appointments = len(Appointment.objects.filter(date = self.date, assigned = True)) # we want th ecell in the calendar to say how many appointments are there for that day
         msg = 'scheduled appointment'
         if (num_appointments > 1): #plural in case of more than one appointment that day
             msg = msg + 's'
         if(date.today() == self.date):
             return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
-        return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
+        return f'<a style="text-decoration:none; color:#366d6b; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
     
