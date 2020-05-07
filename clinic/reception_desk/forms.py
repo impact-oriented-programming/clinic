@@ -33,7 +33,6 @@ class CreatePatientForm(ModelForm):
         required=True
     )
 
-
     class Meta:
         model = gm.Patient
         fields = '__all__'
@@ -91,6 +90,7 @@ class BoolForm(forms.ModelForm):
         # specify fields to be used 
         fields = ["arrived"]
 
+
 class EditPatientForm(ModelForm):
     origin_country = forms.ChoiceField(
         choices=sorted(((country.name, country.name) for country in pycountry.countries)),
@@ -114,11 +114,11 @@ class PatientInputForm(forms.Form):
         max_length=30,
         required=True
     )
+
     class Meta:
         model = gm.Patient
         exclude = ['clinic_identifying_number']
-
-
+        
     def clean_clinic_identifying_or_visa_number(self):
         id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
         patients = gm.Patient.objects.all()
