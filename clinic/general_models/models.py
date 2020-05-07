@@ -59,5 +59,5 @@ class Appointment(models.Model):
             msg = msg + 's'
         if(date.today() == self.date):
             return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
-        return f'<a style="text-decoration:none; color:white; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
+        return f'<a style="text-decoration:none; color:#366d6b; font-size:16px" href="{url}">{num_appointments} {msg} </a>'
     
