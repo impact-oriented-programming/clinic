@@ -4,10 +4,16 @@ from django.forms import ModelForm
 import general_models.models as gm
 import pycountry
 import datetime
+
+from django.utils import timezone
+
 from .models import DoctorSlot
 
 HOUR_CHOICES = (
     [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
+APP_DURATION_CHOICES = (
+    (10, '10'), (15, '15'), (20, '20'), (25, '25'), (30, '30'), (45, '45')
+)
 
 
 class CreatePatientForm(ModelForm):
@@ -35,11 +41,13 @@ class CreatePatientForm(ModelForm):
 class DoctorSlotForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
 
-    date = forms.DateField(widget=forms.SelectDateWidget())
+    date = forms.DateField(widget=forms.SelectDateWidget(), initial=timezone.now())
 
     start_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
 
     end_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+
+    appointment_duration = forms.IntegerField(widget=forms.Select(choices=APP_DURATION_CHOICES), initial=(10, '10'))
 
     class Meta:
         model = DoctorSlot
@@ -68,7 +76,7 @@ class DoctorSlotForm(forms.ModelForm):
         if slot_gap != 0:
             raise forms.ValidationError("Doctor shift must divide in appointment duration\n" +
                                         "(ending " + str(slot_gap) + " minutes earlier or " +
-                                        str(appointment_duration-slot_gap) + " minutes later will work)")
+                                        str(appointment_duration - slot_gap) + " minutes later will work)")
         return appointment_duration
 
 
