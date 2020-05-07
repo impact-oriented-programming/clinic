@@ -17,10 +17,11 @@
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'home' %}">Home Page</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Clinic's Calendar</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
   </div>
   <hr>
+  {% if appointment_list %}
   {% for doc, app_list  in ddocs.items %}
   <div class="table-title">
     <h3 style="color: #283955;">{{doc}}</h3>
@@ -53,5 +54,8 @@
   </table>
   <p></p>
   {% endfor %}
+  {% else %}
+  <h4 style="color: #283955; text-align:center"> No appointments were scheduled for the wanted date. </h4>
+  {% endif %}
   <hr>
 </body>
