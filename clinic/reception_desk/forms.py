@@ -108,6 +108,10 @@ class EditPatientForm(ModelForm):
         required=True
     )
 
+    class Meta:
+        model = gm.Patient
+        exclude = ['clinic_identifying_number']
+
 
 class PatientInputForm(forms.Form):
     clinic_identifying_or_visa_number = forms.CharField(
@@ -115,10 +119,6 @@ class PatientInputForm(forms.Form):
         required=True
     )
 
-    class Meta:
-        model = gm.Patient
-        exclude = ['clinic_identifying_number']
-        
     def clean_clinic_identifying_or_visa_number(self):
         id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
         patients = gm.Patient.objects.all()
