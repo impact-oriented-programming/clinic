@@ -15,10 +15,8 @@
 <body>
   <h1 class="title", style="text-align:center"> Date View: {{ wanted_date }}</h1>
   <hr>
-  <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'home' %}">Home Page</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
+  <div class="btn-group" style="width: 99%">
+    <a class="btn btn-info" style="width:20%; border: 1px solid  #718fbd; margin: 0 auto;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
   </div>
   <hr>
   {% if appointment_list %}

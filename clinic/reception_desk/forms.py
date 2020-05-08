@@ -97,3 +97,43 @@ class BoolForm(forms.ModelForm):
         model = gm.Appointment 
         # specify fields to be used 
         fields = ["arrived"]
+
+
+class EditPatientForm(ModelForm):
+    origin_country = forms.ChoiceField(
+        choices=sorted(((country.name, country.name) for country in pycountry.countries)),
+        widget=forms.Select,
+        required=True)
+
+    date_of_birth = forms.DateField(
+        widget=forms.SelectDateWidget(years=list(range(datetime.datetime.now().year, 1900, -1))),
+        required=True
+    )
+
+    gender = forms.ChoiceField(
+        choices=(("f", "f"), ("m", "m")),
+        widget=forms.Select,
+        required=True
+    )
+
+    class Meta:
+        model = gm.Patient
+        exclude = ['clinic_identifying_number']
+
+
+class PatientInputForm(forms.Form):
+    clinic_identifying_or_visa_number = forms.CharField(
+        max_length=30,
+        required=True
+    )
+
+    def clean_clinic_identifying_or_visa_number(self):
+        id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
+        patients = gm.Patient.objects.all()
+        patients_filter = patients.filter(clinic_identifying_number=id_number)
+        if len(patients_filter) == 0:
+            patients_filter = patients.filter(visa_number=id_number)
+        if len(patients_filter) == 0:
+            raise forms.ValidationError("Patient Not Found")
+            return id_number
+        return id_number
