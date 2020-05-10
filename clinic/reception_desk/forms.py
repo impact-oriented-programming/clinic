@@ -16,12 +16,12 @@ from django.utils import timezone
 
 from .models import DoctorSlot
 
+
 HOUR_CHOICES = (
     [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
 APP_DURATION_CHOICES = (
     (10, '10'), (15, '15'), (20, '20'), (25, '25'), (30, '30'), (45, '45')
 )
-
 
 
 class CreatePatientForm(ModelForm):
