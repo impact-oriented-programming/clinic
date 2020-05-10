@@ -20,4 +20,13 @@ class SessionForm(forms.ModelForm):
                   'diagnosis',
                   'prescriptions',
                   'special_requests',
+                  'height',
+                  'weight',
+                  'systolic_bp',
+                  'diastolic_bp',
+                  'temperature',
+                  'pulse',
+                  'respiratory_rate',
+                  'sp02',
+                  'glucose',
                   ]
