@@ -11,7 +11,8 @@ from django.contrib import messages
 import general_models.models as gm
 from .models import *
 from .utils import Calendar
-from collections import OrderedDict 
+from collections import OrderedDict
+from dal import autocomplete
 
 
 class CalendarView(generic.ListView):
@@ -32,7 +33,7 @@ class CalendarView(generic.ListView):
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
-        context['today_date'] = str(date.today()) #to be used by today's appointments button
+        context['today_date'] = str(date.today())  # to be used by today's appointments button
         return context
 
 
@@ -88,7 +89,7 @@ def edit_patient(request, id_number):
             return redirect('reception_desk:calendar')
     else:
         form = EditPatientForm(instance=patient)
-    return render(request, 'reception_desk/edit_patient.html',  {'form': form, 'title': 'Edit Patient'})
+    return render(request, 'reception_desk/edit_patient.html', {'form': form, 'title': 'Edit Patient'})
 
 
 def edit_existing_patient(request):
@@ -110,8 +111,9 @@ def doctor_slot_view(request):
         delta = dt.timedelta(minutes=slot_instance.appointment_duration)
         # generate appointments
         while start < slot_instance.end_time:
-            appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None, date=slot_instance.date,
-                                                     time=start, room=slot_instance.room, assigned=False, done=False)
+            appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None,
+                                                        date=slot_instance.date,
+                                                        time=start, room=slot_instance.room, assigned=False, done=False)
             appointment.save()
             start = add_delta_to_time(start, delta)
         messages.success(request, f'Doctor time slot added successfully!')
@@ -133,36 +135,49 @@ def date_view(request, my_date):
     try:
         wanted_date = date(wanted_year, wanted_month, wanted_day)
     except:
-        return render(request,'reception_desk/date_error.html') #case the given date is not valid
+        return render(request, 'reception_desk/date_error.html')  # case the given date is not valid
     # list all the appointments of that given day
-    appointment_list = gm.Appointment.objects.filter(date = wanted_date).order_by("time")
-    appointment_list = appointment_list.filter(assigned = True)
+    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("time")
+    appointment_list = appointment_list.filter(assigned=True)
     # list all rooms
-    rooms = sorted(set(appointment.room for appointment in  appointment_list))
+    rooms = sorted(set(appointment.room for appointment in appointment_list))
     # list all doctors
-    docs = sorted(set(appointment.doctor for appointment in  appointment_list))
+    docs = sorted(set(appointment.doctor for appointment in appointment_list))
     # crate a dictionary of room-->appointments list in that room
     drooms = OrderedDict()
     for room in rooms:
-        drooms[room]=[]
-    
+        drooms[room] = []
+
     ddocs = OrderedDict()
     for doc in docs:
-        ddocs[doc]=[]
-        
+        ddocs[doc] = []
+
     for appointment in appointment_list:
-        drooms[appointment.room ].append(appointment)
+        drooms[appointment.room].append(appointment)
         ddocs[appointment.doctor].append(appointment)
-        
-    #for each appointment, set a form. in a dictionary of appointment -->form
+
+    # for each appointment, set a form. in a dictionary of appointment -->form
     dforms = OrderedDict()
     for appointment in appointment_list:
         form = BoolForm(request.GET, instance=appointment)
         dforms[appointment] = form
         if form.is_valid():
-           form.save()
-    
-    context = {'dforms':dforms,'drooms':drooms,'ddocs':ddocs,'wanted_date':wanted_date,'appointment_list':appointment_list}
+            form.save()
+
+    context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
+               'appointment_list': appointment_list}
     return render(request, 'reception_desk/date.html', context)
 
-    
+
+class doctor_autocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return gm.Doctor.objects.none()
+
+        qs = gm.Doctor.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs

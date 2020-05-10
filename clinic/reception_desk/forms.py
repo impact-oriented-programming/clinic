@@ -14,6 +14,7 @@ import datetime
 from django.utils import timezone
 
 from .models import DoctorSlot
+from dal import autocomplete
 
 HOUR_CHOICES = (
     [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
@@ -45,7 +46,11 @@ class CreatePatientForm(ModelForm):
 
 
 class DoctorSlotForm(forms.ModelForm):
-    doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
+    #  doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
+    doctor = forms.ModelChoiceField(
+        queryset=gm.Doctor.objects.all(),
+        widget=autocomplete.ModelSelect2(url='doctor-autocomplete')
+    )
 
     date = forms.DateField(widget=forms.SelectDateWidget(), initial=timezone.now())
 
