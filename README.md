@@ -30,6 +30,7 @@ git clone https://github.com/impact-oriented-programming/clinic.git
 pip install Django==3.0.5
 pip install django-crispy-forms
 pip install pycountry
+pip install django-autocomplete-light
 ```
 ## Usage:
 Enter the library where the project is stored and run the django server:
