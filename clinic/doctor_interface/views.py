@@ -59,7 +59,7 @@ def session_view(request, clinic_id):
     form = SessionForm(request.POST or None)
     if form.is_valid():
         session = form.save(commit=False)
-        session.doctor = request.user
+        session.doctor = request.user.doctor
         session.patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
         session.time = timezone.now()
         session.save()
