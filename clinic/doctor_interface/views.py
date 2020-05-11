@@ -5,6 +5,7 @@ from django.views.generic import CreateView
 import general_models.models as gm
 import datetime
 from .forms import SessionForm
+from .models import Session
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
@@ -46,16 +47,7 @@ class index(View):
         return render(request, 'doctor_interface/doctor_interface_home.html', context)
 
 
-# class SessionCreateView(CreateView):
-#     template_name = 'doctor_interface/new_session.html'
-#     form_class = SessionForm
-#     queryset = gm.Patient.objects.all()
-#
-#     def get_object(self, queryset=None):
-#         id_ = self.kwargs.get("clinic_id")
-#         return get_object_or_404(gm.Patient, id_)
-
-def session_view(request, clinic_id):
+def new_session_view(request, clinic_id):
     form = SessionForm(request.POST or None)
     if form.is_valid():
         session = form.save(commit=False)
@@ -67,4 +59,23 @@ def session_view(request, clinic_id):
         return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
 
     context = {'form': form, 'title': "New Session"}
-    return render(request, 'doctor_interface/new_session.html', context)
+    return render(request, 'doctor_interface/session.html', context)
+
+
+def session_edit_view(request, clinic_id, pk):
+    session = get_object_or_404(Session, pk=pk)
+    if request.method == "POST":
+        form = SessionForm(request.POST, instance=session)
+        if form.is_valid():
+            session = form.save(commit=False)
+            session.doctor = request.user.doctor
+            session.patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
+            session.time = timezone.now()
+            session.save()
+            messages.success(request, f'Session edited successfully!')
+            return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
+    else:
+        form = SessionForm(instance=session)
+
+    context = {'form': form, 'title': "Edit Session"}
+    return render(request, 'doctor_interface/session.html', context)
