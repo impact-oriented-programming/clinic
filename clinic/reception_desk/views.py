@@ -12,7 +12,7 @@ import general_models.models as gm
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
-from dal import autocomplete
+
 
 
 class CalendarView(generic.ListView):
@@ -40,8 +40,8 @@ class CalendarView(generic.ListView):
 def get_date(req_day):
     if req_day:
         year, month = (int(x) for x in req_day.split('-'))
-        return dt.date(year, month, day=1)
-    return dt.date.today()
+        return date(year, month, day=1)
+    return datetime.today()
 
 
 def prev_month(d):
@@ -167,17 +167,3 @@ def date_view(request, my_date):
     context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
     return render(request, 'reception_desk/date.html', context)
-
-
-class doctor_autocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        if not self.request.user.is_authenticated():
-            return gm.Doctor.objects.none()
-
-        qs = gm.Doctor.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-
-        return qs

@@ -11,5 +11,4 @@ urlpatterns = [
     path('date-view/<str:my_date>', views.date_view, name='date-view'),
     path('edit-patient/<id_number>', views.edit_patient, name='edit-patient'),
     path('edit-existing-patient/', views.edit_existing_patient, name='edit-existing-patient'),
-    url(r'^doctor-autocomplete/$', views.doctor_autocomplete.as_view(), name='doctor-autocomplete')
 ]

@@ -56,8 +56,6 @@ class Appointment(models.Model):
     assigned = models.BooleanField(default=False)  # is there a patient?
     arrived = models.BooleanField(default=False)  # did the patient arrive to the reception desk at the scheduled day?
     done = models.BooleanField(default=False)  # is the session done?
-    diagnosis = models.TextField(blank=True, null=True)
-
 
     @property
     def get_html_url(self):

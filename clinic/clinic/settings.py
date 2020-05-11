@@ -35,8 +35,6 @@ INSTALLED_APPS = [
     'reception_desk.apps.ClinicCalendarConfig',
     'doctor_interface.apps.DoctorInterfaceConfig',
     'crispy_forms',
-    'dal',
-    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
