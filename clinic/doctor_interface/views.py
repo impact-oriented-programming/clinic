@@ -64,7 +64,7 @@ def session_view(request, clinic_id):
         session.time = timezone.now()
         session.save()
         messages.success(request, f'Session saved!')
-        return redirect('doctor_interface:patient_interface')
+        return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
 
     context = {'form': form, 'title': "New Session"}
     return render(request, 'doctor_interface/new_session.html', context)
