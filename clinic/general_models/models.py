@@ -19,7 +19,7 @@ class Doctor(models.Model):
     def __lt__(self, other):
         return str(self) < str(other)
 
-
+""" makes all new users automalically doctors, including admins!
 @receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
     if created:
@@ -29,7 +29,7 @@ def create_doctor_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_doctor_profile(sender, instance, **kwargs):
     instance.doctor.save()
-
+"""
 
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
