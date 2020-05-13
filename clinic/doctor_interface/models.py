@@ -6,7 +6,6 @@ class Medication(models.Model):
     medication = models.CharField(max_length=100)
     medication_code = models.IntegerField()
     medication_details = models.TextField(blank=True, null=True)
-    medication_package_size = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     medication_yrpa_code = models.IntegerField(blank=True, null=True)
     medication_pharmasoft_code = models.IntegerField(blank=True, null=True)
     prescription_required = models.BooleanField()
