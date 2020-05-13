@@ -7,10 +7,16 @@ class Medication(models.Model):
     medication_code = models.IntegerField()
     prescription_required = models.BooleanField()
 
+    def __str__(self):
+        return self.medication
+
 
 class Diagnosis(models.Model):
     diagnosis = models.TextField()
     diagnosis_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.diagnosis
 
 
 class Session(models.Model):
