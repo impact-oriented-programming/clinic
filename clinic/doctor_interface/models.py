@@ -2,6 +2,26 @@ from django.db import models
 from general_models.models import Patient, Doctor
 
 
+class Medication(models.Model):
+    medication = models.CharField(max_length=100)
+    medication_code = models.IntegerField()
+    medication_details = models.TextField(blank=True, null=True)
+    medication_yrpa_code = models.IntegerField(blank=True, null=True)
+    medication_pharmasoft_code = models.IntegerField(blank=True, null=True)
+    prescription_required = models.BooleanField()
+
+    def __str__(self):
+        return self.medication
+
+
+class Diagnosis(models.Model):
+    diagnosis = models.TextField()
+    diagnosis_code = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.diagnosis
+
+
 class Session(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
