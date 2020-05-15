@@ -6,13 +6,18 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm
+from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm
 from django.contrib import messages
 import general_models.models as gm
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
+<<<<<<< HEAD
 from django.views import View
+||||||| merged common ancestors
+=======
+from django.core.paginator import Paginator
+>>>>>>> 241b6c2d4c773871df5a83fe18b1e99f78fb01c3
 
 
 
@@ -167,6 +172,7 @@ def date_view(request, my_date):
 
     context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
+<<<<<<< HEAD
     return render(request, 'reception_desk/date.html', context)
 
 class clinic_management(View):
@@ -175,3 +181,110 @@ class clinic_management(View):
          #   return render(request, 'doctor_interface/not_logged_in.html')
         #context = {}
         return render(request, 'reception_desk/clinic_management.html')
+||||||| merged common ancestors
+    return render(request, 'reception_desk/date.html', context)
+=======
+    return render(request, 'reception_desk/date.html', context)
+
+
+def appointments_view(request):
+    context = get_params(request)
+    appointments = gm.Appointment.objects.all().order_by('date', 'time')
+    if context.get('assigned') is not None:
+        appointments = appointments.filter(assigned=True)
+    else:
+        appointments = appointments.filter(assigned=False)
+    if is_valid_param(context.get('from_date')):
+        appointments = appointments.filter(date__gte=context.get('from_date'))
+    if is_valid_param(context.get('until_date')):
+        appointments = appointments.filter(date__lte=context.get('until_date'))
+    if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
+        appointments = [appointment for appointment in appointments if
+                        appointment.doctor.specialty == context.get('specialty')]
+    if is_valid_param(context.get('patient')):
+        appointments = [appointment for appointment in appointments if
+                        appointment.patient.visa_number == context.get('patient') or
+                        appointment.patient.clinic_identifying_number == context.get('patient')]
+    paginate(context, appointments)
+    return render(request, 'reception_desk/appointments.html', context)
+
+
+class AppointmentDetailView(generic.DetailView):
+    model = gm.Appointment
+    template_name = 'reception_desk/appointment.html'
+
+
+class AppointmentAssignView(generic.UpdateView):
+    model = gm.Appointment
+    form_class = AppointmentEditForm
+    template_name = 'reception_desk/appointment_assign.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Make Appointment'
+        return context
+
+    def get_success_url(self):
+        return reverse('reception_desk:appointments')
+
+    def form_valid(self, form):
+        assign = True
+        id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+        patients = gm.Patient.objects.all()
+        patients_filter = patients.filter(clinic_identifying_number=id_number)
+        if len(patients_filter) == 0:
+            patients_filter = patients.filter(visa_number=id_number)
+        if len(patients_filter) == 0:
+            form.instance.arrived = True
+            patient = form.instance.patient
+            assign = False
+        else:
+            patient = patients_filter.first()
+        form.instance.patient = patient
+        if assign:
+            form.instance.assigned = True
+            messages.success(self.request, f'Appointment set for {patient.first_name} {patient.last_name}!')
+        return super().form_valid(form)
+
+
+### aid functions ###
+
+def is_valid_param(param):
+    return param != '' and param is not None
+
+
+def get_specialities(doctors):
+    specialties = set(['All'])
+    for doctor in doctors:
+        if is_valid_param(doctor.specialty):
+            specialties.add(doctor.specialty)
+    return sorted(list(specialties))
+
+
+def get_params(request):
+    context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'specialty': request.GET.get('specialty'),
+               'patient': request.GET.get('patient'), 'from_date': request.GET.get('from_date'),
+               'until_date': request.GET.get('until_date'),
+               'page_number': request.GET.get('page'), 'assigned': request.GET.get('assigned')}
+    context['specialties'] = get_specialities(context.get('doctors'))
+    if not is_valid_param(context.get('assigned')):
+        context['patient'] = None
+    return context
+
+
+def paginate(context, appointments):
+    appointments_per_page = 4
+    paginator = Paginator(appointments, appointments_per_page)
+    if is_valid_param(context.get('page_number')):
+        page_obj = paginator.get_page(context.get('page_number'))
+    else:
+        page_obj = paginator.get_page(1)
+    context['page_obj'] = page_obj
+    context['count'] = ''
+    if len(appointments) > appointments_per_page:
+        context['is_paginated'] = True
+    elif len(appointments) == 0:
+        context['empty'] = True
+    return context
+
+>>>>>>> 241b6c2d4c773871df5a83fe18b1e99f78fb01c3

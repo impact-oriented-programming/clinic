@@ -139,3 +139,25 @@ class PatientInputForm(forms.Form):
             raise forms.ValidationError("Patient Not Found")
             return id_number
         return id_number
+
+
+class AppointmentEditForm(ModelForm):
+    clinic_identifying_or_visa_number = forms.CharField(
+        max_length=30,
+        required=True,
+    )
+
+    class Meta:
+        model = gm.Appointment
+        fields = ['clinic_identifying_or_visa_number']
+
+    def clean_clinic_identifying_or_visa_number(self):
+        id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
+        patients = gm.Patient.objects.all()
+        patients_filter = patients.filter(clinic_identifying_number=id_number)
+        if len(patients_filter) == 0:
+            patients_filter = patients.filter(visa_number=id_number)
+        if len(patients_filter) == 0:
+            raise forms.ValidationError("Patient Not Found")
+            return id_number
+        return id_number
