@@ -9,6 +9,7 @@ from .models import Session
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
+from reception_desk.forms import PatientInputForm
 
 
 def index_patient(request, clinic_id):
@@ -41,8 +42,18 @@ class index(View):
         my_appointments = my_appointments.filter(doctor=user.doctor)
         my_appointments = my_appointments.filter(done=False)
         today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("time")
-
-        context = {"user": user, "today_appointments": today_appointments}
+        
+        # for browse patient:
+        form = ''
+        if request.method == 'POST':
+            form = PatientInputForm(request.POST)
+            if form.is_valid():
+                clinic_id = form.cleaned_data.get('clinic_identifying_or_visa_number')
+                return redirect('doctor_interface:patient-interface', clinic_id=clinic_id)
+        else:
+            form = PatientInputForm()
+        
+        context = {"user": user, "today_appointments": today_appointments, 'form':form}
 
         return render(request, 'doctor_interface/doctor_interface_home.html', context)
 

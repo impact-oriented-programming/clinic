@@ -14,13 +14,14 @@ from .utils import Calendar
 from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
+#from django.contrib.auth.models import User
 
 
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
     template_name = 'reception_desk/calendar.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
