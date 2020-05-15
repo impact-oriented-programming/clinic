@@ -18,9 +18,10 @@
       Hello {{ user.first_name }}  {{ user.last_name }}
 
       {% if 'Doctors' in user.groups.all.0.name %}
-      <p><a href="{% url 'doctor_interface:homepage' %}">Go to doctor's interface</a></p>
+      <p><a href="{% url 'doctor_interface:homepage' %}">Go to Doctor's Interface</a></p>
       {% endif %}
-      <p><a href="{% url 'reception_desk:calendar' %}">Go to clinic's calendar</a></p>
+      <p><a href="{% url 'reception_desk:calendar' %}">Go to Clinic's Calendar</a></p>
+      <p><a href="{% url 'reception_desk:clinic-management' %}">Go to Clinic Management</a></p>
       <p><a href="{% url 'logout' %}">Logout?</a></p>
       </div>
     {% else %}
