@@ -12,12 +12,8 @@ import general_models.models as gm
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
-<<<<<<< HEAD
 from django.views import View
-||||||| merged common ancestors
-=======
 from django.core.paginator import Paginator
->>>>>>> 241b6c2d4c773871df5a83fe18b1e99f78fb01c3
 
 
 
@@ -172,7 +168,6 @@ def date_view(request, my_date):
 
     context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
-<<<<<<< HEAD
     return render(request, 'reception_desk/date.html', context)
 
 class clinic_management(View):
@@ -181,10 +176,6 @@ class clinic_management(View):
          #   return render(request, 'doctor_interface/not_logged_in.html')
         #context = {}
         return render(request, 'reception_desk/clinic_management.html')
-||||||| merged common ancestors
-    return render(request, 'reception_desk/date.html', context)
-=======
-    return render(request, 'reception_desk/date.html', context)
 
 
 def appointments_view(request):
@@ -286,5 +277,3 @@ def paginate(context, appointments):
     elif len(appointments) == 0:
         context['empty'] = True
     return context
-
->>>>>>> 241b6c2d4c773871df5a83fe18b1e99f78fb01c3
