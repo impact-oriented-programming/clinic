@@ -17,6 +17,9 @@
       <p></p>
       Hello {{ user.first_name }}  {{ user.last_name }}
 
+      {% if user.is_superuser %}
+      <p><a href="{% url 'admin:index' %}">Go to Admin Page</a></p>
+      {% endif %}
       {% if 'Doctors' in user.groups.all.0.name %}
       <p><a href="{% url 'doctor_interface:homepage' %}">Go to Doctor's Interface</a></p>
       {% endif %}
