@@ -12,6 +12,7 @@ import general_models.models as gm
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
+from django.views import View
 
 
 
@@ -167,3 +168,10 @@ def date_view(request, my_date):
     context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
     return render(request, 'reception_desk/date.html', context)
+
+class clinic_management(View):
+    def get(self, request, *args, **kwargs):
+        #if not (request.user.is_authenticated):
+         #   return render(request, 'doctor_interface/not_logged_in.html')
+        #context = {}
+        return render(request, 'reception_desk/clinic_management.html')
