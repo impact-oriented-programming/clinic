@@ -44,12 +44,11 @@ class index(View):
         today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("time")
         
         # for browse patient:
-        form = ''
         if request.method == 'POST':
             form = PatientInputForm(request.POST)
             if form.is_valid():
-                clinic_id = form.cleaned_data.get('clinic_identifying_or_visa_number')
-                return redirect('doctor_interface:patient-interface', clinic_id=clinic_id)
+                id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+                return redirect('doctor_interface/patient_interface_home.html', id_number)
         else:
             form = PatientInputForm()
         
