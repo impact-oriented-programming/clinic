@@ -46,7 +46,7 @@
               <div class="list-group">
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:create-patient' %}">Create New Patient</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:edit-existing-patient' %}">Edit Existing Patient</a>
-                <a class="list-group-item list-group-item-action" href="#">Add New Appointment</a>
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:appointments' %}">Add New Appointment</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a>
               </div>
           </div>
