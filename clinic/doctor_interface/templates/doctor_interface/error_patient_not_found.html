@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}ERROR - Patient Does Not Exist{% endblock %}</title>
+      <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_theme.css'%}">
+      <meta charset="UTF-8">
+      <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+</head>
+<body>
+  <main>
+    {% block content %}
+    <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <h3>ERROR</h3>
+      <p>You are trying to access a patient through an identifying number that does not exist.</p>
+      <p></p>
+      <a href="{%  url 'doctor_interface:homepage' %}">Go Back To Doctor Interface</a>
+      <p></p>
+  </div>
+  </div>
+    {% endblock %}
+  </main>
+</body>
+</html>

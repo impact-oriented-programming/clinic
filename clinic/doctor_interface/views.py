@@ -21,9 +21,9 @@ def index_patient(request, clinic_id):
     patient_filter = patient.filter(clinic_identifying_number=clinic_id)
     if (len(patient_filter)==0):
         patient_filter = patient.filter(visa_number=clinic_id)
-    if (len(patient_filter)==0):
-        return
-        # patient not found
+    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
+        return render(request, 'doctor_interface/error_patient_not_found.html')
+       
     patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
     age = datetime.datetime.now().year
     last_visits = gm.Appointment.objects.all()
