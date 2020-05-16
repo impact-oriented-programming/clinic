@@ -18,43 +18,47 @@ def index_patient(request, clinic_id):
     if not (request.user.groups.filter(name='Doctors').exists()):
         return render(request, 'doctor_interface/not_a_doctor.html')
     patient = gm.Patient.objects.all()
-    patient = patient.filter(clinic_identifying_number=clinic_id)
-    patient = patient[0]  # was list of length 1. we want the patient itselfs
+    patient_filter = patient.filter(clinic_identifying_number=clinic_id)
+    if (len(patient_filter)==0):
+        patient_filter = patient.filter(visa_number=clinic_id)
+    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
+        return render(request, 'doctor_interface/error_patient_not_found.html')
+       
+    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
     age = datetime.datetime.now().year
     last_visits = gm.Appointment.objects.all()
-    last_visits = last_visits.filter(patient=patient)
+    last_visits = last_visits.filter(patient=patient_filter)
 
-    context = {'patient': patient, 'last_visits': last_visits, "age": str(age)}
+    context = {'patient': patient_filter, 'last_visits': last_visits, "age": str(age)}
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
-class index(View):
-    def get(self, request, *args, **kwargs):
-        if not (request.user.is_authenticated):
-            return render(request, 'doctor_interface/not_logged_in.html')
-        if not (request.user.groups.filter(name='Doctors').exists()):
-            return render(request, 'doctor_interface/not_a_doctor.html')
+def index(request):
+    if not (request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+    if not (request.user.groups.filter(name='Doctors').exists()):
+        return render(request, 'doctor_interface/not_a_doctor.html')
 
-        user = request.user
-        # specialty = user.doctor.specialty
-        my_appointments = gm.Appointment.objects.all()
-        my_appointments = my_appointments.filter(assigned=True)
-        my_appointments = my_appointments.filter(doctor=user.doctor)
-        my_appointments = my_appointments.filter(done=False)
-        today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("time")
-        
-        # for browse patient:
-        if request.method == 'POST':
-            form = PatientInputForm(request.POST)
-            if form.is_valid():
-                id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
-                return redirect('doctor_interface/patient_interface_home.html', id_number)
-        else:
-            form = PatientInputForm()
-        
-        context = {"user": user, "today_appointments": today_appointments, 'form':form}
+    user = request.user
+    # specialty = user.doctor.specialty
+    my_appointments = gm.Appointment.objects.all()
+    my_appointments = my_appointments.filter(assigned=True)
+    my_appointments = my_appointments.filter(doctor=user.doctor)
+    my_appointments = my_appointments.filter(done=False)
+    today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("time")
+    
+    # for browse patient:
+    if request.method == 'POST':
+        form = PatientInputForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+            return redirect('doctor_interface:patient_interface', clinic_id = id_number)
+    else:
+        form = PatientInputForm()
+    
+    context = {"user": user, "today_appointments": today_appointments, 'form':form}
 
-        return render(request, 'doctor_interface/doctor_interface_home.html', context)
+    return render(request, 'doctor_interface/doctor_interface_home.html', context)
 
 
 def new_session_view(request, clinic_id):

@@ -7,31 +7,30 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-  <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/styles.css'%}">
+  <link rel="stylesheet" type="text/css" href="{% static 'style_homepage.css'%}">
   <title>Clinic Calendar</title>
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
 </head>
 <body>
-<h1 class="title", style="text-align:center; color:#366d6b"> Clinic Management</h1>
+  <main>
+    {% block content %}
+    <div class="wrapper fadeInDown">
+    {% if user.is_authenticated %}
+    <div id="formContent">
+      <div class="fadeIn first">
+      <h3 type="text" class="fadeIn second"> Clinic Management</h3>
+      <h3></h3>
+      </div>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a></p>
+      <p><a class="fadeIn second" >Delete Appointment</a></p>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:calendar' %}">Go Back to Clinic's Calendar</a></p>
+      <p><a class="fadeIn second" href="{% url 'logout' %}">Logout?</a></p>
+    </div>
+    {% else %}
 
-  <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:50%; border: 1px solid  #254b4a;" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a>
-    <a class="btn btn-info left clearfix" style="width:50%; border: 1px solid  #254b4a;">Delete Appointment</a>
-    <a class="btn btn-info left clearfix" style="width:50%; border: 1px solid  #254b4a;" href="{% url 'reception_desk:calendar' %}">Go Back to Clinic's Calendar</a>
+    {% endif %}
   </div>
-  <hr>
-
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-    crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-    crossorigin="anonymous"></script>
-  {% block script %}
-  {% endblock %}
+    {% endblock %}
+  </main>
 </body>
 </html>
