@@ -262,7 +262,7 @@ def get_params(request):
     if not is_valid_param(context.get('assigned')):
         context['patient'] = None
     if context.get('from_date') is None:
-        context['from_date'] = ''
+        context['from_date'] = date.today().strftime('%Y-%m-%d')
     return context
 
 
@@ -274,7 +274,7 @@ def paginate(context, appointments):
     else:
         page_obj = paginator.get_page(1)
     context['page_obj'] = page_obj
-    context['count'] = context.get('from_date')
+    context['count'] = ''
     if len(appointments) > appointments_per_page:
         context['is_paginated'] = True
     elif len(appointments) == 0:
