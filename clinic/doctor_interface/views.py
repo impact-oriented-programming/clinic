@@ -18,13 +18,18 @@ def index_patient(request, clinic_id):
     if not (request.user.groups.filter(name='Doctors').exists()):
         return render(request, 'doctor_interface/not_a_doctor.html')
     patient = gm.Patient.objects.all()
-    patient = patient.filter(clinic_identifying_number=clinic_id)
-    patient = patient[0]  # was list of length 1. we want the patient itselfs
+    patient_filter = patient.filter(clinic_identifying_number=clinic_id)
+    if (len(patient_filter)==0):
+        patient_filter = patient.filter(visa_number=clinic_id)
+    if (len(patient_filter)==0):
+        return
+        # patient not found
+    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
     age = datetime.datetime.now().year
     last_visits = gm.Appointment.objects.all()
-    last_visits = last_visits.filter(patient=patient)
+    last_visits = last_visits.filter(patient=patient_filter)
 
-    context = {'patient': patient, 'last_visits': last_visits, "age": str(age)}
+    context = {'patient': patient_filter, 'last_visits': last_visits, "age": str(age)}
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
