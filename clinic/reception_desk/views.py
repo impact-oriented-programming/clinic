@@ -262,7 +262,7 @@ def get_params(request):
     if not is_valid_param(context.get('assigned')):
         context['patient'] = None
     if context.get('from_date') is None:
-        context['from_date'] = date.today().strftime('%Y-%m-%d')
+        context['from_date'] = ''
     return context
 
 
