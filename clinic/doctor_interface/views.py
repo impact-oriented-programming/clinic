@@ -59,27 +59,29 @@ class index(View):
 
 def new_session_view(request, clinic_id):
     form = SessionForm(request.POST or None)
+    patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
     if form.is_valid():
         session = form.save(commit=False)
         session.doctor = request.user.doctor
-        session.patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
+        session.patient = patient
         session.time = timezone.now()
         session.save()
         messages.success(request, f'Session saved!')
         return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
 
-    context = {'form': form, 'title': "New Session"}
+    context = {'form': form, 'title': "New Session", 'patient': patient}
     return render(request, 'doctor_interface/session.html', context)
 
 
 def session_edit_view(request, clinic_id, pk):
     session = get_object_or_404(Session, pk=pk)
+    patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
     if request.method == "POST":
         form = SessionForm(request.POST, instance=session)
         if form.is_valid():
             session = form.save(commit=False)
             session.doctor = request.user.doctor
-            session.patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
+            session.patient = patient
             session.time = timezone.now()
             session.save()
             messages.success(request, f'Session edited successfully!')
@@ -87,5 +89,5 @@ def session_edit_view(request, clinic_id, pk):
     else:
         form = SessionForm(instance=session)
 
-    context = {'form': form, 'title': "Edit Session"}
+    context = {'form': form, 'title': "Edit Session", 'patient': patient}
     return render(request, 'doctor_interface/session.html', context)

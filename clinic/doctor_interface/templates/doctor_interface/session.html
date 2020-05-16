@@ -1,9 +1,81 @@
-{% load static %}
+<html><head>
 
-<html>
-    <form method="POST"> {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
-    </form>
-</body>
-</html>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="/static/create_new_patient/main.css">
+    
+        <title>Patient Session: {{ patient.first_name }} {{ patient.last_name }}</title>
+
+</head>
+<body>
+
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+            
+          
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Patient Session: {{ patient.first_name }} {{ patient.last_name }}</legend>
+                
+
+<div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">
+                Chief Complaint
+            </label> <div class=""> <textarea name="chief_complaint" cols="40" rows="2" class="textarea form-control" id="id_chief_complaint"></textarea> </div> </div> <div id="div_id_physical_exam" class="form-group"> <label for="id_physical_exam" class="">
+                Physical Exam
+            </label> <div class=""> <textarea name="physical_exam" cols="40" rows="2" class="textarea form-control" id="id_physical_exam"></textarea> </div> </div> <div id="div_id_assessment" class="form-group"> <label for="id_assessment" class="">
+                Assessment
+            </label> <div class=""> <textarea name="assessment" cols="40" rows="2" class="textarea form-control" id="id_assessment"></textarea> </div> </div> <div id="div_id_treatment_plan" class="form-group"> <label for="id_treatment_plan" class="">
+                Treatment Plan
+            </label> <div class=""> <textarea name="treatment_plan" cols="40" rows="2" class="textarea form-control" id="id_treatment_plan"></textarea> </div> </div> <div id="div_id_diagnosis" class="form-group"> <label for="id_diagnosis" class="">
+                Diagnosis
+            </label> <div class=""> <textarea name="diagnosis" cols="40" rows="1" class="textarea form-control" id="id_diagnosis"></textarea> </div> </div> <div id="div_id_prescriptions" class="form-group"> <label for="id_prescriptions" class="">
+                Prescriptions
+            </label> <div class=""> <textarea name="prescriptions" cols="40" rows="1" class="textarea form-control" id="id_prescriptions"></textarea> </div> </div> <div id="div_id_special_requests" class="form-group"> <label for="id_special_requests" class="">
+                Special Requests
+            </label> <div class=""> <textarea name="special_requests" cols="40" rows="1" class="textarea form-control" id="id_special_requests"></textarea> </div> </div> <div id="div_id_height" class="form-group"> <label for="id_height" class="">
+                Height
+            </label> <div class=""> <input type="number" name="height" step="0.01" class="numberinput form-control" id="id_height"> </div> </div> <div id="div_id_weight" class="form-group"> <label for="id_weight" class="">
+                Weight
+            </label> <div class=""> <input type="number" name="weight" step="0.1" class="numberinput form-control" id="id_weight"> </div> </div> <div id="div_id_systolic_bp" class="form-group"> <label for="id_systolic_bp" class="">
+                Systolic BP
+            </label> <div class=""> <input type="number" name="systolic_bp" class="numberinput form-control" id="id_systolic_bp"> </div> </div> <div id="div_id_diastolic_bp" class="form-group"> <label for="id_diastolic_bp" class="">
+                Diastolic BP
+            </label> <div class=""> <input type="number" name="diastolic_bp" class="numberinput form-control" id="id_diastolic_bp"> </div> </div> <div id="div_id_temperature" class="form-group"> <label for="id_temperature" class="">
+                Temperature
+            </label> <div class=""> <input type="number" name="temperature" step="0.01" class="numberinput form-control" id="id_temperature"> </div> </div> <div id="div_id_pulse" class="form-group"> <label for="id_pulse" class="">
+                Pulse
+            </label> <div class=""> <input type="number" name="pulse" class="numberinput form-control" id="id_pulse"> </div> </div> <div id="div_id_respiratory_rate" class="form-group"> <label for="id_respiratory_rate" class="">
+                Respiratory Rate
+            </label> <div class=""> <input type="number" name="respiratory_rate" class="numberinput form-control" id="id_respiratory_rate"> </div> </div> <div id="div_id_sp02" class="form-group"> <label for="id_sp02" class="">
+                Sp02
+            </label> <div class=""> <input type="number" name="sp02" class="numberinput form-control" id="id_sp02"> </div> </div> <div id="div_id_glucose" class="form-group"> <label for="id_glucose" class="">
+                Glucose
+            </label> <div class=""> <input type="number" name="glucose" class="numberinput form-control" id="id_glucose"> </div> </div>
+
+            </fieldset>
+            <div class="form-group">
+               <input class="btn btn-outline-info" type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body></html>
