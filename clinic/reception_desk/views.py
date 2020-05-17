@@ -261,6 +261,8 @@ def get_params(request):
     context['specialties'] = get_specialities(context.get('doctors'))
     if not is_valid_param(context.get('assigned')):
         context['patient'] = None
+    if context.get('from_date') is None:
+        context['from_date'] = date.today().strftime('%Y-%m-%d')
     return context
 
 
