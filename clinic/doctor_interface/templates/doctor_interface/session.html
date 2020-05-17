@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" type="text/css" href="/static/create_new_patient/main.css">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
         <title>Patient Session: {{ patient.first_name }} {{ patient.last_name }}</title>
 
 </head>
@@ -45,13 +46,20 @@
                 Prescriptions
             </label> <div class=""> <textarea name="prescriptions" cols="40" rows="1" class="textarea form-control" id="id_prescriptions"></textarea> </div> </div> <div id="div_id_special_requests" class="form-group"> <label for="id_special_requests" class="">
                 Special Requests
-            </label> <div class=""> <textarea name="special_requests" cols="40" rows="1" class="textarea form-control" id="id_special_requests"></textarea> </div> </div> <div id="div_id_height" class="form-group"> <label for="id_height" class="">
+            </label> <div class=""> <textarea name="special_requests" cols="40" rows="1" class="textarea form-control" id="id_special_requests"></textarea> </div> </div>
+            <table style="width: 100%" >
+              <tr>
+            <td style="width: 20%"> <div id="div_id_height" class="form-group"> <label for="id_height" class="">
                 Height
-            </label> <div class=""> <input type="number" name="height" step="0.01" class="numberinput form-control" id="id_height"> </div> </div> <div id="div_id_weight" class="form-group"> <label for="id_weight" class="">
+            </label> <div class=""> <input type="number" name="height" step="0.01" class="numberinput form-control" id="id_height"> </div> </div> </td>
+
+            <td style="width: 40%"> <div id="div_id_weight" class="form-group"> <label for="id_weight" class="">
                 Weight
-            </label> <div class=""> <input type="number" name="weight" step="0.1" class="numberinput form-control" id="id_weight"> </div> </div> <div id="div_id_systolic_bp" class="form-group"> <label for="id_systolic_bp" class="">
+            </label> <div class=""> <input type="number" name="weight" step="0.1" class="numberinput form-control" id="id_weight"> </div> </div> </td>
+
+            <td style="width: 40%"> <div id="div_id_systolic_bp" class="form-group"> <label for="id_systolic_bp" class="">
                 Systolic BP
-            </label> <div class=""> <input type="number" name="systolic_bp" class="numberinput form-control" id="id_systolic_bp"> </div> </div> <div id="div_id_diastolic_bp" class="form-group"> <label for="id_diastolic_bp" class="">
+            </label> <div class=""> <input type="number" name="systolic_bp" class="numberinput form-control" id="id_systolic_bp"> </div> </div> </td></tr>  </table> <div id="div_id_diastolic_bp" class="form-group"> <label for="id_diastolic_bp" class="">
                 Diastolic BP
             </label> <div class=""> <input type="number" name="diastolic_bp" class="numberinput form-control" id="id_diastolic_bp"> </div> </div> <div id="div_id_temperature" class="form-group"> <label for="id_temperature" class="">
                 Temperature
@@ -64,6 +72,7 @@
             </label> <div class=""> <input type="number" name="sp02" class="numberinput form-control" id="id_sp02"> </div> </div> <div id="div_id_glucose" class="form-group"> <label for="id_glucose" class="">
                 Glucose
             </label> <div class=""> <input type="number" name="glucose" class="numberinput form-control" id="id_glucose"> </div> </div>
+
 
             </fieldset>
             <div class="form-group">
