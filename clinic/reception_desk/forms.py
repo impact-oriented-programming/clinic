@@ -78,9 +78,9 @@ class DoctorSlotForm(forms.ModelForm):
         appointment_duration = self.cleaned_data.get('appointment_duration')
         start = self.cleaned_data.get('start_time')
         end = self.cleaned_data.get('end_time')
-        slot_gap = doctor_slot_in_minutes(start, end) % appointment_duration
         if start is None or end is None:
             raise forms.ValidationError("")
+        slot_gap = doctor_slot_in_minutes(start, end) % appointment_duration
         if slot_gap != 0:
             raise forms.ValidationError("Doctor shift must divide in appointment duration\n" +
                                         "(ending " + str(slot_gap) + " minutes earlier or " +

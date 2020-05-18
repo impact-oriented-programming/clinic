@@ -25,11 +25,11 @@ def index_patient(request, clinic_id):
         return render(request, 'doctor_interface/error_patient_not_found.html')
        
     patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
-    age = datetime.datetime.now().year
-    last_visits = gm.Appointment.objects.all()
-    last_visits = last_visits.filter(patient=patient_filter)
-
-    context = {'patient': patient_filter, 'last_visits': last_visits, "age": str(age)}
+    #age = datetime.datetime.now().year
+    last_visits = Session.objects.all()
+    max_session = min(5, len(last_visits))
+    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
+    context = {'patient': patient_filter, 'last_visits': last_visits} #, "age": str(age)}
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
