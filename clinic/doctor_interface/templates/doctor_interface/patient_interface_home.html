@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface_patient.css'%}">
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
     <title>{{ patient.first_name }} {{ patient.last_name }}</title>
@@ -34,23 +34,25 @@
   <hr>
   <div class="table-title">
     <h3>Last Visits</h3>
-    <p>click on appointment to see full details</p>
+    <p>click on session to see full details</p>
   </div>
   {% if last_visits %}
           <table class="table-fill">
             <thead>
               <tr>
                 <th>Session Details</th>
+                <th>Diagnosis</th>
                 <th>Date</th>
                 <th>Doctor</th>
               </tr>
             </thead>
             <tbody class="table-hover">
-              {% for appointment in last_visits %}
+              {% for Session in last_visits %}
               <tr>
                 <td>To do (add icon)</td>
-                <td>{{ appointment.date }}</td>
-                <td>{{ appointment.doctor }}</td>
+                <td>{{ Session.diagnosis }}</td>
+                <td>{{ Session.time }}</td>
+                <td>{{ Session.doctor }}</td>
               </tr>
             {% endfor %}
           </tbody>
@@ -60,5 +62,46 @@
             <p>No previous visits available</p>
           </div>
           {% endif %}
-          <hr>
+            <hr>
+            
+  <div class="table-title">
+    <h3>Last Perscriptions</h3>
+    <p </p>
+  </div>
+  {% if last_visits %}
+          <table class="table-fill">
+            <thead>
+              <tr>
+                <th>Prescription</th>
+                <th>Date</th>
+                <th>Doctor</th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+              {% for Session in last_visits %}
+                  {% for Medication in Session.prescriptions.all %}
+                  <tr>
+                    <td>{{ Medication }}</td>
+                    <td>{{ Session.time }}</td>
+                    <td>{{ Session.doctor }}</td>
+                  </tr>
+                  {% endfor %}
+            {% endfor %}
+          </tbody>
+          </table>
+          {% else %}
+          <div class="table-title">
+            <p>No previous prescriptions available</p>
+          </div>
+          {% endif %}
+              <hr>
+          
+  <div class="table-title">
+    <h3>Last Tests</h3>
+    <p </p>
+  </div>
+  <div class="table-title">
+    <p>No previous tests available</p>
+  </div>
+        <hr>
   </body>
