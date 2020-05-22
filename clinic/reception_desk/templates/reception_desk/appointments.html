@@ -4,7 +4,7 @@
 {% block content %}
 
       <h3>Filter Appointments</h3>
-      <form method="GET" action=".">
+      <form method="GET" action="." autocomplete="off">
           {% csrf_token %}
         <div class="form-row">
                 <div class="form-group col-md-4">
@@ -62,7 +62,7 @@
               {% if empty %}
                 <h3>No Appointments Were Found</h3>
               {% else %}
-              <table class="table-responsive">
+              <table>
                     <thead>
                       <tr>
                         <th style="width:25%">Doctor</th>
@@ -72,7 +72,7 @@
                         <th style="width:25%">Action</th>
                       </tr>
                     </thead>
-                  <tbody class="table-hover">
+                  <tbody>
                     {% for appointment in page_obj.object_list %}
                     <tr>
                         <td>{{ appointment.doctor}}</td>
