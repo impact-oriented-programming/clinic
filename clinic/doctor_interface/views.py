@@ -62,6 +62,10 @@ def index(request):
 
 
 def new_session_view(request, clinic_id):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    if not (request.user.groups.filter(name='Doctors').exists()):
+        return render(request, 'doctor_interface/not_a_doctor.html')
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
     if form.is_valid():
@@ -78,6 +82,10 @@ def new_session_view(request, clinic_id):
 
 
 def session_edit_view(request, clinic_id, pk):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    if not (request.user.groups.filter(name='Doctors').exists()):
+        return render(request, 'doctor_interface/not_a_doctor.html')
     session = get_object_or_404(Session, pk=pk)
     patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
     if request.method == "POST":
