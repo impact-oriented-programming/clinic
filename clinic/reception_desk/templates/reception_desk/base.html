@@ -9,8 +9,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <link rel="stylesheet" type="text/css" href="{% static 'create_new_patient/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
     {% if title%}
         <title>{{ title }}</title>
@@ -23,7 +22,7 @@
      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         <div class="container">
             <a class="navbar-brand" href="{% url 'reception_desk:calendar' %}">Back To Calendar</a>
-             <a class="navbar-brand" href="{% url 'home' %}">Back To Home</a>
+            <a class="navbar-brand" href="{% url 'home' %}">Back To Home</a>
             </div>
         </div>
      </nav>
@@ -44,7 +43,7 @@
         <div class="col-md-4">
           <div class="content-section">
             <h3>Other Options</h3>
-              <div class="list-group">
+              <div class="list-group-custom">
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:create-patient' %}">Create New Patient</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:edit-existing-patient' %}">Edit Existing Patient</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:appointments' %}">Add New Appointment</a>

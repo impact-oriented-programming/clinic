@@ -58,31 +58,42 @@
             </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
       </form>
-
       <hr />
-
-      <div class="row">
-          <ul class="list-unstyled">
               {% if empty %}
                 <h3>No Appointments Were Found</h3>
-              {% endif %}
-              {% for appointment in page_obj.object_list %}
-           <li>
-              <span>Doctor: {{ appointment.doctor }} </span>
-              <span>Date: {{appointment.date }}</span>
-               {% if patient %}
-               <span>Patient: {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</span>
-               {% endif %}
-              <span>Time: {{ count }}{{ appointment.time }}</span>
-               {% if assigned is None %}
-                   <a  class="btn btn-outline-info"
-                       href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">Assign Patient</a>
-               {% endif %}
-                <hr />
-           </li>
-            {% endfor %}
-        </ul>
-           </div>
+              {% else %}
+              <table class="table-responsive">
+                    <thead>
+                      <tr>
+                        <th style="width:25%">Doctor</th>
+                        <th style="width:25%">Patient</th>
+                        <th style="width:25%">Date</th>
+                        <th style="width:25%">Time</th>
+                        <th style="width:25%">Action</th>
+                      </tr>
+                    </thead>
+                  <tbody class="table-hover">
+                    {% for appointment in page_obj.object_list %}
+                    <tr>
+                        <td>{{ appointment.doctor}}</td>
+                        <td>{{ appointment.patient }}</td>
+                        <td>{{ appointment.date }}</td>
+                        <td>{{ appointment.time }}</td>
+                        {% if not appointment.assigned %}
+                        <td><a  class="btn btn-outline-info"
+                                href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
+                                Assign Patient</a></td>
+                        {% else %}
+                        <td><a  class="btn btn-outline-info"
+                                href="#">
+                                Remove Patient</a></td>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                  {% endif %}
+                  </tbody>
+              </table>
         {% if is_paginated %}
             {% if page_obj.has_previous %}
                   <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
@@ -102,4 +113,5 @@
                   <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
             {% endif %}
         {% endif %}
+
 {% endblock content %}
