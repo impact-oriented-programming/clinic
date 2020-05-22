@@ -267,7 +267,7 @@ def get_params(request):
 
 
 def paginate(context, appointments):
-    appointments_per_page = 4
+    appointments_per_page = 10
     paginator = Paginator(appointments, appointments_per_page)
     if is_valid_param(context.get('page_number')):
         page_obj = paginator.get_page(context.get('page_number'))
