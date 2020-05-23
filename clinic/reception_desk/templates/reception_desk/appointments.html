@@ -58,33 +58,32 @@
             </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
       </form>
-      <hr />
               {% if empty %}
                 <h3>No Appointments Were Found</h3>
               {% else %}
-              <table>
+              <table class="table table-sm" style="border:hidden">
                     <thead>
                       <tr>
-                        <th style="width:25%">Doctor</th>
-                        <th style="width:25%">Patient</th>
-                        <th style="width:25%">Date</th>
-                        <th style="width:25%">Time</th>
-                        <th style="width:25%">Action</th>
+                        <th style="width:25%;text-align:center" >Doctor</th>
+                        <th style="width:25%;text-align:center">Patient</th>
+                        <th style="width:25%;text-align:center">Date</th>
+                        <th style="width:25%;text-align:center">Time</th>
+                        <th style="width:25%;text-align:center">Action</th>
                       </tr>
                     </thead>
                   <tbody>
                     {% for appointment in page_obj.object_list %}
                     <tr>
-                        <td>{{ appointment.doctor}}</td>
-                        <td>{{ appointment.patient }}</td>
-                        <td>{{ appointment.date }}</td>
-                        <td>{{ appointment.time }}</td>
+                        <td style="text-align:center">{{ appointment.doctor}}</td>
+                        <td style="text-align:center">{{ appointment.patient }}</td>
+                        <td style="text-align:center">{{ appointment.date }}</td>
+                        <td style="text-align:center">{{ appointment.time }}</td>
                         {% if not appointment.assigned %}
-                        <td><a  class="btn btn-outline-info"
+                        <td style="text-align:center"><a  class="btn btn-outline-success"
                                 href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
                                 Assign Patient</a></td>
                         {% else %}
-                        <td><a  class="btn btn-outline-info"
+                        <td style="text-align:center"><a  class="btn btn-outline-danger"
                                 href="#">
                                 Remove Patient</a></td>
                         </td>

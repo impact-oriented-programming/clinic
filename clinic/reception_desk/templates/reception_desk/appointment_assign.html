@@ -2,21 +2,34 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">
-        <form method="POST">
+        <form method="POST" autocomplete="off">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Make Appointment - Enter The Patient's Details </legend>
-
                 {{ form|crispy }}
             </fieldset>
-            <ul class="list-unstyled">
-            <li>
-              <span>Doctor: {{ object.doctor }} </span>
-              <span>Date: {{object.date }}</span>
-              <span>Time: {{ object.time }}</span>
-                <hr />
-           </li>
-            </ul>
+             <hr />
+            <legend>Appoitment Details</legend>
+            <table>
+                    <thead>
+                      <tr>
+                        <th style="width:25%">Specialty</th>
+                        <th style="width:25%">Doctor</th>
+                        <th style="width:25%">Date</th>
+                        <th style="width:25%">Time</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    <tr>
+                        <td>{{ object.doctor.specialty }}</td>
+                        <td>{{ object.doctor}}</td>
+                        <td>{{ object.date }}</td>
+                        <td>{{ object.time }}</td>
+                    </tr>
+                  </tbody>
+              </table>
+             <hr />
             <div class="form-group">
                <input class="btn btn-outline-info" type="submit" value="Make Appointment">
             </div>
