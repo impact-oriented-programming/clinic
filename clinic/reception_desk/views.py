@@ -21,7 +21,7 @@ from django.core.paginator import Paginator
 class CalendarView(generic.ListView):
     model = gm.Appointment
     template_name = 'reception_desk/calendar.html'
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -182,6 +182,10 @@ class clinic_management(View):
 def appointments_view(request):
     context = get_params(request)
     appointments = gm.Appointment.objects.all().order_by('date', 'time')
+    if request.method == "POST":
+        remove_id = request.POST.get('remove_id')
+        if is_valid_param(remove_id):
+            clear_appointment(appointments, remove_id)
     if context.get('assigned') is not None:
         appointments = appointments.filter(assigned=True)
     else:
@@ -193,6 +197,9 @@ def appointments_view(request):
     if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
         appointments = [appointment for appointment in appointments if
                         appointment.doctor.specialty == context.get('specialty')]
+    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
+        appointments = [appointment for appointment in appointments if
+                        str(appointment.doctor) == context.get('doctor')]
     if is_valid_param(context.get('patient')):
         appointments = [appointment for appointment in appointments if
                         appointment.patient.visa_number == context.get('patient') or
@@ -256,9 +263,10 @@ def get_specialities(doctors):
 def get_params(request):
     context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'specialty': request.GET.get('specialty'),
                'patient': request.GET.get('patient'), 'from_date': request.GET.get('from_date'),
-               'until_date': request.GET.get('until_date'),
+               'until_date': request.GET.get('until_date'), 'doctor': request.GET.get('doctor'),
                'page_number': request.GET.get('page'), 'assigned': request.GET.get('assigned')}
     context['specialties'] = get_specialities(context.get('doctors'))
+    context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     if not is_valid_param(context.get('assigned')):
         context['patient'] = None
     if context.get('from_date') is None:
@@ -267,16 +275,24 @@ def get_params(request):
 
 
 def paginate(context, appointments):
-    appointments_per_page = 10
+    appointments_per_page = 9
     paginator = Paginator(appointments, appointments_per_page)
     if is_valid_param(context.get('page_number')):
         page_obj = paginator.get_page(context.get('page_number'))
     else:
         page_obj = paginator.get_page(1)
     context['page_obj'] = page_obj
-    context['count'] = ''
     if len(appointments) > appointments_per_page:
         context['is_paginated'] = True
     elif len(appointments) == 0:
         context['empty'] = True
     return context
+
+
+def clear_appointment(appointments, remove_id):
+    appointment_to_clear = appointments.get(id=remove_id)
+    if appointment_to_clear.assigned:
+        appointment_to_clear.patient = None
+        appointment_to_clear.assigned = False
+        appointment_to_clear.save()
+        return

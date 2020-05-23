@@ -2,10 +2,10 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 {% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
       <h3>Filter Appointments</h3>
       <form method="GET" action="." autocomplete="off">
-          {% csrf_token %}
         <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="specialty">Specialty</label>
@@ -20,9 +20,9 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="doctor">Doctor</label>
-                    <select class="form-control " id ="doctor" name="doctor" placeholder="Doctor" />
+                    <select class="form-control " id ="doctor" name="doctor" />
                      {% if doctor and doctor != 'All' %}
-                    <option selected placeholder="specialty">{{ doctor }}</option>
+                    <option selected placeholder="doctor">{{ doctor }}</option>
                     {% endif %}
                     {% for doctor in doctors %}
                         <option value="{{ doctor }}">{{ doctor }}</option>
@@ -45,18 +45,19 @@
           </div>
           <div class="form-group col-md-2 col-lg-4">
             <label for="until_date">Until</label>
-            <input type="date" class="form-control" id="until_Date" name="until_date"
+            <input type="date" class="form-control" id="until_date" name="until_date"
             {% if until_date %} value={{ until_date }} {% endif %}>
           </div>
         </div>
           <div class="form-group">
                 <div class="form-check ">
-                    <input class="form-check-input" type="checkbox" id="assigned" name="assigned" value="assigned"
+                    <input class="form-check-input" type="checkbox" id="assigned" name="assigned" value=True
                 {% if assigned %} checked {% endif %}>
                     <label class="form-check-label" for="assigned">Assigned</label>
                 </div>
             </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
+        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:appointments' %}"> Reset </a>
       </form>
               {% if empty %}
                 <h3>No Appointments Were Found</h3>
@@ -64,7 +65,7 @@
               <table class="table table-sm" style="border:hidden">
                     <thead>
                       <tr>
-                        <th style="width:25%;text-align:center" >Doctor</th>
+                        <th style="width:25%;text-align:center">Doctor</th>
                         <th style="width:25%;text-align:center">Patient</th>
                         <th style="width:25%;text-align:center">Date</th>
                         <th style="width:25%;text-align:center">Time</th>
@@ -83,9 +84,76 @@
                                 href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
                                 Assign Patient</a></td>
                         {% else %}
-                        <td style="text-align:center"><a  class="btn btn-outline-danger"
-                                href="#">
-                                Remove Patient</a></td>
+                        <td style="text-align:center"><button
+                        onclick="removepatientclick({{ appointment.id }})"
+                        class="btn btn-outline-danger">
+                                Remove Patient</button></td>
+                        <script>
+                            function removepatientclick(id){
+                            swal({
+                              title: "Are you sure?",
+                              icon: "warning",
+                              buttons: [true, "Remove"],
+                              dangerMode: true,
+                            })
+                            .then((Removed) => {
+                              if (Removed) {
+                                swal({title:"Patient Removed!",
+                                  icon: "success",
+                                }).then(function(){ post("{% url 'reception_desk:appointments' %}",
+                                {'remove_id':id});});
+                              }
+                              else{}
+                            })
+                           };
+                           </script>
+                        <script >
+
+                          function getCookie(name) {
+                                console.log('getCookie');
+                                var cookieValue = null;
+                                if (document.cookie && document.cookie != '') {
+                                        var cookies = document.cookie.split(';');
+                                        for (var i = 0; i < cookies.length; i++) {
+                                                var cookie = jQuery.trim(cookies[i]);
+                                                // Does this cookie string begin with the name we want?
+                                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                        break;
+                                                }
+                                        }
+                                }
+                                console.log('cookie:' + cookieValue);
+                                return cookieValue;
+                                }
+                            </script>
+                        <script>
+                          function post(path, params) {
+                          const form = document.createElement('form');
+                          form.method = 'post';
+                          form.action = path;
+
+                          var hiddenField1 = document.createElement("input");
+                          hiddenField1.setAttribute("type", "hidden");
+                          hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+                          hiddenField1.setAttribute("value", getCookie('csrftoken'));
+                          form.appendChild(hiddenField1);
+
+                          for (const key in params) {
+                            if (params.hasOwnProperty(key)) {
+                              const hiddenField = document.createElement('input');
+                              hiddenField.type = 'hidden';
+                              hiddenField.name = key;
+                              hiddenField.value = params[key];
+
+                              form.appendChild(hiddenField);
+                            }
+                          }
+
+                          document.body.appendChild(form);
+                          form.submit();
+                        }
+                        </script>
                         </td>
                         {% endif %}
                     </tr>
