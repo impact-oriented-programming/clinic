@@ -20,9 +20,16 @@ from django.core.paginator import Paginator
 
 class CalendarView(generic.ListView):
     model = gm.Appointment
-    template_name = 'reception_desk/calendar.html'
+    
+    def get_template_names(self, **kwargs):
+        template_name = 'reception_desk/calendar.html'
+        if not (self.request.user.is_authenticated):
+            template_name = 'doctor_interface/not_logged_in.html'
+        return [template_name]
     
     def get_context_data(self, **kwargs):
+
+        
         context = super().get_context_data(**kwargs)
 
         # use today's date for the calendar
