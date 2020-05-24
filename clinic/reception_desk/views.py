@@ -9,13 +9,13 @@ import datetime as dt
 from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm
 from django.contrib import messages
 import general_models.models as gm
+from doctor_interface.models import Session
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
 #from django.contrib.auth.models import User
-
 
 
 class CalendarView(generic.ListView):
@@ -288,3 +288,36 @@ def paginate(context, appointments):
     elif len(appointments) == 0:
         context['empty'] = True
     return context
+
+def view_patient(request):
+    if not (request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+
+    user = request.user
+    if request.method == 'POST':
+        form = PatientInputForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+            return redirect('reception_desk:patient-details', id_number=id_number)
+    else:
+        form = PatientInputForm()
+    context = {"user": user, 'form':form}
+    return render(request, 'reception_desk/view_patient_form.html', context)
+
+def patient_details(request, id_number):
+    if not (request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+    
+    patient = gm.Patient.objects.all()
+    patient_filter = patient.filter(clinic_identifying_number=id_number)
+    if (len(patient_filter)==0):
+        patient_filter = patient.filter(visa_number=id_number)
+    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
+        return render(request, 'doctor_interface/error_patient_not_found.html') # TODO - fix return button to calendar
+    
+    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
+    last_visits = Session.objects.all()
+    max_session = min(5, len(last_visits))
+    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
+    context = {'patient': patient_filter, 'last_visits': last_visits} #, "age": str(age)}
+    return render(request, 'reception_desk/view_patient.html', context)

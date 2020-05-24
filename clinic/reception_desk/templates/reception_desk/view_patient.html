@@ -1,0 +1,115 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+  <title>{{ patient.first_name}} {{patient.last_name}}</title>
+</head>
+<body>
+  <div class="btn-group clearfix" style="width: 99%">
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'reception_desk:view-patient' %}">Search Another Patient</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
+  </div>
+  <hr>
+  <h1 class="title", style="text-align:center">View Patient: {{ patient.first_name}} {{patient.last_name}}</h1>
+  <hr>
+
+  <div class="table-title">
+  <h3>Patient Details</h3>
+  <table style="border:0px; width: 100%;">
+    <tr>
+      <td style="width: 33.3%; background: transparent;">Name: {{ patient.first_name }} {{ patient.last_name }}</td>
+      <td  style="width: 33.3%; background: transparent;">Clinic ID: {{ patient.clinic_identifying_number}}</td>
+      <td style="width: 33.3%; background: transparent;">Visa Number: {{ patient.visa_number }}</td>
+    </tr>
+    <tr>
+      <td style="width: 33.3%; background: transparent;">Date Of Birth: {{ patient.date_of_birth}}</td>
+      <td style="width: 33.3%; background: transparent;">Gender: {{ patient.gender }}</td>
+      <td style="width: 33.3%; background: transparent;">Origin Country: {{ patient.origin_country }}</td>
+    </tr>
+  </table>
+  </div>
+  <hr>
+  <div class="table-title">
+    <h3>Last Visits</h3>
+    <p>click on session to see full details</p>
+  </div>
+  {% if last_visits %}
+          <table class="table-fill">
+            <thead>
+              <tr>
+                <th>Session Details</th>
+                <th>Diagnosis</th>
+                <th>Date</th>
+                <th>Doctor</th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+              {% for Session in last_visits %}
+              <tr>
+                <td><i class="fas fa-file-alt"></i></td>
+                <td>{{ Session.diagnosis }}</td>
+                <td>{{ Session.time }}</td>
+                <td>{{ Session.doctor }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          </table>
+          {% else %}
+          <div class="table-title">
+            <p>No previous visits available</p>
+          </div>
+          {% endif %}
+            <hr>
+
+  <div class="table-title">
+    <h3>Last Perscriptions</h3>
+    <p </p>
+  </div>
+  {% if last_visits %}
+          <table class="table-fill">
+            <thead>
+              <tr>
+                <th>Prescription</th>
+                <th>Date</th>
+                <th>Doctor</th>
+              </tr>
+            </thead>
+            <tbody class="table-hover">
+              {% for Session in last_visits %}
+                  {% for Medication in Session.prescriptions.all %}
+                  <tr>
+                    <td>{{ Medication }}</td>
+                    <td>{{ Session.time }}</td>
+                    <td>{{ Session.doctor }}</td>
+                  </tr>
+                  {% endfor %}
+            {% endfor %}
+          </tbody>
+          </table>
+          {% else %}
+          <div class="table-title">
+            <p>No previous prescriptions available</p>
+          </div>
+          {% endif %}
+              <hr>
+
+  <div class="table-title">
+    <h3>Last Tests</h3>
+    <p </p>
+  </div>
+  <div class="table-title">
+    <p>No previous tests available</p>
+  </div>
+
+  <hr>
+</body>
