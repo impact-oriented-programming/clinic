@@ -148,7 +148,7 @@ def date_view(request, my_date):
     except:
         return render(request, 'reception_desk/date_error.html')  # case the given date is not valid
     # list all the appointments of that given day
-    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("time")
+    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
     appointment_list = appointment_list.filter(assigned=True)
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in appointment_list))
@@ -189,7 +189,7 @@ class clinic_management(View):
 
 def appointments_view(request):
     context = get_params(request)
-    appointments = gm.Appointment.objects.all().order_by('date', 'time')
+    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
     if context.get('assigned') is not None:
         appointments = appointments.filter(assigned=True)
     else:

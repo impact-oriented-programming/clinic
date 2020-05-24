@@ -99,9 +99,7 @@ class DoctorSlotForm(forms.ModelForm):
             if room is not None:
                 appointments = gm.Appointment.objects.filter(date__range=(date, date)).filter(start_time__lt=end).filter(end_time__gt=start).filter(room__exact=room)
                 if appointments.exists():
-                    a = list(appointments)
-
-                    err = forms.ValidationError("This room is occupied for the requested time"+str(a))
+                    err = forms.ValidationError("This room is occupied for the requested time")
                     self.add_error('room', err)
 
 
