@@ -115,8 +115,9 @@ def doctor_slot_view(request):
         # generate appointments
         while start < slot_instance.end_time:
             appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None,
-                                                        date=slot_instance.date,
-                                                        time=start, room=slot_instance.room, assigned=False, done=False)
+                                                        date=slot_instance.date, start_time=start,
+                                                        end_time=add_delta_to_time(start, delta),
+                                                        room=slot_instance.room, assigned=False, done=False)
             appointment.save()
             start = add_delta_to_time(start, delta)
         messages.success(request, f'Doctor time slot added successfully!')
