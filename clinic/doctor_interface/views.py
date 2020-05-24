@@ -45,7 +45,7 @@ def index(request):
     my_appointments = my_appointments.filter(assigned=True)
     my_appointments = my_appointments.filter(doctor=user.doctor)
     my_appointments = my_appointments.filter(done=False)
-    today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("time")
+    today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("start_time")
     
     # for browse patient:
     if request.method == 'POST':
