@@ -9,5 +9,6 @@ def param_replace(context, **kwargs):
     for k, v in kwargs.items():
         d[k] = v
     for k in [k for k, v in d.items() if not v]:
-        del d[k]
+        if k != "from_date":
+            del d[k]
     return d.urlencode()

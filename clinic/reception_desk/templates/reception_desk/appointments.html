@@ -2,10 +2,10 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 {% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
       <h3>Filter Appointments</h3>
-      <form method="GET" action=".">
-          {% csrf_token %}
+      <form method="GET" action="." autocomplete="off">
         <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="specialty">Specialty</label>
@@ -20,9 +20,9 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="doctor">Doctor</label>
-                    <select class="form-control " id ="doctor" name="doctor" placeholder="Doctor" />
+                    <select class="form-control " id ="doctor" name="doctor" />
                      {% if doctor and doctor != 'All' %}
-                    <option selected placeholder="specialty">{{ doctor }}</option>
+                    <option selected placeholder="doctor">{{ doctor }}</option>
                     {% endif %}
                     {% for doctor in doctors %}
                         <option value="{{ doctor }}">{{ doctor }}</option>
@@ -45,44 +45,122 @@
           </div>
           <div class="form-group col-md-2 col-lg-4">
             <label for="until_date">Until</label>
-            <input type="date" class="form-control" id="until_Date" name="until_date"
+            <input type="date" class="form-control" id="until_date" name="until_date"
             {% if until_date %} value={{ until_date }} {% endif %}>
           </div>
         </div>
           <div class="form-group">
                 <div class="form-check ">
-                    <input class="form-check-input" type="checkbox" id="assigned" name="assigned" value="assigned"
+                    <input class="form-check-input" type="checkbox" id="assigned" name="assigned" value=True
                 {% if assigned %} checked {% endif %}>
                     <label class="form-check-label" for="assigned">Assigned</label>
                 </div>
             </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
+        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:appointments' %}"> Reset </a>
       </form>
-
-      <hr />
-
-      <div class="row">
-          <ul class="list-unstyled">
               {% if empty %}
                 <h3>No Appointments Were Found</h3>
-              {% endif %}
-              {% for appointment in page_obj.object_list %}
-           <li>
-              <span>Doctor: {{ appointment.doctor }} </span>
-              <span>Date: {{appointment.date }}</span>
-               {% if patient %}
-               <span>Patient: {{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</span>
-               {% endif %}
-              <span>Time: {{ count }}{{ appointment.time }}</span>
-               {% if assigned is None %}
-                   <a  class="btn btn-outline-info"
-                       href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">Assign Patient</a>
-               {% endif %}
-                <hr />
-           </li>
-            {% endfor %}
-        </ul>
-           </div>
+              {% else %}
+              <table class="table table-sm" style="border:hidden">
+                    <thead>
+                      <tr>
+                        <th style="width:25%;text-align:center">Doctor</th>
+                        <th style="width:25%;text-align:center">Patient</th>
+                        <th style="width:25%;text-align:center">Date</th>
+                        <th style="width:25%;text-align:center">Time</th>
+                        <th style="width:25%;text-align:center">Action</th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    {% for appointment in page_obj.object_list %}
+                    <tr>
+                        <td style="text-align:center">{{ appointment.doctor}}</td>
+                        <td style="text-align:center">{{ appointment.patient }}</td>
+                        <td style="text-align:center">{{ appointment.date }}</td>
+                        <td style="text-align:center">{{ appointment.start_time }}</td>
+                        {% if not appointment.assigned %}
+                        <td style="text-align:center"><a  class="btn btn-outline-success"
+                                href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
+                                Assign Patient</a></td>
+                        {% else %}
+                        <td style="text-align:center"><button
+                        onclick="remove_patient_click({{ appointment.id }})"
+                        class="btn btn-outline-danger">
+                                Remove Patient</button></td>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    <script>
+                            function remove_patient_click(id,patient){
+                            swal({
+                              title: "Are you sure?",
+                              icon: "warning",
+                              buttons: [true, "Remove"],
+                              dangerMode: true,
+                            })
+                            .then((Removed) => {
+                              if (Removed) {
+                                swal({title:"Patient Removed!",
+                                  icon: "success",
+                                }).then(function(){ post("{% url 'reception_desk:appointments' %}",
+                                {'remove_id':id});});
+                              }
+                              else{}
+                            })
+                           };
+                           </script>
+                    <script >
+
+                          function getCookie(name) {
+                                console.log('getCookie');
+                                var cookieValue = null;
+                                if (document.cookie && document.cookie != '') {
+                                        var cookies = document.cookie.split(';');
+                                        for (var i = 0; i < cookies.length; i++) {
+                                                var cookie = jQuery.trim(cookies[i]);
+                                                // Does this cookie string begin with the name we want?
+                                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                        break;
+                                                }
+                                        }
+                                }
+                                console.log('cookie:' + cookieValue);
+                                return cookieValue;
+                                }
+                            </script>
+                    <script>
+                          function post(path, params) {
+                          const form = document.createElement('form');
+                          form.method = 'post';
+                          form.action = path;
+
+                          var hiddenField1 = document.createElement("input");
+                          hiddenField1.setAttribute("type", "hidden");
+                          hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+                          hiddenField1.setAttribute("value", getCookie('csrftoken'));
+                          form.appendChild(hiddenField1);
+
+                          for (const key in params) {
+                            if (params.hasOwnProperty(key)) {
+                              const hiddenField = document.createElement('input');
+                              hiddenField.type = 'hidden';
+                              hiddenField.name = key;
+                              hiddenField.value = params[key];
+
+                              form.appendChild(hiddenField);
+                            }
+                          }
+
+                          document.body.appendChild(form);
+                          form.submit();
+                        }
+                        </script>
+                  {% endif %}
+                  </tbody>
+              </table>
         {% if is_paginated %}
             {% if page_obj.has_previous %}
                   <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
@@ -102,4 +180,5 @@
                   <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
             {% endif %}
         {% endif %}
+
 {% endblock content %}
