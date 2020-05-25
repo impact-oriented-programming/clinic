@@ -1,5 +1,6 @@
 import dal
 from django import forms
+from django.db.models import Q
 
 from django.forms import ModelForm, fields, CheckboxInput
 
@@ -16,12 +17,15 @@ from django.utils import timezone
 
 from .models import DoctorSlot
 
-
 HOUR_CHOICES = (
     [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
 APP_DURATION_CHOICES = (
-    (10, '10'), (15, '15'), (20, '20'), (25, '25'), (30, '30'), (45, '45')
-)
+    (10, '10'), (15, '15'), (20, '20'), (25, '25'), (30, '30'), (45, '45'))
+ROOM_CHOICES = (
+(None, ""), ("Blood Test AML", "Blood Test AML"), ("Refugee Clinic", "Refugee Clinic"), ("Nurse Room", "Nurse Room"),
+("Ultrasound Room", "Ultrasound Room"), ("Room 1", "Room 1"), ("Room 2", "Room 2"), ("Room 3", "Room 3"),
+("Room 4", "Room 4"), ("Room 5 Jerusalem", "Room 5 Jerusalem"), ("Room 6 Jerusalem", "Room 6 Jerusalem"),
+("Room 7 Jerusalem", "Room 7 Jerusalem"))
 
 
 class CreatePatientForm(ModelForm):
@@ -48,13 +52,10 @@ class CreatePatientForm(ModelForm):
 
 class DoctorSlotForm(forms.ModelForm):
     doctor = forms.ModelChoiceField(queryset=gm.Doctor.objects.all())
-
+    room = forms.CharField(widget=forms.Select(choices=ROOM_CHOICES), required=False)
     date = forms.DateField(widget=forms.SelectDateWidget(), initial=timezone.now())
-
     start_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
-
     end_time = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
-
     appointment_duration = forms.IntegerField(widget=forms.Select(choices=APP_DURATION_CHOICES), initial=(10, '10'))
 
     class Meta:
@@ -87,6 +88,20 @@ class DoctorSlotForm(forms.ModelForm):
                                         str(appointment_duration - slot_gap) + " minutes later will work)")
         return appointment_duration
 
+    def clean(self):
+        cleaned_data = super().clean()
+        date = cleaned_data.get("date")
+        start = cleaned_data.get("start_time")
+        end = cleaned_data.get("end_time")
+        room = self.cleaned_data.get("room")
+        if date and start and end:
+            # Validate room only if all 3 fields are valid so far.
+            if room is not None:
+                appointments = gm.Appointment.objects.filter(date__range=(date, date)).filter(start_time__lt=end).filter(end_time__gt=start).filter(room__exact=room)
+                if appointments.exists():
+                    err = forms.ValidationError("This room is occupied for the requested time")
+                    self.add_error('room', err)
+
 
 def doctor_slot_in_minutes(start, end):
     return (end.hour * 60 + end.minute) - (start.hour * 60 + start.minute)
@@ -94,9 +109,9 @@ def doctor_slot_in_minutes(start, end):
 
 class BoolForm(forms.ModelForm):
     # create meta class 
-    class Meta: 
+    class Meta:
         # specify model to be used 
-        model = gm.Appointment 
+        model = gm.Appointment
         # specify fields to be used 
         fields = ["arrived"]
 

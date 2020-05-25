@@ -9,6 +9,7 @@ import datetime as dt
 from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm
 from django.contrib import messages
 import general_models.models as gm
+from doctor_interface.models import Session
 from .models import *
 from .utils import Calendar
 from collections import OrderedDict
@@ -17,12 +18,18 @@ from django.core.paginator import Paginator
 #from django.contrib.auth.models import User
 
 
-
 class CalendarView(generic.ListView):
     model = gm.Appointment
-    template_name = 'reception_desk/calendar.html'
 
+    def get_template_names(self, **kwargs):
+        template_name = 'reception_desk/calendar.html'
+        if not (self.request.user.is_authenticated):
+            template_name = 'doctor_interface/not_logged_in.html'
+        return [template_name]
+    
     def get_context_data(self, **kwargs):
+
+        
         context = super().get_context_data(**kwargs)
 
         # use today's date for the calendar
@@ -115,8 +122,9 @@ def doctor_slot_view(request):
         # generate appointments
         while start < slot_instance.end_time:
             appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None,
-                                                        date=slot_instance.date,
-                                                        time=start, room=slot_instance.room, assigned=False, done=False)
+                                                        date=slot_instance.date, start_time=start,
+                                                        end_time=add_delta_to_time(start, delta),
+                                                        room=slot_instance.room, assigned=False, done=False)
             appointment.save()
             start = add_delta_to_time(start, delta)
         messages.success(request, f'Doctor time slot added successfully!')
@@ -140,7 +148,7 @@ def date_view(request, my_date):
     except:
         return render(request, 'reception_desk/date_error.html')  # case the given date is not valid
     # list all the appointments of that given day
-    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("time")
+    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
     appointment_list = appointment_list.filter(assigned=True)
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in appointment_list))
@@ -181,7 +189,7 @@ class clinic_management(View):
 
 def appointments_view(request):
     context = get_params(request)
-    appointments = gm.Appointment.objects.all().order_by('date', 'time')
+    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
     if request.method == "POST":
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
@@ -296,3 +304,38 @@ def clear_appointment(appointments, remove_id):
         appointment_to_clear.assigned = False
         appointment_to_clear.save()
         return
+
+
+def view_patient(request):
+    if not (request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+
+    user = request.user
+    if request.method == 'POST':
+        form = PatientInputForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+            return redirect('reception_desk:patient-details', id_number=id_number)
+    else:
+        form = PatientInputForm()
+    context = {"user": user, 'form':form}
+    return render(request, 'reception_desk/view_patient_form.html', context)
+
+def patient_details(request, id_number):
+    if not (request.user.is_authenticated):
+        return render(request, 'doctor_interface/not_logged_in.html')
+    
+    patient = gm.Patient.objects.all()
+    patient_filter = patient.filter(clinic_identifying_number=id_number)
+    if (len(patient_filter)==0):
+        patient_filter = patient.filter(visa_number=id_number)
+    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
+        return render(request, 'doctor_interface/error_patient_not_found.html') # TODO - fix return button to calendar
+    
+    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
+    last_visits = Session.objects.all()
+    max_session = min(5, len(last_visits))
+    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
+    context = {'patient': patient_filter, 'last_visits': last_visits} #, "age": str(age)}
+    return render(request, 'reception_desk/view_patient.html', context)
+

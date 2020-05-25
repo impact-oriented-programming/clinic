@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta, date, time
 
 
 class Doctor(models.Model):
@@ -19,6 +19,7 @@ class Doctor(models.Model):
     def __lt__(self, other):
         return str(self) < str(other)
 
+
 """ makes all new users automalically doctors, including admins!
 @receiver(post_save, sender=User)
 def create_doctor_profile(sender, instance, created, **kwargs):
@@ -30,6 +31,7 @@ def create_doctor_profile(sender, instance, created, **kwargs):
 def save_doctor_profile(sender, instance, **kwargs):
     instance.doctor.save()
 """
+
 
 class Patient(models.Model):
     first_name = models.CharField(max_length=30)
@@ -51,7 +53,8 @@ class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     date = models.DateField()
-    time = models.TimeField()
+    start_time = models.TimeField()
+    end_time = models.TimeField(default=(time(21, 00)))
     room = models.CharField(max_length=30, null=True)
     assigned = models.BooleanField(default=False)  # is there a patient?
     arrived = models.BooleanField(default=False)  # did the patient arrive to the reception desk at the scheduled day?
@@ -60,7 +63,7 @@ class Appointment(models.Model):
     @property
     def get_html_url(self):
         url = reverse('reception_desk:date-view', args=(
-        str(self.date),))  # will sent the link to date view with argument - the appointment's date as string
+            str(self.date),))  # will sent the link to date view with argument - the appointment's date as string
         num_appointments = len(Appointment.objects.filter(date=self.date,
                                                           assigned=True))  # we want th ecell in the calendar to say how many appointments are there for that day
         msg = 'scheduled appointment'

@@ -44,7 +44,7 @@
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
       </tr>
       {% endfor %}

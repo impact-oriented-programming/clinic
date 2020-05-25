@@ -17,8 +17,8 @@ from django.utils import timezone
 class DoctorSlot(models.Model):
     doctor = models.ForeignKey(gm.Doctor, on_delete=models.CASCADE)
     room = models.CharField(max_length=30, null=True, blank=True)
-    date = models.DateField(null=True)
-    start_time = models.TimeField(null=True)
-    end_time = models.TimeField(null=True)
+    date = models.DateField(default=timezone.now)
+    start_time = models.TimeField(default=(datetime.time(7, 00)))
+    end_time = models.TimeField(default=(datetime.time(21, 00)))
     appointment_duration = models.IntegerField()
 
