@@ -40,7 +40,7 @@
       <tr>
         <td>{{ appointment.patient}}</td>
         <td>{{ appointment.patient.visa_number}}</td>
-        <td>{{ appointment.time }}</td>
+        <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
         <td><form method="GET">
           {% csrf_token %}
