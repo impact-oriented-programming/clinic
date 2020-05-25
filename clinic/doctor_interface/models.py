@@ -42,3 +42,11 @@ class Session(models.Model):
     respiratory_rate = models.IntegerField(blank=True, null=True)
     sp02 = models.IntegerField(blank=True, null=True)
     glucose = models.IntegerField(blank=True, null=True)
+    
+class BloodTest(models.Model):
+    blood_test = models.TextField()
+    blood_test_code = models.IntegerField()
+    price = models.IntegerField()
+    
+    def __str__(self):
+        return self.blood_test
