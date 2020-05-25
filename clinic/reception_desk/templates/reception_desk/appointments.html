@@ -78,18 +78,22 @@
                         <td style="text-align:center">{{ appointment.doctor}}</td>
                         <td style="text-align:center">{{ appointment.patient }}</td>
                         <td style="text-align:center">{{ appointment.date }}</td>
-                        <td style="text-align:center">{{ appointment.time }}</td>
+                        <td style="text-align:center">{{ appointment.start_time }}</td>
                         {% if not appointment.assigned %}
                         <td style="text-align:center"><a  class="btn btn-outline-success"
                                 href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
                                 Assign Patient</a></td>
                         {% else %}
                         <td style="text-align:center"><button
-                        onclick="removepatientclick({{ appointment.id }})"
+                        onclick="remove_patient_click({{ appointment.id }})"
                         class="btn btn-outline-danger">
                                 Remove Patient</button></td>
-                        <script>
-                            function removepatientclick(id){
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    <script>
+                            function remove_patient_click(id,patient){
                             swal({
                               title: "Are you sure?",
                               icon: "warning",
@@ -107,7 +111,7 @@
                             })
                            };
                            </script>
-                        <script >
+                    <script >
 
                           function getCookie(name) {
                                 console.log('getCookie');
@@ -127,7 +131,7 @@
                                 return cookieValue;
                                 }
                             </script>
-                        <script>
+                    <script>
                           function post(path, params) {
                           const form = document.createElement('form');
                           form.method = 'post';
@@ -154,10 +158,6 @@
                           form.submit();
                         }
                         </script>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
                   {% endif %}
                   </tbody>
               </table>

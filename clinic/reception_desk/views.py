@@ -26,7 +26,7 @@ class CalendarView(generic.ListView):
         if not (self.request.user.is_authenticated):
             template_name = 'doctor_interface/not_logged_in.html'
         return [template_name]
-    
+
     def get_context_data(self, **kwargs):
 
         
@@ -304,6 +304,8 @@ def clear_appointment(appointments, remove_id):
         appointment_to_clear.assigned = False
         appointment_to_clear.save()
         return
+
+### end of aid functions ###
 
 
 def view_patient(request):
