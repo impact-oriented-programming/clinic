@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" type="text/css" href="{% static 'style_homepage.css'%}">
-  <title>Clinic Calendar</title>
+  <title>Clinic Management</title>
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
 </head>
 <body>
@@ -18,9 +18,10 @@
     {% if user.is_authenticated %}
     <div id="formContent">
       <div class="fadeIn first">
-      <h3 type="text" class="fadeIn second"> Clinic Management</h3>
+      <h3 type="text" class="fadeIn second">Clinic Management</h3>
       <h3></h3>
       </div>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:create-patient' %}">Create / Edit Patient</a>
       <p><a class="fadeIn second" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a></p>
       <p><a class="fadeIn second" >Delete Appointment</a></p>
       <p><a class="fadeIn second" href="{% url 'reception_desk:calendar' %}">Go Back to Clinic's Calendar</a></p>
