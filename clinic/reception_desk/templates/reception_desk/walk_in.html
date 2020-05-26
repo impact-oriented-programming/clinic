@@ -1,0 +1,124 @@
+{% extends "reception_desk/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+{% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+      <h3>Walk-In</h3>
+
+              {% if not doctors_dict %}
+                <h3>No Doctors Were Found</h3>
+              {% else %}
+              <table class="table table-sm" style="border:hidden">
+                    <thead>
+                      <tr>
+                        <th style="width:25%;text-align:center">Doctor</th>
+                        <th style="width:25%;text-align:center">From</th>
+                        <th style="width:25%;text-align:center">To</th>
+                          <th style="width:25%;text-align:center">Room</th>
+                        <th style="width:25%;text-align:center"></th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    {% for key, values in doctors_dict.items %}
+                    <tr>
+                        <td style="text-align:center">{{ key }}</td>
+                        {%  for v in values %}
+                        <td style="text-align:center">{{ v }}</td>
+                        {% endfor %}
+                        <td style="text-align:center"><a  class="btn btn-outline-success"
+                                href="{% url 'reception_desk:walk-in' %}">
+                                Schedule Walk-In</a></td>
+                    </tr>
+                    {% endfor %}
+
+                    <script>
+                            function remove_patient_click(id,patient){
+                            swal({
+                              title: "Are you sure?",
+                              icon: "warning",
+                              buttons: [true, "Remove"],
+                              dangerMode: true,
+                            })
+                            .then((Removed) => {
+                              if (Removed) {
+                                swal({title:"Patient Removed!",
+                                  icon: "success",
+                                }).then(function(){ post("{% url 'reception_desk:appointments' %}",
+                                {'remove_id':id});});
+                              }
+                              else{}
+                            })
+                           };
+                           </script>
+                    <script >
+
+                          function getCookie(name) {
+                                console.log('getCookie');
+                                var cookieValue = null;
+                                if (document.cookie && document.cookie != '') {
+                                        var cookies = document.cookie.split(';');
+                                        for (var i = 0; i < cookies.length; i++) {
+                                                var cookie = jQuery.trim(cookies[i]);
+                                                // Does this cookie string begin with the name we want?
+                                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                        break;
+                                                }
+                                        }
+                                }
+                                console.log('cookie:' + cookieValue);
+                                return cookieValue;
+                                }
+                            </script>
+                    <script>
+                          function post(path, params) {
+                          const form = document.createElement('form');
+                          form.method = 'post';
+                          form.action = path;
+
+                          var hiddenField1 = document.createElement("input");
+                          hiddenField1.setAttribute("type", "hidden");
+                          hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+                          hiddenField1.setAttribute("value", getCookie('csrftoken'));
+                          form.appendChild(hiddenField1);
+
+                          for (const key in params) {
+                            if (params.hasOwnProperty(key)) {
+                              const hiddenField = document.createElement('input');
+                              hiddenField.type = 'hidden';
+                              hiddenField.name = key;
+                              hiddenField.value = params[key];
+
+                              form.appendChild(hiddenField);
+                            }
+                          }
+
+                          document.body.appendChild(form);
+                          form.submit();
+                        }
+                        </script>
+                  {% endif %}
+                  </tbody>
+              </table>
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
+                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
+            {% endif %}
+        {% endif %}
+
+{% endblock content %}
