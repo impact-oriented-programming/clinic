@@ -15,8 +15,8 @@
 </head>
 <body>
   <div class="clearfix">
-    <a class="btn btn-info left" style="border: 1px solid  #254b4a;" href="{% url 'logout' %}"> Logout? </a>
-    <a class="btn btn-info right" style="border: 1px solid  #254b4a;" href="{% url 'home'%}"> Home Page </a>
+    <a class="btn btn-info left border-style" href="{% url 'logout' %}"> Logout? </a>
+    <a class="btn btn-info right border-style" href="{% url 'home'%}"> Home Page </a>
   </div>
   <h1 class="title", style="text-align:center; color:#366d6b"> Clinic's Calendar</h1>
   <div class ="container">
@@ -31,9 +31,9 @@
   </div>
 
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #254b4a;"href="{% url 'reception_desk:appointments' %}">Add / Edit Appointment</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #254b4a;"href="{% url 'reception_desk:view-patient' %}" >View Patient</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #254b4a;" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
+    <a class="btn-style btn btn-info" href="{% url 'reception_desk:appointments' %}">Add / Edit Appointment</a>
+    <a class="btn-style btn btn-info" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
+    <a class="btn-style btn btn-info" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
   </div>
   <hr>
   <div class="clearfix">
