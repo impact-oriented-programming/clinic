@@ -320,7 +320,7 @@ def view_patient(request):
             return redirect('reception_desk:patient-details', id_number=id_number)
     else:
         form = PatientInputForm()
-    context = {"user": user, 'form':form}
+    context = {"user": user, 'form':form, 'title': 'View Patient'}
     return render(request, 'reception_desk/view_patient_form.html', context)
 
 def patient_details(request, id_number):
