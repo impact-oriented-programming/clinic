@@ -12,7 +12,6 @@ urlpatterns = [
     path('edit-patient/<id_number>', views.edit_patient, name='edit-patient'),
     path('edit-existing-patient/', views.edit_existing_patient, name='edit-existing-patient'),
     path('clinic-management', views.clinic_management.as_view() , name='clinic-management'),
-    path('appointment/<int:pk>/', views.AppointmentDetailView.as_view(), name='appointment'),
     path('appointment/<int:pk>/assign/', views.AppointmentAssignView.as_view(), name='appointment-assign'),
     path('appointments/', views.appointments_view, name='appointments'),
     path('view-patient/', views.view_patient, name='view-patient'),

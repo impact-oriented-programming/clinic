@@ -214,9 +214,7 @@ def appointments_view(request):
     return render(request, 'reception_desk/appointments.html', context)
 
 
-class AppointmentDetailView(generic.DetailView):
-    model = gm.Appointment
-    template_name = 'reception_desk/appointment.html'
+
 
 
 class AppointmentAssignView(generic.UpdateView):
