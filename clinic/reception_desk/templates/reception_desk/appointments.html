@@ -76,8 +76,8 @@
                     <tr>
                         <td style="text-align:center">{{ appointment.doctor}}</td>
                         <td style="text-align:center">{{ appointment.patient }}</td>
-                        <td style="text-align:center">{{ appointment.date }}</td>
-                        <td style="text-align:center">{{ appointment.start_time }}</td>
+                        <td style="text-align:center">{{ appointment.date | date:"d/m/Y" }}</td>
+                        <td style="text-align:center">{{ appointment.start_time | time:"H:i" }}</td>
                         {% if not appointment.assigned %}
                         <td style="text-align:center"><a  class="btn btn-outline-success"
                                 href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
