@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm
+from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm, patient_from_id_number
 from django.contrib import messages
 import general_models.models as gm
 from doctor_interface.models import Session
@@ -15,6 +15,7 @@ from .utils import Calendar
 from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # from django.contrib.auth.models import User
@@ -84,11 +85,7 @@ def create_patient(request):
 
 
 def edit_patient(request, id_number):
-    patients = gm.Patient.objects.all()
-    patients_filter = patients.filter(clinic_identifying_number=id_number)
-    if len(patients_filter) == 0:
-        patients_filter = patients.filter(visa_number=id_number)
-    patient = patients_filter.first()
+    patient = patient_from_id_number(id_number)
     if request.method == 'POST':
         form = EditPatientForm(request.POST, instance=patient)
         if form.is_valid():
@@ -327,7 +324,6 @@ def clear_appointment(appointments, remove_id):
         appointment_to_clear.patient = None
         appointment_to_clear.assigned = False
         appointment_to_clear.save()
-        return
 
 
 ### end of aid functions ###
@@ -353,14 +349,10 @@ def patient_details(request, id_number):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
 
-    patient = gm.Patient.objects.all()
-    patient_filter = patient.filter(clinic_identifying_number=id_number)
-    if (len(patient_filter) == 0):
-        patient_filter = patient.filter(visa_number=id_number)
-    if (len(patient_filter) == 0):  # patient not found - will only happen if trying directly through url
+    patient_filter = patient_from_id_number(id_number)
+    if patient_filter is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')  # TODO - fix return button to calendar
 
-    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
     last_visits = Session.objects.all()
     max_session = min(5, len(last_visits))
     last_visits = last_visits.filter(patient=patient_filter)[:max_session]
