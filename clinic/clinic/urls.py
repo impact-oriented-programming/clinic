@@ -26,4 +26,5 @@ urlpatterns = [
     path('home/', TemplateView.as_view(template_name='home.html'), name='home'),
     path('doctor_interface/', include('doctor_interface.urls'), name='doctor_interface'),
     path('reception_desk/', include('reception_desk.urls'), name='reception_desk'),
+    url('^', include('django.contrib.auth.urls')),
 ]
