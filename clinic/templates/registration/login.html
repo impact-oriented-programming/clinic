@@ -45,7 +45,9 @@
         <input type="hidden" name="next" value="{{ next }}">
       </form>
       {% endblock %}
+      {% if form.errors %}
       <h6><a class="fadeIn fourth" href="{% url 'password_reset' %}">Forgot Password?</a></h6>
+      {% endif %}
     </div>
   </div>
 </main>
