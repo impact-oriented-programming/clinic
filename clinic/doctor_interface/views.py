@@ -9,7 +9,8 @@ from .models import Session
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
-from reception_desk.forms import PatientInputForm
+from reception_desk.forms import PatientInputForm, patient_from_id_number
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def index_patient(request, clinic_id):
@@ -17,14 +18,10 @@ def index_patient(request, clinic_id):
         return render(request, 'doctor_interface/not_logged_in.html')
     if not (request.user.groups.filter(name='Doctors').exists()):
         return render(request, 'doctor_interface/not_a_doctor.html')
-    patient = gm.Patient.objects.all()
-    patient_filter = patient.filter(clinic_identifying_number=clinic_id)
-    if (len(patient_filter)==0):
-        patient_filter = patient.filter(visa_number=clinic_id)
-    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
+    patient_filter = patient_from_id_number(clinic_id)
+    if patient_filter is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')
-       
-    patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
+
     today = datetime.date.today()
     born = patient_filter.date_of_birth
     patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))

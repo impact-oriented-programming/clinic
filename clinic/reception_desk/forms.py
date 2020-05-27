@@ -17,6 +17,8 @@ from django.utils import timezone
 
 from .models import DoctorSlot
 
+from django.core.exceptions import ObjectDoesNotExist
+
 HOUR_CHOICES = (
     [(datetime.time(hour=x, minute=y), '{:02d}:{:02d}'.format(x, y)) for x in range(8, 20) for y in range(00, 60, 10)])
 APP_DURATION_CHOICES = (
@@ -128,7 +130,7 @@ class EditPatientForm(ModelForm):
     )
 
     gender = forms.ChoiceField(
-        choices=(("f", "f"), ("m", "m")),
+        choices=(("f", "Female"), ("m", "Male"), ("o", "Other")),
         widget=forms.Select,
         required=True
     )
@@ -146,13 +148,8 @@ class PatientInputForm(forms.Form):
 
     def clean_clinic_identifying_or_visa_number(self):
         id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
-        patients = gm.Patient.objects.all()
-        patients_filter = patients.filter(clinic_identifying_number=id_number)
-        if len(patients_filter) == 0:
-            patients_filter = patients.filter(visa_number=id_number)
-        if len(patients_filter) == 0:
+        if patient_from_id_number(id_number) is None:
             raise forms.ValidationError("Patient Not Found")
-            return id_number
         return id_number
 
 
@@ -168,11 +165,23 @@ class AppointmentEditForm(ModelForm):
 
     def clean_clinic_identifying_or_visa_number(self):
         id_number = self.cleaned_data.get('clinic_identifying_or_visa_number')
-        patients = gm.Patient.objects.all()
-        patients_filter = patients.filter(clinic_identifying_number=id_number)
-        if len(patients_filter) == 0:
-            patients_filter = patients.filter(visa_number=id_number)
-        if len(patients_filter) == 0:
+        if patient_from_id_number(id_number) is None:
             raise forms.ValidationError("Patient Not Found")
-            return id_number
         return id_number
+
+
+### aid functions ###
+
+def patient_from_id_number(id_number):
+    patients = gm.Patient.objects.all()
+    try:
+        patient = patients.get(clinic_identifying_number=id_number)
+    except ObjectDoesNotExist:
+        try:
+            patient = patients.get(visa_number=id_number)
+        except ObjectDoesNotExist:
+            return None
+    return patient
+
+
+### end of aid functions ###
