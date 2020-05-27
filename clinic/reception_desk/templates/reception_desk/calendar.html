@@ -1,8 +1,13 @@
 {% load static %}
+{% load custom_tags %}
+
 <!doctype html>
 <html lang="en">
 
 <head>
+   <!-- Sweet alerts 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,14 +25,24 @@
   </div>
   <h1 class="title", style="text-align:center; color:#366d6b"> Clinic's Calendar</h1>
   <div class ="container">
-    {% if messages%}
-    {% for message in messages%}
-    <div class="alert alert-{{ message.tags }}" style="text-align:center">
-      {{ message }}
-    </div>
-    {% endfor %}
+    <div class="row">
+        <div class="col-md-8">
+    {% if messages %}
+      <script>function alert_msg(msg){
+              swal({
+                title: "Success!",
+                text: `${msg}`,
+                type: "success",
+                confirmButtonColor: '#28a745'
+              })}
+              </script>
+          {% for message in messages %}
+      <script>alert_msg({{ message | js_safe }});</script>
+          {% endfor %}
     {% endif %}
     {% block content %}{% endblock %}
+          </div>
+    </div>
   </div>
 
   <div class="btn-group clearfix" style="width: 99%">

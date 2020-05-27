@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 {% block content %}
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
       <h3>Filter Appointments</h3>
       <form method="GET" action="." autocomplete="off">
@@ -82,12 +81,12 @@
                         {% if not appointment.assigned %}
                         <td style="text-align:center"><a  class="btn btn-outline-success"
                                 href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
-                                Assign Patient</a></td>
+                                Make Appointment</a></td>
                         {% else %}
                         <td style="text-align:center"><button
-                        onclick="remove_patient_click({{ appointment.id }})"
+                        onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
                         class="btn btn-outline-danger">
-                                Remove Patient</button></td>
+                        Cancel Appointment</button></td>
                         </td>
                         {% endif %}
                     </tr>
@@ -96,14 +95,21 @@
                             function remove_patient_click(id,patient){
                             swal({
                               title: "Are you sure?",
-                              icon: "warning",
-                              buttons: [true, "Remove"],
-                              dangerMode: true,
+                              text: `Cancel appointment for ${patient}?`,
+                              type: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: '#dc3545',
+                              cancelButtonColor: '#6c757d',
+                              confirmButtonText: 'Yes',
+                              cancelButtonText: 'No',
+                              reverseButtons: true
                             })
-                            .then((Removed) => {
-                              if (Removed) {
-                                swal({title:"Patient Removed!",
-                                  icon: "success",
+                            .then((result) => {
+                                if (result.value) {
+                                swal({
+                                  title:"Appointment cancelled!",
+                                  type: "success",
+                                  confirmButtonColor: '#28a745'
                                 }).then(function(){ post("{% url 'reception_desk:appointments' %}",
                                 {'remove_id':id});});
                               }

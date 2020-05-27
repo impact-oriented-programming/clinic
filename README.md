@@ -38,7 +38,3 @@ Enter the library where the project is stored and run the django server:
 python manage.py runserver
 ```
 Now you can go to:  http://localhost:8000/accounts/login and log into the system :nail_care:
-
-Toy doctor user (not admin):
-- username: Johndoe
-- password: abcd@1234

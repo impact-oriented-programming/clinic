@@ -1,6 +1,19 @@
 from django import template
+from django.utils.safestring import mark_safe
+import json
+
 
 register = template.Library()
+
+
+@register.filter(is_safe=True)
+def js_safe(obj):
+    return mark_safe(json.dumps(str(obj)))
+
+
+@register.filter
+def js_not_safe(obj):
+    return json.dumps(str(obj))
 
 
 @register.simple_tag(takes_context=True)

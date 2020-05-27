@@ -15,7 +15,9 @@ from .utils import Calendar
 from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
-#from django.contrib.auth.models import User
+
+
+# from django.contrib.auth.models import User
 
 
 class CalendarView(generic.ListView):
@@ -28,8 +30,6 @@ class CalendarView(generic.ListView):
         return [template_name]
 
     def get_context_data(self, **kwargs):
-
-        
         context = super().get_context_data(**kwargs)
 
         # use today's date for the calendar
@@ -179,11 +179,12 @@ def date_view(request, my_date):
                'appointment_list': appointment_list}
     return render(request, 'reception_desk/date.html', context)
 
+
 class clinic_management(View):
     def get(self, request, *args, **kwargs):
-        #if not (request.user.is_authenticated):
-         #   return render(request, 'doctor_interface/not_logged_in.html')
-        #context = {}
+        # if not (request.user.is_authenticated):
+        #   return render(request, 'doctor_interface/not_logged_in.html')
+        # context = {}
         return render(request, 'reception_desk/clinic_management.html')
 
 
@@ -254,6 +255,29 @@ class AppointmentAssignView(generic.UpdateView):
         return super().form_valid(form)
 
 
+def walk_in_view(request):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    today_appointments = gm.Appointment.objects.filter(date__range=(date.today(), date.today()))
+    doctors_dict = {}
+    for appoint in today_appointments:
+        doctor = str(appoint.doctor)
+        if doctor not in doctors_dict:
+            doctors_dict[doctor] = [appoint.start_time, appoint.end_time, appoint.room]
+        else:
+            if appoint.start_time < doctors_dict[doctor][0]:
+                doctors_dict[doctor][0] = appoint.start_time
+            if appoint.end_time > doctors_dict[doctor][1]:
+                doctors_dict[doctor][1] = appoint.end_time
+    # remove all doctors that ended their shift
+    for doc in list(doctors_dict):
+        if doctors_dict[doc][1] < dt.datetime.now().time():
+            del doctors_dict[doc]
+
+    context = {"doctors_dict": doctors_dict}
+    return render(request, 'reception_desk/walk_in.html', context)
+
+
 ### aid functions ###
 
 def is_valid_param(param):
@@ -305,6 +329,7 @@ def clear_appointment(appointments, remove_id):
         appointment_to_clear.save()
         return
 
+
 ### end of aid functions ###
 
 
@@ -323,21 +348,21 @@ def view_patient(request):
     context = {"user": user, 'form':form, 'title': 'View Patient'}
     return render(request, 'reception_desk/view_patient_form.html', context)
 
+
 def patient_details(request, id_number):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
-    
+
     patient = gm.Patient.objects.all()
     patient_filter = patient.filter(clinic_identifying_number=id_number)
-    if (len(patient_filter)==0):
+    if (len(patient_filter) == 0):
         patient_filter = patient.filter(visa_number=id_number)
-    if (len(patient_filter)==0): # patient not found - will only happen if trying directly through url
-        return render(request, 'doctor_interface/error_patient_not_found.html') # TODO - fix return button to calendar
-    
+    if (len(patient_filter) == 0):  # patient not found - will only happen if trying directly through url
+        return render(request, 'doctor_interface/error_patient_not_found.html')  # TODO - fix return button to calendar
+
     patient_filter = patient_filter[0]  # was list of length 1. we want the patient itselfs
     last_visits = Session.objects.all()
     max_session = min(5, len(last_visits))
     last_visits = last_visits.filter(patient=patient_filter)[:max_session]
-    context = {'patient': patient_filter, 'last_visits': last_visits} #, "age": str(age)}
+    context = {'patient': patient_filter, 'last_visits': last_visits}  # , "age": str(age)}
     return render(request, 'reception_desk/view_patient.html', context)
-
