@@ -12,9 +12,6 @@
   <main>
     {% block content %}
     <div class="wrapper fadeInDown">
-    {% if form.errors %}
-    <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
 
     {% if next %}
     {% if user.is_authenticated %}
@@ -34,7 +31,10 @@
       <h3 type="text" class="fadeIn second"> Hey there! Please log in</h3>
       <h3></h3>
       </div>
-
+      {% if form.errors %}
+      <h5 class="fadeIn second">Your username and password didn't match.
+      Please try again.</h5>
+      {% endif %}
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <p type="text" class="fadeIn second" placeholder="login" >{{ form.username.label_tag }}</p>
