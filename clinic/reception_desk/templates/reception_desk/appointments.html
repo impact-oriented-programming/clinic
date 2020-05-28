@@ -4,6 +4,7 @@
 {% block content %}
 
       <h3>Filter Appointments</h3>
+
       <form method="GET" action="." autocomplete="off">
         <div class="form-row">
                 <div class="form-group col-md-4">
@@ -58,133 +59,131 @@
         <button type="submit" class="btn btn-outline-info">Search</button>
         <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:appointments' %}"> Reset </a>
       </form>
-              {% if empty %}
-                <h3>No Appointments Were Found</h3>
-              {% else %}
-              <table class="table table-sm" style="border:hidden">
-                    <thead>
-                      <tr>
-                        <th style="width:25%;text-align:center">Doctor</th>
-                        <th style="width:25%;text-align:center">Patient</th>
-                        <th style="width:25%;text-align:center">Date</th>
-                        <th style="width:25%;text-align:center">Time</th>
-                        <th style="width:25%;text-align:center">Action</th>
-                      </tr>
-                    </thead>
-                  <tbody>
-                    {% for appointment in page_obj.object_list %}
-                    <tr>
-                        <td style="text-align:center">{{ appointment.doctor}}</td>
-                        <td style="text-align:center">{{ appointment.patient }}</td>
-                        <td style="text-align:center">{{ appointment.date | date:"d/m/Y" }}</td>
-                        <td style="text-align:center">{{ appointment.start_time | time:"H:i" }}</td>
-                        {% if not appointment.assigned %}
-                        <td style="text-align:center"><a  class="btn btn-outline-success"
-                                href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
-                                Make Appointment</a></td>
-                        {% else %}
-                        <td style="text-align:center"><button
-                        onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
-                        class="btn btn-outline-danger">
-                        Cancel Appointment</button></td>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    <script>
-                            function remove_patient_click(id,patient){
-                            swal({
-                              title: "Are you sure?",
-                              text: `Cancel appointment for ${patient}?`,
-                              type: "warning",
-                              showCancelButton: true,
-                              confirmButtonColor: '#dc3545',
-                              cancelButtonColor: '#6c757d',
-                              confirmButtonText: 'Yes',
-                              cancelButtonText: 'No',
-                              reverseButtons: true
-                            })
-                            .then((result) => {
-                                if (result.value) {
-                                swal({
-                                  title:"Appointment cancelled!",
-                                  type: "success",
-                                  confirmButtonColor: '#28a745'
-                                }).then(function(){ post("{% url 'reception_desk:appointments' %}",
-                                {'remove_id':id});});
-                              }
-                              else{}
-                            })
-                           };
-                           </script>
-                    <script >
 
-                          function getCookie(name) {
-                                console.log('getCookie');
-                                var cookieValue = null;
-                                if (document.cookie && document.cookie != '') {
-                                        var cookies = document.cookie.split(';');
-                                        for (var i = 0; i < cookies.length; i++) {
-                                                var cookie = jQuery.trim(cookies[i]);
-                                                // Does this cookie string begin with the name we want?
-                                                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                        break;
-                                                }
+      {% if empty %}
+        <h3>No Appointments Were Found</h3>
+      {% else %}
+      <table class="table table-sm" style="border:hidden">
+            <thead>
+              <tr>
+                <th class="text-center">Doctor</th>
+                <th class="text-center">Patient</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Time</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+          <tbody>
+            {% for appointment in page_obj.object_list %}
+            <tr>
+                <td class="text-center">{{ appointment.doctor}}</td>
+                <td class="text-center">{{ appointment.patient }}</td>
+                <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
+                <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
+                {% if not appointment.assigned %}
+                <td class="text-center"><a  class="btn btn-outline-success"
+                        href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
+                        Make Appointment</a></td>
+                {% else %}
+                <td class="text-center"><button
+                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
+                class="btn btn-outline-danger">
+                Cancel Appointment</button></td>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            <script>
+                    function remove_patient_click(id,patient){
+                    swal({
+                      title: "Are you sure?",
+                      text: `Cancel appointment for ${patient}?`,
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: '#dc3545',
+                      cancelButtonColor: '#6c757d',
+                      confirmButtonText: 'Yes',
+                      cancelButtonText: 'No',
+                      reverseButtons: true
+                    })
+                    .then((result) => {
+                        if (result.value) {
+                        swal({
+                          title:"Appointment cancelled!",
+                          type: "success",
+                          confirmButtonColor: '#28a745'
+                        }).then(function(){ post("{% url 'reception_desk:appointments' %}",
+                        {'remove_id':id});});
+                      }
+                      else{}
+                    })
+                   };
+                   </script>
+            <script >
+                  function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                                var cookies = document.cookie.split(';');
+                                for (var i = 0; i < cookies.length; i++) {
+                                        var cookie = jQuery.trim(cookies[i]);
+                                        // Does this cookie string begin with the name we want?
+                                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                break;
                                         }
                                 }
-                                console.log('cookie:' + cookieValue);
-                                return cookieValue;
-                                }
-                            </script>
-                    <script>
-                          function post(path, params) {
-                          const form = document.createElement('form');
-                          form.method = 'post';
-                          form.action = path;
-
-                          var hiddenField1 = document.createElement("input");
-                          hiddenField1.setAttribute("type", "hidden");
-                          hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
-                          hiddenField1.setAttribute("value", getCookie('csrftoken'));
-                          form.appendChild(hiddenField1);
-
-                          for (const key in params) {
-                            if (params.hasOwnProperty(key)) {
-                              const hiddenField = document.createElement('input');
-                              hiddenField.type = 'hidden';
-                              hiddenField.name = key;
-                              hiddenField.value = params[key];
-
-                              form.appendChild(hiddenField);
-                            }
-                          }
-
-                          document.body.appendChild(form);
-                          form.submit();
                         }
-                        </script>
-                  {% endif %}
-                  </tbody>
-              </table>
-        {% if is_paginated %}
-            {% if page_obj.has_previous %}
-                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
-                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
-            {% endif %}
+                        return cookieValue;
+                        }
+                    </script>
+            <script>
+                  function post(path, params) {
+                  const form = document.createElement('form');
+                  form.method = 'post';
+                  form.action = path;
 
-            {% for num in page_obj.paginator.page_range %}
-                {% if page_obj.number == num %}
-                    <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
-                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                  var hiddenField1 = document.createElement("input");
+                  hiddenField1.setAttribute("type", "hidden");
+                  hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+                  hiddenField1.setAttribute("value", getCookie('csrftoken'));
+                  form.appendChild(hiddenField1);
+
+                  for (const key in params) {
+                    if (params.hasOwnProperty(key)) {
+                      const hiddenField = document.createElement('input');
+                      hiddenField.type = 'hidden';
+                      hiddenField.name = key;
+                      hiddenField.value = params[key];
+
+                      form.appendChild(hiddenField);
+                    }
+                  }
+
+                  document.body.appendChild(form);
+                  form.submit();
+                }
+                </script>
+          {% endif %}
+          </tbody>
+      </table>
+      {% if is_paginated %}
+          {% if page_obj.has_previous %}
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
                 {% endif %}
-            {% endfor %}
 
-            {% if page_obj.has_next %}
-                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
-                  <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
+                {% endif %}
             {% endif %}
-        {% endif %}
 
 {% endblock content %}
