@@ -86,6 +86,8 @@ def create_patient(request):
 
 def edit_patient(request, id_number):
     patient = patient_from_id_number(id_number)
+    if patient is None:
+        return redirect('reception_desk:calendar') #to be changed to patient does not exist page
     if request.method == 'POST':
         form = EditPatientForm(request.POST, instance=patient)
         if form.is_valid():
@@ -214,9 +216,6 @@ def appointments_view(request):
     return render(request, 'reception_desk/appointments.html', context)
 
 
-
-
-
 class AppointmentAssignView(generic.UpdateView):
     model = gm.Appointment
     form_class = AppointmentEditForm
@@ -231,20 +230,10 @@ class AppointmentAssignView(generic.UpdateView):
         return reverse('reception_desk:appointments')
 
     def form_valid(self, form):
-        assign = True
         id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
-        patients = gm.Patient.objects.all()
-        patients_filter = patients.filter(clinic_identifying_number=id_number)
-        if len(patients_filter) == 0:
-            patients_filter = patients.filter(visa_number=id_number)
-        if len(patients_filter) == 0:
-            form.instance.arrived = True
-            patient = form.instance.patient
-            assign = False
-        else:
-            patient = patients_filter.first()
-        form.instance.patient = patient
-        if assign:
+        patient = patient_from_id_number(id_number)
+        if patient is not None:
+            form.instance.patient = patient
             form.instance.assigned = True
             messages.success(self.request, f'Appointment set for {patient.first_name} {patient.last_name}!')
         return super().form_valid(form)
