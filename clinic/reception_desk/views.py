@@ -257,8 +257,9 @@ def walk_in_view(request):
         return render(request, 'doctor_interface/not_logged_in.html')
     today_appointments = gm.Appointment.objects.filter(date__exact=date.today())
     today_shifts = today_appointments.values('doctor', 'room').annotate(start=Min('start_time'), end=Max('end_time'))
-    today_relevant_shifts = [shift for shift in today_shifts if shift['end'] > dt.datetime.now().time()]
-    doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['start'], today_relevant_shifts[i]['end'], today_relevant_shifts[i]['room']] for i in range(len(today_relevant_shifts))}
+    curr_time = dt.datetime.now().time()
+    today_relevant_shifts = [shift for shift in today_shifts if shift['start'] < curr_time < shift['end']]
+    doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['room'], today_relevant_shifts[i]['end']] for i in range(len(today_relevant_shifts))}
     context = {"doctors_dict": doctors_dict, 'title': "Walk-In"}
     return render(request, 'reception_desk/walk_in.html', context)
 

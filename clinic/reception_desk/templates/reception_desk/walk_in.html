@@ -12,22 +12,20 @@
               <table class="table table-sm" style="border:hidden">
                     <thead>
                       <tr>
-                        <th class="text-center" style="width:20%">Doctor</th>
-                        <th class="text-center" style="width:20%">From</th>
-                        <th class="text-center" style="width:20%">To</th>
-                        <th class="text-center" style="width:20%">Room</th>
-                        <th class="text-center" style="width:20%">Action</th>
+                        <th style="width:20%">Doctor</th>
+                        <th style="width:20%">Room</th>
+                        <th style="width:20%">End Of Shift</th>
+                        <th style="width:20%">Action</th>
                       </tr>
                     </thead>
                   <tbody>
                     {% for key, values in doctors_dict.items %}
                     <tr>
-                        <td style="text-align:center">{{ key }}</td>
-                        <td style="text-align:center">{{ values.0 }}</td>
-                        <td style="text-align:center">{{ values.1 }}</td>
-                        <td style="text-align:center">{{ values.2 }}</td>
-                        <td style="text-align:center"><a  class="btn btn-outline-success"
-                                href="{% url 'reception_desk:walk-in-schedule' doctor_id=key.id room=values.2 %}">
+                        <td>{{ key }}</td>
+                        <td>{{ values.0 }}</td>
+                        <td>{{ values.1 }}</td>
+                        <td><a  class="btn btn-outline-success"
+                                href="{% url 'reception_desk:walk-in-schedule' doctor_id=key.id room=values.0 %}">
                                 Schedule Walk-In</a></td>
                     </tr>
                     {% endfor %}
