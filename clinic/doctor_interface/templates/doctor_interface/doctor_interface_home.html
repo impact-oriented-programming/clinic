@@ -12,7 +12,7 @@
 
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
-  <title>{{ user.first_name}} {{user.last_name}}</title>
+  <title>Dr. {{ user.first_name}} {{user.last_name}}</title>
 </head>
 <body>
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
@@ -24,37 +24,63 @@
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
   </div>
   <hr>
+  {% if today_appointments %}
   <div class="table-title">
-    <h3 style="color: #283955;">Today's Appointments</h3>
+    <h3 style="color: #283955;">Waiting Patients</h3>
     <p style="color: #283955;">Click on patient to view their profile</p>
   </div>
-  {% if today_appointments %}
   <table class="table-fill">
     <thead>
       <tr>
         <th>Patient</th>
         <th>Clinic ID</th>
         <th>Visa Number</th>
-        <th>Time</th>
-        <th>Room</th>
+        <th>Time Arrived</th>
+        <th>Time Waiting</th>
       </tr>
     </thead>
     <tbody class="table-hover">
-      {% for appointment in today_appointments %}
+      {% for appointment in app_arrived %}
+      <tr>
+        <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
+        <td>{{ appointment.patient.clinic_identifying_number }}</td>
+        <td>{{ appointment.patient.visa_number }}</td>
+        <td>{{ appointment.arrived }}</td>
+        <td>10 Minutes</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p></p>
+  <div class="table-title">
+    <h3 style="color: #283955;">Later Today</h3>
+  </div>
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Clinic ID</th>
+        <th>Visa Number</th>
+        <th>Time Scheduled</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for appointment in app_not_arrived %}
       <tr>
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
         <td>{{ appointment.start_time }}</td>
-        <td>{{ appointment.room }}</td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
   {% else %}
   <div class="table-title">
     <p style="color: #283955;">No Appointments for today!</p>
   </div>
+
   {% endif %}
   <hr>
   <div class="table-title">

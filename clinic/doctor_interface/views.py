@@ -45,6 +45,13 @@ def index(request):
     my_appointments = my_appointments.filter(doctor=user.doctor)
     my_appointments = my_appointments.filter(done=False)
     today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("start_time")
+    app_arrived = []
+    app_not_arrived = []
+    for app in today_appointments:
+        if not app.arrived:
+            app_not_arrived.append(app)
+        else:
+            app_arrived.append(app)
     
     # for browse patient:
     if request.method == 'POST':
@@ -55,7 +62,7 @@ def index(request):
     else:
         form = PatientInputForm()
     
-    context = {"user": user, "today_appointments": today_appointments, 'form':form}
+    context = {"user": user, "today_appointments": today_appointments, "app_arrived":app_arrived, "app_not_arrived":app_not_arrived,  'form':form}
 
     return render(request, 'doctor_interface/doctor_interface_home.html', context)
 
