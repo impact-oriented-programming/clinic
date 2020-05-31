@@ -14,6 +14,28 @@ div.table-title {
   width: 100%;
 }
 
+.back-to-top {
+  /* Remove the background color */
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity .6s ease-in-out;
+  z-index: 999;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  /* Change the width and height to match your image dimensions */
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  border-radius: 0%;
+}
+
+.back-to-top.show {
+     opacity: 1;
+}
+
+
 .table-title h3{
    color: #283955;
    font-size: 30px;

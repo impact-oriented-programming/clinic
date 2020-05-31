@@ -18,30 +18,6 @@
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
   <title>Date View</title>
 
-  <!-- Styles your button (this is a 100x100 pixels image) -->
-<style>
-.back-to-top {
-    /* Remove the background color */
-    color: #FFFFFF;
-    opacity: 0;
-    transition: opacity .6s ease-in-out;
-    z-index: 999;
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-
-    /* Change the width and height to match your image dimensions */
-    width: 100px;
-    height: 100px;
-    box-sizing: border-box;
-    border-radius: 0%;
-}
-
-  .back-to-top.show {
-       opacity: 1;
-  }
-</style>
-
 </head>
 <body>
 
@@ -121,35 +97,34 @@
   <h4 style="color: #283955; text-align:center"> No appointments were scheduled for the wanted date. </h4>
   {% endif %}
   <hr>
+
+  <!-- Fades in the button when you scroll down -->
+  <script>
+    var link = document.getElementById("back-to-top");
+    var amountScrolled = 250;
+
+    window.addEventListener('scroll', function(e) {
+        if ( window.pageYOffset > amountScrolled ) {
+            link.classList.add('show');
+        } else {
+            link.className = 'back-to-top';
+        }
+    });
+
+  <!-- Scroll to Top -->
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var distance = 0 - window.pageYOffset;
+        var increments = distance/(500/16);
+        function animateScroll() {
+            window.scrollBy(0, increments);
+            if (window.pageYOffset <= document.body.offsetTop) {
+                clearInterval(runAnimation);
+            }
+        };
+        // Loop the animation function
+        var runAnimation = setInterval(animateScroll, 16);
+    });
+  </script>
 </body>
-
-
-<!-- Fades in the button when you scroll down -->
-<script>
-  var link = document.getElementById("back-to-top");
-  var amountScrolled = 250;
-
-  window.addEventListener('scroll', function(e) {
-      if ( window.pageYOffset > amountScrolled ) {
-          link.classList.add('show');
-      } else {
-          link.className = 'back-to-top';
-      }
-  });
-
-<!-- Scroll to Top -->
-  link.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      var distance = 0 - window.pageYOffset;
-      var increments = distance/(500/16);
-      function animateScroll() {
-          window.scrollBy(0, increments);
-          if (window.pageYOffset <= document.body.offsetTop) {
-              clearInterval(runAnimation);
-          }
-      };
-      // Loop the animation function
-      var runAnimation = setInterval(animateScroll, 16);
-  });
-</script>
