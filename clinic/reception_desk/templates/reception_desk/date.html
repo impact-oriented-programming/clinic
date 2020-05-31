@@ -68,7 +68,7 @@
     <tbody class="table-hover">
       {% for appointment in app_list %}
       <tr>
-        <td>{{ appointment.patient}}</td>
+        <td><a href="{% url 'reception_desk:patient-details' appointment.patient.clinic_identifying_number%}" target="_blank" style="color:black; text-decoration: none;">{{ appointment.patient}}</a></td>
         <td>{{ appointment.patient.visa_number}}</td>
         <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
