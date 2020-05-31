@@ -100,14 +100,15 @@
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-info" type="submit" value="Arrived">
+          <input class="btn btn-outline-success" type="submit" value="Arrived">
 
         </form></td>
         {% else %}
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-info" type="submit" value="Cancel">
+          <input class="btn btn-outline-danger" type="submit" value="Cancel">
+
         </form> </td>
         {% endif %}
       </tr>
