@@ -12,27 +12,27 @@
               <table class="table table-sm" style="border:hidden">
                     <thead>
                       <tr>
-                        <th style="width:25%;text-align:center">Doctor</th>
-                        <th style="width:25%;text-align:center">From</th>
-                        <th style="width:25%;text-align:center">To</th>
-                          <th style="width:25%;text-align:center">Room</th>
-                        <th style="width:25%;text-align:center"></th>
+                        <th style="width:20%">Doctor</th>
+                        <th style="width:20%">Room</th>
+                        <th style="width:20%">End Of Shift</th>
+                        <th style="width:20%">Action</th>
                       </tr>
                     </thead>
                   <tbody>
                     {% for key, values in doctors_dict.items %}
                     <tr>
-                        <td style="text-align:center">{{ key }}</td>
-                        {%  for v in values %}
-                        <td style="text-align:center">{{ v }}</td>
-                        {% endfor %}
-                        <td style="text-align:center"><a  class="btn btn-outline-success"
-                                href="{% url 'reception_desk:walk-in' %}">
+                        <td>{{ key }}</td>
+                        <td>{{ values.0 }}</td>
+                        <td>{{ values.1 }}</td>
+                        <td><a  class="btn btn-outline-success"
+                                href="{% url 'reception_desk:walk-in-schedule' doctor_id=key.id room=values.0 %}">
                                 Schedule Walk-In</a></td>
                     </tr>
                     {% endfor %}
-
-                    <script>
+                  {% endif %}
+                  </tbody>
+              </table>
+                        <script>
                             function remove_patient_click(id,patient){
                             swal({
                               title: "Are you sure?",
@@ -50,11 +50,7 @@
                               else{}
                             })
                            };
-                           </script>
-                    <script >
-
                           function getCookie(name) {
-                                console.log('getCookie');
                                 var cookieValue = null;
                                 if (document.cookie && document.cookie != '') {
                                         var cookies = document.cookie.split(';');
@@ -67,11 +63,8 @@
                                                 }
                                         }
                                 }
-                                console.log('cookie:' + cookieValue);
                                 return cookieValue;
                                 }
-                            </script>
-                    <script>
                           function post(path, params) {
                           const form = document.createElement('form');
                           form.method = 'post';
@@ -98,9 +91,7 @@
                           form.submit();
                         }
                         </script>
-                  {% endif %}
-                  </tbody>
-              </table>
+
         {% if is_paginated %}
             {% if page_obj.has_previous %}
                   <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>

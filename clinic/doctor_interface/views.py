@@ -66,7 +66,7 @@ def new_session_view(request, clinic_id):
     if not (request.user.groups.filter(name='Doctors').exists()):
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = SessionForm(request.POST or None)
-    patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]
+    patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
     if form.is_valid():
         session = form.save(commit=False)
         session.doctor = request.user.doctor

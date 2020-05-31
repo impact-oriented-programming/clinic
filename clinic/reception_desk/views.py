@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, date
+
+from django.db.models import Min, Max
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import generic
@@ -242,24 +244,36 @@ class AppointmentAssignView(generic.UpdateView):
 def walk_in_view(request):
     if not request.user.is_authenticated:
         return render(request, 'doctor_interface/not_logged_in.html')
-    today_appointments = gm.Appointment.objects.filter(date__range=(date.today(), date.today()))
-    doctors_dict = {}
-    for appoint in today_appointments:
-        doctor = str(appoint.doctor)
-        if doctor not in doctors_dict:
-            doctors_dict[doctor] = [appoint.start_time, appoint.end_time, appoint.room]
-        else:
-            if appoint.start_time < doctors_dict[doctor][0]:
-                doctors_dict[doctor][0] = appoint.start_time
-            if appoint.end_time > doctors_dict[doctor][1]:
-                doctors_dict[doctor][1] = appoint.end_time
-    # remove all doctors that ended their shift
-    for doc in list(doctors_dict):
-        if doctors_dict[doc][1] < dt.datetime.now().time():
-            del doctors_dict[doc]
-
-    context = {"doctors_dict": doctors_dict}
+    today_appointments = gm.Appointment.objects.filter(date__exact=date.today())
+    today_shifts = today_appointments.values('doctor', 'room').annotate(start=Min('start_time'), end=Max('end_time'))
+    curr_time = dt.datetime.now().time()
+    today_relevant_shifts = [shift for shift in today_shifts if shift['start'] < curr_time < shift['end']]
+    doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['room'], today_relevant_shifts[i]['end']] for i in range(len(today_relevant_shifts))}
+    context = {"doctors_dict": doctors_dict, 'title': "Walk-In"}
     return render(request, 'reception_desk/walk_in.html', context)
+
+
+def walk_in_schedule_view(request, doctor_id, room):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    doctor = gm.Doctor.objects.get(id=doctor_id)
+    if request.method == 'POST':
+        form = PatientInputForm(request.POST)
+        if form.is_valid():
+            id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
+            patient = patient_from_id_number(id_number)
+            curr_time = dt.datetime.now().time()
+            curr_date = dt.datetime.now().today()
+            appointment = gm.Appointment.objects.create(doctor=doctor, patient=patient, date=curr_date,
+                                                        start_time=curr_time, end_time=curr_date+timedelta(minutes=10),
+                                                        room=room, assigned=True, arrived=True, done=False)
+            appointment.save()
+            messages.success(request, f'Walk-In added for {patient}!')
+            return redirect('reception_desk:calendar')
+    else:
+        form = PatientInputForm()
+    context = {"doctor": doctor, 'room': room, "form": form, 'title': "Schedule Walk-In"}
+    return render(request, 'reception_desk/walk_in_schedule.html', context)
 
 
 ### aid functions ###
