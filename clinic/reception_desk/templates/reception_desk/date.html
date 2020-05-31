@@ -40,7 +40,7 @@
     </tr>
     {% for doctor in ddocs.keys %}
     <tr>
-      <td style="width: 33.3%; background: transparent;"><a href="#{{doctor}}" style = "text-decoration: none; color: black;">{{doctor}}</a></td>
+      <td style="width: 33.3%; background: transparent;"><a href="#{{doctor}}" style = "color: black;">{{doctor}}</a></td>
       <td style="width: 33.3%; background: transparent;">08:00 - 16:00</td>
     </tr>
     {% endfor %}
@@ -62,13 +62,13 @@
         <th style="width:25%">Visa Number</th>
         <th style="width:25%">Time</th>
         <th style="width:25%">Room</th>
-        <th style="width:5%"></th>
+        <th style="width:5%">Arrived?</th>
       </tr>
     </thead>
     <tbody class="table-hover">
       {% for appointment in app_list %}
       <tr>
-        <td><a href="{% url 'reception_desk:patient-details' appointment.patient.clinic_identifying_number%}" target="_blank" style="color:black; text-decoration: none;">{{ appointment.patient}}</a></td>
+        <td><a href="{% url 'reception_desk:patient-details' appointment.patient.clinic_identifying_number%}" target="_blank" style="color:black;">{{ appointment.patient}}</a></td>
         <td>{{ appointment.patient.visa_number}}</td>
         <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
@@ -76,15 +76,13 @@
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-success" type="submit" value="Arrived">
-
+          <input class="btn btn-outline-danger" type="submit" value="&#10007">
         </form></td>
         {% else %}
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-danger" type="submit" value="Cancel">
-
+          <input class="btn btn-outline-success" type="submit" value="&#10003">
         </form> </td>
         {% endif %}
       </tr>
