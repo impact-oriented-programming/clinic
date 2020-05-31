@@ -40,6 +40,7 @@ div.table-title {
   animation: float 5s infinite;
 }
 
+
 th {
   color:#D5DDE5;
   font-family: "Roboto", helvetica, arial, sans-serif;
@@ -73,6 +74,7 @@ tr {
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
 
+
 tr:first-child {
   border-top:none;
 }
@@ -95,6 +97,10 @@ td {
   font-size:16px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+}
+
+table tr td:last-child{
+  border:0
 }
 
 .table-link{
