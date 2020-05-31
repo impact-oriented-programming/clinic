@@ -15,6 +15,7 @@
   <title>{{ user.first_name}} {{user.last_name}}</title>
 </head>
 <body>
+  <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
   <h1 class="title", style="text-align:center"> Welcome Dr. {{ user.first_name }} {{ user.last_name }}</h1>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
@@ -73,4 +74,33 @@
     </div>
   </div>
   <hr>
+  <!-- Fades in the button when you scroll down -->
+  <script>
+    var link = document.getElementById("back-to-top");
+    var amountScrolled = 250;
+
+    window.addEventListener('scroll', function(e) {
+        if ( window.pageYOffset > amountScrolled ) {
+            link.classList.add('show');
+        } else {
+            link.className = 'back-to-top';
+        }
+    });
+
+  <!-- Scroll to Top -->
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var distance = 0 - window.pageYOffset;
+        var increments = distance/(500/16);
+        function animateScroll() {
+            window.scrollBy(0, increments);
+            if (window.pageYOffset <= document.body.offsetTop) {
+                clearInterval(runAnimation);
+            }
+        };
+        // Loop the animation function
+        var runAnimation = setInterval(animateScroll, 16);
+    });
+  </script>
 </body>

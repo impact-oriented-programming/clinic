@@ -1,15 +1,19 @@
 {% load static %}
+<!doctype html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
-    <title>{{ patient.first_name }} {{ patient.last_name }}</title>
+  <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+  <title>{{ patient.first_name }} {{ patient.last_name }}</title>
 </head>
 <body>
+  <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
+
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="http://localhost:8000/doctor_interface/">Go back to doctor interface</a>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;">+ Ask for blood test</a>
@@ -37,71 +41,98 @@
     <p>click on session to see full details</p>
   </div>
   {% if last_visits %}
-          <table class="table-fill">
-            <thead>
-              <tr>
-                <th>Session Details</th>
-                <th>Diagnosis</th>
-                <th>Date</th>
-                <th>Doctor</th>
-              </tr>
-            </thead>
-            <tbody class="table-hover">
-              {% for Session in last_visits %}
-              <tr>
-                <td><i class="fas fa-file-alt"></i></td>
-                <td>{{ Session.diagnosis }}</td>
-                <td>{{ Session.time }}</td>
-                <td>{{ Session.doctor }}</td>
-              </tr>
-            {% endfor %}
-          </tbody>
-          </table>
-          {% else %}
-          <div class="table-title">
-            <p>No previous visits available</p>
-          </div>
-          {% endif %}
-            <hr>
-
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Session Details</th>
+        <th>Diagnosis</th>
+        <th>Date</th>
+        <th>Doctor</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for Session in last_visits %}
+      <tr>
+        <td><i class="fas fa-file-alt"></i></td>
+        <td>{{ Session.diagnosis }}</td>
+        <td>{{ Session.time }}</td>
+        <td>{{ Session.doctor }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  {% else %}
+  <div class="table-title">
+    <p>No previous visits available</p>
+  </div>
+  {% endif %}
+  <hr>
   <div class="table-title">
     <h3>Last Perscriptions</h3>
     <p </p>
   </div>
   {% if last_visits %}
-          <table class="table-fill">
-            <thead>
-              <tr>
-                <th>Prescription</th>
-                <th>Date</th>
-                <th>Doctor</th>
-              </tr>
-            </thead>
-            <tbody class="table-hover">
-              {% for Session in last_visits %}
-                  {% for Medication in Session.prescriptions.all %}
-                  <tr>
-                    <td>{{ Medication }}</td>
-                    <td>{{ Session.time }}</td>
-                    <td>{{ Session.doctor }}</td>
-                  </tr>
-                  {% endfor %}
-            {% endfor %}
-          </tbody>
-          </table>
-          {% else %}
-          <div class="table-title">
-            <p>No previous prescriptions available</p>
-          </div>
-          {% endif %}
-              <hr>
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Prescription</th>
+        <th>Date</th>
+        <th>Doctor</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for Session in last_visits %}
+          {% for Medication in Session.prescriptions.all %}
+          <tr>
+            <td>{{ Medication }}</td>
+            <td>{{ Session.time }}</td>
+            <td>{{ Session.doctor }}</td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="table-title">
+  <p>No previous prescriptions available</p>
+</div>
+{% endif %}
+<hr>
+<div class="table-title">
+  <h3>Last Tests</h3>
+  <p> </p>
+</div>
+<div class="table-title">
+  <p>No previous tests available</p>
+</div>
+<hr>
+<!-- Fades in the button when you scroll down -->
+<script>
+  var link = document.getElementById("back-to-top");
+  var amountScrolled = 250;
 
-  <div class="table-title">
-    <h3>Last Tests</h3>
-    <p </p>
-  </div>
-  <div class="table-title">
-    <p>No previous tests available</p>
-  </div>
-        <hr>
-  </body>
+  window.addEventListener('scroll', function(e) {
+      if ( window.pageYOffset > amountScrolled ) {
+          link.classList.add('show');
+      } else {
+          link.className = 'back-to-top';
+      }
+  });
+
+<!-- Scroll to Top -->
+  link.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      var distance = 0 - window.pageYOffset;
+      var increments = distance/(500/16);
+      function animateScroll() {
+          window.scrollBy(0, increments);
+          if (window.pageYOffset <= document.body.offsetTop) {
+              clearInterval(runAnimation);
+          }
+      };
+      // Loop the animation function
+      var runAnimation = setInterval(animateScroll, 16);
+  });
+</script>
+</body>

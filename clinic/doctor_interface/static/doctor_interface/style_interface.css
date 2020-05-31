@@ -5,7 +5,6 @@ body {
   background: #fafafa;
 }
 
-
 div.table-title {
   display: block;
   margin: auto;
@@ -34,7 +33,6 @@ div.table-title {
 .back-to-top.show {
      opacity: 1;
 }
-
 
 .table-title h3{
    color: #283955;
