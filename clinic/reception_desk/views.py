@@ -139,6 +139,19 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
+
+    if request.method == 'POST':
+        appointment_id = request.POST.get('arrived')
+        if appointment_id is not None:
+            appointment = gm.Appointment.objects.all().get(id=appointment_id)
+            appointment.arrived = dt.datetime.now().time()
+        else:
+            appointment_id = request.POST.get('cancel arrived')
+            appointment = gm.Appointment.objects.all().get(id=appointment_id)
+            appointment.arrived = None
+        appointment.save()
+        return redirect('reception_desk:date-view', my_date=my_date)
+
     # first parse wanted date from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
@@ -168,16 +181,9 @@ def date_view(request, my_date):
         drooms[appointment.room].append(appointment)
         ddocs[appointment.doctor].append(appointment)
 
-    # for each appointment, set a form. in a dictionary of appointment -->form
-    dforms = OrderedDict()
-    for appointment in appointment_list:
-        form = BoolForm(request.GET, instance=appointment)
-        dforms[appointment] = form
-        if form.is_valid():
-            form.save()
-
-    context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
+    context = {'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
+
     return render(request, 'reception_desk/date.html', context)
 
 
