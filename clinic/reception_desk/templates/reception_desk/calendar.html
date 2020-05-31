@@ -24,9 +24,7 @@
     <a class="btn btn-info right border-style" href="{% url 'home'%}">Home Page</a>
   </div>
   <h1 class="title", style="text-align:center; color:#366d6b"> Clinic's Calendar</h1>
-  <div class ="container">
-    <div class="row">
-        <div class="col-md-8">
+
     {% if messages %}
       <script>function alert_msg(msg){
               swal({
@@ -41,9 +39,6 @@
           {% endfor %}
     {% endif %}
     {% block content %}{% endblock %}
-          </div>
-    </div>
-  </div>
 
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn-style btn btn-info" href="{% url 'reception_desk:appointments' %}">Add / Edit Appointment</a>

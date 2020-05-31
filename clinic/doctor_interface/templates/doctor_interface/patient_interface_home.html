@@ -1,8 +1,13 @@
 {% load static %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="en">
 
 <head>
+  <!-- Sweet alerts 2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -19,6 +24,21 @@
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;">+ Ask for blood test</a>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' patient.clinic_identifying_number %}">+ Session</a>
   </div>
+
+  {% if messages %}
+      <script>function alert_msg(msg){
+              swal({
+                title: "Success!",
+                text: `${msg}`,
+                type: "success",
+                confirmButtonColor: '#28a745'
+              })}
+              </script>
+          {% for message in messages %}
+      <script>alert_msg({{ message | js_safe }});</script>
+          {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
 
   <div class="table-title">
   <h3>Patient Details</h3>
