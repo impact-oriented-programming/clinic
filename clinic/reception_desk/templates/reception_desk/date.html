@@ -58,11 +58,12 @@
   <table class="table-fill" style="width:100%">
     <thead>
       <tr>
-        <th style="width:25%">Patient</th>
-        <th style="width:25%">Visa Number</th>
-        <th style="width:25%">Time</th>
-        <th style="width:25%">Room</th>
-        <th style="width:5%">Arrived?</th>
+        <th style="width:22%">Patient</th>
+        <th style="width:18%">Visa Number</th>
+        <th style="width:15%">Time</th>
+        <th style="width:15%">Room</th>
+        <th style="width:8%">Arrived?</th>
+        <th style="width:35%">Delete Appointment</th>
       </tr>
     </thead>
     <tbody class="table-hover">
@@ -76,15 +77,16 @@
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-danger" type="submit" value="&#10007">
+          <input class="btn btn-outline-danger" type="submit" value="&#10008">
         </form></td>
         {% else %}
         <td><form method="POST">
           {% csrf_token %}
           <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-success" type="submit" value="&#10003">
+          <input class="btn btn-outline-success" type="submit" value="&#10004">
         </form> </td>
         {% endif %}
+        <td></td>
       </tr>
       {% endfor %}
     </tbody>
