@@ -98,8 +98,8 @@ class DoctorSlotForm(forms.ModelForm):
         room = self.cleaned_data.get("room")
         if date and start and end:
             # Validate room only if all 3 fields are valid so far.
-            if room is not None:
-                appointments = gm.Appointment.objects.filter(date__range=(date, date)).filter(start_time__lt=end).filter(end_time__gt=start).filter(room__exact=room)
+            if room != "":
+                appointments = gm.Appointment.objects.filter(date__exact=date).filter(start_time__lt=end).filter(end_time__gt=start).filter(room__exact=room)
                 if appointments.exists():
                     err = forms.ValidationError("This room is occupied for the requested time")
                     self.add_error('room', err)
