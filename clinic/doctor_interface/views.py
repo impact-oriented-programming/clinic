@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import CreateView
 import general_models.models as gm
 import datetime
+import datetime as dt
 from .forms import SessionForm
 from .models import Session
 from django.utils import timezone
@@ -52,7 +53,7 @@ def index(request):
             app_not_arrived.append(app)
         else:
             app_arrived.append(app)
-    
+    curr_time = dt.datetime.now().time()
     # for browse patient:
     if request.method == 'POST':
         form = PatientInputForm(request.POST)
@@ -62,7 +63,7 @@ def index(request):
     else:
         form = PatientInputForm()
     
-    context = {"user": user, "today_appointments": today_appointments, "app_arrived":app_arrived, "app_not_arrived":app_not_arrived,  'form':form}
+    context = {"user": user, "today_appointments": today_appointments, "curr_time": curr_time, "app_arrived":app_arrived, "app_not_arrived":app_not_arrived,  'form':form}
 
     return render(request, 'doctor_interface/doctor_interface_home.html', context)
 

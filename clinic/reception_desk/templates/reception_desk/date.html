@@ -63,6 +63,7 @@
         <th style="width:15%">Time</th>
         <th style="width:15%">Room</th>
         <th style="width:8%">Arrived?</th>
+        <th style="width:8%">Status</th>
         <th style="width:35%">Delete Appointment</th>
       </tr>
     </thead>
@@ -85,6 +86,13 @@
           <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
           <input class="btn btn-outline-success" type="submit" value="&#10004">
         </form> </td>
+        {% endif %}
+        {% if appointment.done %}
+        <td>Done</td>
+        {% elif appointment.arrived %}
+        <td>Waiting in line</td>
+        {% else %}
+        <td></td>
         {% endif %}
         <td></td>
       </tr>

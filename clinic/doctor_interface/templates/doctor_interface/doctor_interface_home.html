@@ -13,6 +13,7 @@
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
   <title>Dr. {{ user.first_name}} {{user.last_name}}</title>
+
 </head>
 <body>
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
@@ -24,11 +25,15 @@
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
   </div>
   <hr>
+  <div class="table-title">
+    <h2 style="color: #283955;">Today's Appointments</h2>
+    <p style="color: #283955;">Click on patient to view their profile</p>
+  </div>
   {% if today_appointments %}
   <div class="table-title">
     <h3 style="color: #283955;">Waiting Patients</h3>
-    <p style="color: #283955;">Click on patient to view their profile</p>
   </div>
+  {% if app_arrived %}
   <table class="table-fill">
     <thead>
       <tr>
@@ -46,15 +51,21 @@
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
         <td>{{ appointment.arrived }}</td>
-        <td>10 Minutes</td>
+        <td>{{curr_time}} Minutes</td>
       </tr>
       {% endfor %}
+      {% else %}
+      <div class="table-title">
+        <p style="color: #283955;">No Patients are waiting right now. Refresh page to view the most updated information.</p>
+      </div>
+      {% endif %}
     </tbody>
   </table>
   <p></p>
   <div class="table-title">
     <h3 style="color: #283955;">Later Today</h3>
   </div>
+  {% if app_not_arrived %}
   <table class="table-fill">
     <thead>
       <tr>
@@ -73,6 +84,11 @@
         <td>{{ appointment.start_time }}</td>
       </tr>
       {% endfor %}
+      {% else %}
+      <div class="table-title">
+        <p style="color: #283955;">No other appointemnts are scheduled for today!</p>
+      </div>
+      {% endif %}
     </tbody>
   </table>
 
