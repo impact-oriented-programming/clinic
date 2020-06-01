@@ -21,7 +21,7 @@
       {% if user.is_superuser %}
       <p><a href="{% url 'admin:index' %}">Go to Admin Page</a></p>
       {% endif %}
-      {% if 'Doctors' in user.groups.all.0.name %}
+      {% if user.doctor %}
       <p><a href="{% url 'doctor_interface:homepage' %}">Go to Doctor's Interface</a></p>
       {% endif %}
       <p><a href="{% url 'reception_desk:calendar' %}">Go to Clinic's Calendar</a></p>
