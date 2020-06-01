@@ -50,3 +50,10 @@ class BloodTest(models.Model):
     
     def __str__(self):
         return self.blood_test
+    
+class BloodTestRequest(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    time = models.DateTimeField()
+    blood_tests = models.ManyToManyField(BloodTest)
+    #todo - Add Blood test results

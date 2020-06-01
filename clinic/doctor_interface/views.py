@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import CreateView
 import general_models.models as gm
 import datetime
-from .forms import SessionForm
+from .forms import SessionForm, NewBloodTestForm
 from .models import Session
 from django.utils import timezone
 import django.contrib.auth
@@ -67,6 +67,9 @@ def new_session_view(request, clinic_id):
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
+    today = datetime.date.today()
+    born = patient_filter.date_of_birth
+    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
     if form.is_valid():
         session = form.save(commit=False)
         session.doctor = request.user.doctor
@@ -102,3 +105,28 @@ def session_edit_view(request, clinic_id, pk):
 
     context = {'form': form, 'title': "Edit Session", 'patient': patient}
     return render(request, 'doctor_interface/session.html', context)
+
+
+def new_blood_test_view(request, clinic_id):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    if not (request.user.groups.filter(name='Doctors').exists()):
+        return render(request, 'doctor_interface/not_a_doctor.html')
+    form = NewBloodTestForm(request.POST or None)
+    doctor = request.user
+    patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
+    today = datetime.date.today()
+    born = patient.date_of_birth
+    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    current_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+    if form.is_valid():
+        blood_test_request = form.save(commit=False)
+        blood_test_request.doctor = doctor
+        blood_test_request.patient = patient
+        blood_test_request.time = timezone.now()
+        blood_test_request.save()
+        messages.success(request, f'Blood test saved!')
+        return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
+
+    context = {'form': form, 'patient': patient, 'doctor': doctor, 'age_value': str(patient_age), 'current_time': str(current_time)}
+    return render(request, 'doctor_interface/blood_test_request.html', context)
