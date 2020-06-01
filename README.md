@@ -38,7 +38,7 @@ Includes two main modules:
   ```
 
 ## Usage:
-1. Enter the library where the project is stored throgh the command line.
+1. Enter the library where the project is stored through the command line.
 2. Create an admin user (follow command-line instructions)
   ```
   python manage.py createsuperuser
