@@ -9,7 +9,10 @@ class Custoimize_Appointments(admin.ModelAdmin):
 class Custoimize_Patient(admin.ModelAdmin):
     list_display = ('id', 'first_name', 'last_name', 'clinic_identifying_number', 'visa_number')
 
+class Custoimize_Doctor(admin.ModelAdmin):
+    list_display = ('id', '__str__', 'specialty')
 
-admin.site.register(Doctor)
+
+admin.site.register(Doctor, Custoimize_Doctor)
 admin.site.register(Patient, Custoimize_Patient)
 admin.site.register(Appointment, Custoimize_Appointments)
