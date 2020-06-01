@@ -20,6 +20,7 @@ from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin
 
 urlpatterns = [
     path('admin/', admin.site.urls, name = 'admin'),
@@ -29,4 +30,12 @@ urlpatterns = [
     path('reception_desk/', include('reception_desk.urls'), name='reception_desk'),
     url('^', include('django.contrib.auth.urls')),
 ]
+
 admin.site.unregister(Group)
+admin.site.unregister(User)
+UserAdmin.fieldsets = [
+        (None,               {'fields': ['email', 'password']}),
+        ('Personal Info', {'fields': ['first_name', 'last_name']}),
+        ('Important Dates', {'fields': ['last_login', 'date_joined']}),
+    ]
+admin.site.register(User, UserAdmin)
