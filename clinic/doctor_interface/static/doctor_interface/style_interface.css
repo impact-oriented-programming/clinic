@@ -119,9 +119,11 @@ td {
   border-right: 1px solid #C1C3D1;
 }
 
+
 table tr td:last-child{
   border:0
 }
+
 
 .table-link{
     display:block;

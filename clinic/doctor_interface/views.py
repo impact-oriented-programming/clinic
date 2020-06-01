@@ -82,9 +82,6 @@ def new_session_view(request, clinic_id):
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
-    today = datetime.date.today()
-    born = patient_filter.date_of_birth
-    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
     if form.is_valid():
         session = form.save(commit=False)
         session.doctor = request.user.doctor
