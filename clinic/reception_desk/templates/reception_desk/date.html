@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="en">
 
@@ -8,45 +10,91 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
 
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
   <title>Date View</title>
+
 </head>
 <body>
+
+  <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
+
   <h1 class="title", style="text-align:center"> Date View: {{ wanted_date }}</h1>
   <hr>
   <div class="btn-group" style="width: 99%">
-    <a class="btn btn-info" style="width:20%; border: 1px solid  #718fbd; margin: 0 auto;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
+    <a class="btn btn-info" style="background-color:transparent;color: #283955; width:20%; border: 1px solid  #718fbd; margin: 0 auto;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
   </div>
   <hr>
+
+  <div class="table-title">
+  <h3>Doctor's Details</h3>
+  <p>Click on doctor's name to jump to the wanted appointments list</p>
+  <table style="border:0px; width: 100%;">
+    <tr>
+      <td style="width: 33.3%; background: transparent;"><h6>Name</h6></td>
+      <td  style="width: 33.3%; background: transparent;"><h6> Shift Hours</h6></td>
+    </tr>
+    {% for doctor in ddocs.keys %}
+    <tr>
+      <td style="width: 33.3%; background: transparent;"><a href="#{{doctor}}" style = "color: black;">{{doctor}}</a></td>
+      <td style="width: 33.3%; background: transparent;">08:00 - 16:00</td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+  <hr>
+
+
+
   {% if appointment_list %}
   {% for doc, app_list  in ddocs.items %}
   <div class="table-title">
-    <h3 style="color: #283955;">{{doc}}</h3>
+    <h3 style="color: #283955;"><a id="{{doc}}">{{doc}}<a></h3>
   </div>
   <table class="table-fill" style="width:100%">
     <thead>
       <tr>
-        <th style="width:25%">Patient</th>
-        <th style="width:25%">Visa Number</th>
-        <th style="width:25%">Time</th>
-        <th style="width:25%">Room</th>
-        <th style="width:5%">Arrived?</th>
+        <th style="width:22%">Patient</th>
+        <th style="width:18%">Visa Number</th>
+        <th style="width:15%">Time</th>
+        <th style="width:15%">Room</th>
+        <th style="width:8%">Arrived?</th>
+        <th style="width:8%">Status</th>
+        <th style="width:35%">Delete Appointment</th>
       </tr>
     </thead>
     <tbody class="table-hover">
       {% for appointment in app_list %}
       <tr>
-        <td>{{ appointment.patient}}</td>
+        <td><a href="{% url 'reception_desk:patient-details' appointment.patient.clinic_identifying_number%}" target="_blank" style="color:black;">{{ appointment.patient}}</a></td>
         <td>{{ appointment.patient.visa_number}}</td>
         <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
-        <td><form method="GET">
+        {% if not appointment.arrived %}
+        <td><form method="POST">
           {% csrf_token %}
-          {{ dforms.appointment}}
-          <input type="checkbox">
+          <input type="hidden" name="arrived" value="{{ appointment.id }}">
+          <input class="btn btn-outline-danger" type="submit" value="&#10008">
         </form></td>
+        {% else %}
+        <td><form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
+          <input class="btn btn-outline-success" type="submit" value="&#10004">
+        </form> </td>
+        {% endif %}
+        {% if appointment.done %}
+        <td>Done</td>
+        {% elif appointment.arrived %}
+        <td>Waiting in line</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        <td></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -57,4 +105,34 @@
   <h4 style="color: #283955; text-align:center"> No appointments were scheduled for the wanted date. </h4>
   {% endif %}
   <hr>
+
+  <!-- Fades in the button when you scroll down -->
+  <script>
+    var link = document.getElementById("back-to-top");
+    var amountScrolled = 250;
+
+    window.addEventListener('scroll', function(e) {
+        if ( window.pageYOffset > amountScrolled ) {
+            link.classList.add('show');
+        } else {
+            link.className = 'back-to-top';
+        }
+    });
+
+  <!-- Scroll to Top -->
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        var distance = 0 - window.pageYOffset;
+        var increments = distance/(500/16);
+        function animateScroll() {
+            window.scrollBy(0, increments);
+            if (window.pageYOffset <= document.body.offsetTop) {
+                clearInterval(runAnimation);
+            }
+        };
+        // Loop the animation function
+        var runAnimation = setInterval(animateScroll, 16);
+    });
+  </script>
 </body>

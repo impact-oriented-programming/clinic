@@ -4,7 +4,12 @@ from django.views import View
 from django.views.generic import CreateView
 import general_models.models as gm
 import datetime
+<<<<<<< HEAD
 from .forms import SessionForm, NewBloodTestForm
+=======
+import datetime as dt
+from .forms import SessionForm
+>>>>>>> 62d82ef7e6cf4b2cc71aa0f791ffeddccd031666
 from .models import Session
 from django.utils import timezone
 import django.contrib.auth
@@ -16,7 +21,9 @@ from django.core.exceptions import ObjectDoesNotExist
 def index_patient(request, clinic_id):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
-    if not (request.user.groups.filter(name='Doctors').exists()):
+    try:
+        request.user.doctor
+    except:
         return render(request, 'doctor_interface/not_a_doctor.html')
     patient_filter = patient_from_id_number(clinic_id)
     if patient_filter is None:
@@ -35,7 +42,9 @@ def index_patient(request, clinic_id):
 def index(request):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
-    if not (request.user.groups.filter(name='Doctors').exists()):
+    try:
+        request.user.doctor
+    except:
         return render(request, 'doctor_interface/not_a_doctor.html')
 
     user = request.user
@@ -45,7 +54,14 @@ def index(request):
     my_appointments = my_appointments.filter(doctor=user.doctor)
     my_appointments = my_appointments.filter(done=False)
     today_appointments = my_appointments.filter(date=str(datetime.date.today())).order_by("start_time")
-    
+    app_arrived = []
+    app_not_arrived = []
+    for app in today_appointments:
+        if not app.arrived:
+            app_not_arrived.append(app)
+        else:
+            app_arrived.append(app)
+    curr_time = dt.datetime.now().time()
     # for browse patient:
     if request.method == 'POST':
         form = PatientInputForm(request.POST)
@@ -55,7 +71,7 @@ def index(request):
     else:
         form = PatientInputForm()
     
-    context = {"user": user, "today_appointments": today_appointments, 'form':form}
+    context = {"user": user, "today_appointments": today_appointments, "curr_time": curr_time, "app_arrived":app_arrived, "app_not_arrived":app_not_arrived,  'form':form}
 
     return render(request, 'doctor_interface/doctor_interface_home.html', context)
 
@@ -63,7 +79,9 @@ def index(request):
 def new_session_view(request, clinic_id):
     if not request.user.is_authenticated:
         return render(request, 'doctor_interface/not_logged_in.html')
-    if not (request.user.groups.filter(name='Doctors').exists()):
+    try:
+        request.user.doctor
+    except:
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
@@ -86,7 +104,9 @@ def new_session_view(request, clinic_id):
 def session_edit_view(request, clinic_id, pk):
     if not request.user.is_authenticated:
         return render(request, 'doctor_interface/not_logged_in.html')
-    if not (request.user.groups.filter(name='Doctors').exists()):
+    try:
+        request.user.doctor
+    except:
         return render(request, 'doctor_interface/not_a_doctor.html')
     session = get_object_or_404(Session, pk=pk)
     patient = gm.Patient.objects.all().filter(clinic_identifying_number=clinic_id)[0]

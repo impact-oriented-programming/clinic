@@ -88,6 +88,8 @@ def create_patient(request):
 
 def edit_patient(request, id_number):
     patient = patient_from_id_number(id_number)
+    if patient is None:
+        return redirect('reception_desk:calendar') #to be changed to patient does not exist page
     if request.method == 'POST':
         form = EditPatientForm(request.POST, instance=patient)
         if form.is_valid():
@@ -137,6 +139,19 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
+
+    if request.method == 'POST':
+        appointment_id = request.POST.get('arrived')
+        if appointment_id is not None:
+            appointment = gm.Appointment.objects.all().get(id=appointment_id)
+            appointment.arrived = dt.datetime.now().time()
+        else:
+            appointment_id = request.POST.get('cancel arrived')
+            appointment = gm.Appointment.objects.all().get(id=appointment_id)
+            appointment.arrived = None
+        appointment.save()
+        return redirect('reception_desk:date-view', my_date=my_date)
+
     # first parse wanted date from given my_date string of form yyyy-mm-dd
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
@@ -166,16 +181,9 @@ def date_view(request, my_date):
         drooms[appointment.room].append(appointment)
         ddocs[appointment.doctor].append(appointment)
 
-    # for each appointment, set a form. in a dictionary of appointment -->form
-    dforms = OrderedDict()
-    for appointment in appointment_list:
-        form = BoolForm(request.GET, instance=appointment)
-        dforms[appointment] = form
-        if form.is_valid():
-            form.save()
-
-    context = {'dforms': dforms, 'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
+    context = {'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
+
     return render(request, 'reception_desk/date.html', context)
 
 
@@ -216,9 +224,6 @@ def appointments_view(request):
     return render(request, 'reception_desk/appointments.html', context)
 
 
-
-
-
 class AppointmentAssignView(generic.UpdateView):
     model = gm.Appointment
     form_class = AppointmentEditForm
@@ -233,20 +238,10 @@ class AppointmentAssignView(generic.UpdateView):
         return reverse('reception_desk:appointments')
 
     def form_valid(self, form):
-        assign = True
         id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
-        patients = gm.Patient.objects.all()
-        patients_filter = patients.filter(clinic_identifying_number=id_number)
-        if len(patients_filter) == 0:
-            patients_filter = patients.filter(visa_number=id_number)
-        if len(patients_filter) == 0:
-            form.instance.arrived = True
-            patient = form.instance.patient
-            assign = False
-        else:
-            patient = patients_filter.first()
-        form.instance.patient = patient
-        if assign:
+        patient = patient_from_id_number(id_number)
+        if patient is not None:
+            form.instance.patient = patient
             form.instance.assigned = True
             messages.success(self.request, f'Appointment set for {patient.first_name} {patient.last_name}!')
         return super().form_valid(form)

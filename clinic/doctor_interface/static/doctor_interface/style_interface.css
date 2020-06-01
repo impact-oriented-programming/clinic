@@ -5,13 +5,33 @@ body {
   background: #fafafa;
 }
 
-
 div.table-title {
   display: block;
   margin: auto;
   max-width: 1000px;
   padding:5px;
   width: 100%;
+}
+
+.back-to-top {
+  /* Remove the background color */
+  color: #FFFFFF;
+  opacity: 0;
+  transition: opacity .6s ease-in-out;
+  z-index: 999;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+
+  /* Change the width and height to match your image dimensions */
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  border-radius: 0%;
+}
+
+.back-to-top.show {
+     opacity: 1;
 }
 
 .table-title h3{
@@ -39,6 +59,7 @@ div.table-title {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
+
 
 th {
   color:#D5DDE5;
@@ -73,6 +94,7 @@ tr {
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
 
+
 tr:first-child {
   border-top:none;
 }
@@ -95,6 +117,10 @@ td {
   font-size:16px;
   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
+}
+
+table tr td:last-child{
+  border:0
 }
 
 .table-link{
