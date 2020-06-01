@@ -4,12 +4,9 @@ from django.views import View
 from django.views.generic import CreateView
 import general_models.models as gm
 import datetime
-<<<<<<< HEAD
 from .forms import SessionForm, NewBloodTestForm
-=======
 import datetime as dt
 from .forms import SessionForm
->>>>>>> 62d82ef7e6cf4b2cc71aa0f791ffeddccd031666
 from .models import Session
 from django.utils import timezone
 import django.contrib.auth
