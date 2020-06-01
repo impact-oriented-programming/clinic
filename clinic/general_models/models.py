@@ -59,6 +59,13 @@ class Appointment(models.Model):
     assigned = models.BooleanField(default=False)  # is there a patient?
     arrived = models.TimeField(null=True, default= None)  # did the patient arrive to the reception desk at the scheduled day?
     done = models.BooleanField(default=False)  # is the session done?
+    def arrived_bool(self):
+        if self.arrived:
+            return True
+        return False
+    arrived_bool.admin_order_field = 'arrived'
+    arrived_bool.boolean = True
+    arrived_bool.short_description = 'Arrived'
 
     @property
     def get_html_url(self):
