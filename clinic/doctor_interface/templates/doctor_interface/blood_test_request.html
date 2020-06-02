@@ -31,17 +31,17 @@
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Blood Test Request</legend>
 
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">First Name: {{ patient.first_name }}</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Last Name: {{ patient.last_name }}</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Date Of Birth: {{ patient.date_of_birth}} (Age: {{age_value}})</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Gender: {{ patient.gender }}</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Origin Country: {{ patient.origin_country }}</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Time Of Request: {{ current_time }}</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Order From: Terem Clinic</label>
-                <div id="div_id_chief_complaint" class="form-group"> <label for="id_chief_complaint" class="">Ordering Physician: {{ doctor.first_name }} {{doctor.last_name}}</label>
+                <div> <label class="">First Name: {{ patient.first_name }}</label>
+                <div> <label class="">Last Name: {{ patient.last_name }}</label>
+                <div> <label class="">Date Of Birth: {{ patient.date_of_birth}} (Age: {{age_value}})</label>
+                <div> <label class="">Gender: {{ patient.gender }}</label>
+                <div> <label class="">Origin Country: {{ patient.origin_country }}</label>
+                <div> <label class="">Time Of Request: {{ current_time }}</label>
+                <div> <label class="">Order From: Terem Clinic</label>
+                <div> <label for="id_chief_complaint" class="">Ordering Physician: {{ doctor.first_name }} {{doctor.last_name}}</label>
                 <hr>
-                <div id="div_id_prescriptions" class="form-group"> <label for="id_prescriptions" class="">Tests Ordered</label>
-                    <div class=""> <textarea name="prescriptions" cols="40" rows="1" class="textarea form-control" id="id_prescriptions"></textarea> </div> </div>
+                <div id="div_id_blood_tests" class="form-group"> <label for="id_blood_tests" class="">Tests Ordered</label>
+                    <div class=""> <textarea name="blood_tests" cols="40" rows="1" class="textarea form-control" id="id_blood_tests"></textarea> </div> </div>
                 </table></fieldset>
             <div class="form-group">
                <input class="btn btn-outline-info" type="submit" value="Save">

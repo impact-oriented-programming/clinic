@@ -1,3 +1,4 @@
+from dal import autocomplete
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
@@ -7,7 +8,7 @@ import datetime
 from .forms import SessionForm, NewBloodTestForm
 import datetime as dt
 from .forms import SessionForm
-from .models import Session
+from .models import Session, Diagnosis, Medication
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
@@ -144,3 +145,13 @@ def new_blood_test_view(request, clinic_id):
 
     context = {'form': form, 'patient': patient, 'doctor': doctor, 'age_value': str(patient_age), 'current_time': str(current_time)}
     return render(request, 'doctor_interface/blood_test_request.html', context)
+
+class DiagnosisAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = Diagnosis.objects.all()
+
+        if self.q:
+            qs = qs.filter(description__istartswith=self.q)
+
+        return qs

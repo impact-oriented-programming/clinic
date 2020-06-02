@@ -15,11 +15,11 @@ class Medication(models.Model):
 
 
 class Diagnosis(models.Model):
-    diagnosis = models.TextField()
+    description = models.TextField()
     diagnosis_code = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.diagnosis
+        return self.description
 
 
 class Session(models.Model):
@@ -30,8 +30,8 @@ class Session(models.Model):
     physical_exam = models.TextField(blank=True, null=True)
     assessment = models.TextField(blank=True, null=True)
     treatment_plan = models.TextField(blank=True, null=True)
-    diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE, null=True)
-    prescriptions = models.ManyToManyField(Medication)
+    diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE, null=True, related_name='diagnosis')
+    prescriptions = models.ManyToManyField(Medication, related_name='prescriptions')
     special_requests = models.TextField(blank=True, null=True)
     height = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)

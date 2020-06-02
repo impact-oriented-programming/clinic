@@ -1,9 +1,15 @@
 from django import forms
-from .models import Session, BloodTestRequest
+from .models import Session, BloodTestRequest, Diagnosis, Medication
+from dal import autocomplete
 
 
 class SessionForm(forms.ModelForm):
 
+    diagnosis = forms.ModelChoiceField(
+        queryset=Diagnosis.objects.all(),
+        widget=autocomplete.ModelSelect2(url='doctor_interface:diagnosis-autocomplete')
+    )
+    
     class Meta:
         model = Session
         fields = ['chief_complaint',
@@ -23,6 +29,7 @@ class SessionForm(forms.ModelForm):
                   'sp02',
                   'glucose',
                   ]
+        #widgets = {'diagnosis': autocomplete.ListSelect2(url='doctor_interface:diagnosis-autocomplete')}
         
 class NewBloodTestForm(forms.ModelForm):
 

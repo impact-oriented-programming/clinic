@@ -1,4 +1,4 @@
-import dal
+#import dal
 from django import forms
 from django.db.models import Q
 
