@@ -125,7 +125,9 @@ def session_edit_view(request, clinic_id, pk):
 def new_blood_test_view(request, clinic_id):
     if not request.user.is_authenticated:
         return render(request, 'doctor_interface/not_logged_in.html')
-    if not (request.user.groups.filter(name='Doctors').exists()):
+    try:
+        request.user.doctor
+    except:
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = NewBloodTestForm(request.POST or None)
     doctor = request.user

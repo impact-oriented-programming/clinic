@@ -36,11 +36,13 @@
   <table style="border:0px; width: 100%;">
     <tr>
       <td style="width: 33.3%; background: transparent;"><h6>Name</h6></td>
+      <td style="width: 33.3%; background: transparent;"><h6>Specialty</h6></td>
       <td  style="width: 33.3%; background: transparent;"><h6> Shift Hours</h6></td>
     </tr>
     {% for doctor in ddocs.keys %}
     <tr>
-      <td style="width: 33.3%; background: transparent;"><a href="#{{doctor}}" style = "color: black;">{{doctor}}</a></td>
+      <td style="width: 33.3%; background: transparent;"><a href="#{{doctor.id}}" style = "color: black;">Dr. {{doctor}}</a></td>
+      <td style="width: 33.3%; background: transparent;">{{doctor.specialty}}</td>
       <td style="width: 33.3%; background: transparent;">08:00 - 16:00</td>
     </tr>
     {% endfor %}
@@ -53,7 +55,7 @@
   {% if appointment_list %}
   {% for doc, app_list  in ddocs.items %}
   <div class="table-title">
-    <h3 style="color: #283955;"><a id="{{doc}}">{{doc}}<a></h3>
+    <h3 style="color: #283955;"><a id="{{doc.id}}">{{doc}}<a></h3>
   </div>
   <table class="table-fill" style="width:100%">
     <thead>
@@ -63,8 +65,7 @@
         <th style="width:15%">Time</th>
         <th style="width:15%">Room</th>
         <th style="width:8%">Arrived?</th>
-        <th style="width:8%">Status</th>
-        <th style="width:35%">Delete Appointment</th>
+        <th style="width:15%">Status</th>
       </tr>
     </thead>
     <tbody class="table-hover">
@@ -94,7 +95,6 @@
         {% else %}
         <td></td>
         {% endif %}
-        <td></td>
       </tr>
       {% endfor %}
     </tbody>

@@ -1,40 +1,51 @@
 # clinic
 #### Refugee Clinic Management System
-Includes two main modules (which are not complete yet):
+Includes two main modules:
 1. **Clinic calendar:** To be used in the reception desk
-  	- Shows scheduled appointments
-  	- Query a day and view it's scheduled appointments
-  	- Create / edit patients
-  	- Create / edit appointment
-  	- Add doctor time slot in system (doctor's shift hours)
+  	- Show scheduled appointments (month & day view)
+    - Create / edit appointment
+    - Query a patient and view their profile
+  	- Link to clinic management page (create / edit patients, doctor's shifts and more)
   
 2. **Doctor interface:** The doctor's "home-page"
-  	- Shows all of today's scheduled appointments
+  	- Show all of today's scheduled appointments
   	- Query a patient
-  	- links to patient interface - view the medical record of a patient
+  	- link to patient interface - view the medical record of a patient
   	- Start session (between doctor and patient during an appointment)
   	- Prescribe medications (and export copy for patient)
   	- Ask for blood test
   	- Ask manager for special requests (e.g. MRI scan)
  
-2. **Other features**
-  	- Send SMS reminders to patients
-
 ## Installation:
-1. Download / clone project:
-```
-git clone https://github.com/impact-oriented-programming/clinic.git
-```
+1. Download / clone project to your computer:
+  ```
+  git clone https://github.com/impact-oriented-programming/clinic.git
+  ```
 2. Install Django and other required libraries:
-```
-pip install Django==3.0.5
-pip install django-crispy-forms
-pip install pycountry
-pip install django-autocomplete-light
-```
+  ```
+  pip install Django==3.0.5
+  pip install django-crispy-forms
+  pip install pycountry
+  pip install django-autocomplete-light
+  ```
+3. Create a new, empty DB (the repository does not include one):
+  ```
+  python manage.py migrate
+  ```
+4. Add medical data to the DB:
+  ```
+  TO DO : add scripts here
+  ```
+
 ## Usage:
-Enter the library where the project is stored and run the django server:
-```
-python manage.py runserver
-```
-Now you can go to:  http://localhost:8000/accounts/login and log into the system :nail_care:
+1. Enter the library where the project is stored through the command line.
+2. Create an admin user (follow command-line instructions)
+  ```
+  python manage.py createsuperuser
+  ```
+3. Run the Django server:
+  ```
+  python manage.py runserver
+  ```
+Now you can go to:  http://localhost:8000/accounts/login and log into the system with the admin you created. :nail_care:
+

@@ -21,6 +21,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 urlpatterns = [
     path('admin/', admin.site.urls, name = 'admin'),
@@ -35,7 +36,8 @@ admin.site.unregister(Group)
 admin.site.unregister(User)
 UserAdmin.fieldsets = [
         (None,               {'fields': ['email', 'password']}),
-        ('Personal Info', {'fields': ['first_name', 'last_name']}),
+        ('Personal Info', {'fields': ['first_name', 'last_name',]}),
         ('Important Dates', {'fields': ['last_login', 'date_joined']}),
     ]
+
 admin.site.register(User, UserAdmin)
