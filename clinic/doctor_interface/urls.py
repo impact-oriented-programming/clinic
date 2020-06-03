@@ -11,5 +11,6 @@ urlpatterns = [
     path('patient_interface/<str:clinic_id>/new-session', views.new_session_view, name='new-session'),
     path('patient_interface/<str:clinic_id>/<int:pk>/edit-session', views.session_edit_view, name='edit-session'),
     path('patient_interface/<str:clinic_id>/blood-test', views.new_blood_test_view, name='blood-test'),
-    path(r'^diagnosis-autocomplete/$', views.DiagnosisAutocomplete.as_view(), name='diagnosis-autocomplete'),
+    url(r'^diagnosis-autocomplete/$', views.DiagnosisAutocomplete.as_view(), name='diagnosis-autocomplete'),
+    path('patient_interface/<int:pk>/medication-pdf', views.GeneratePDF, name='medication-pdf')
     ]
