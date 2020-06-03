@@ -9,6 +9,10 @@ class SessionForm(forms.ModelForm):
         queryset=Diagnosis.objects.all(),
         widget=autocomplete.ModelSelect2(url='doctor_interface:diagnosis-autocomplete')
     )
+    prescriptions = forms.ModelChoiceField(
+        queryset=Medication.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url='doctor_interface:medication-autocomplete')
+    )
     
     class Meta:
         model = Session
@@ -29,7 +33,6 @@ class SessionForm(forms.ModelForm):
                   'sp02',
                   'glucose',
                   ]
-        #widgets = {'diagnosis': autocomplete.ListSelect2(url='doctor_interface:diagnosis-autocomplete')}
         
 class NewBloodTestForm(forms.ModelForm):
 

@@ -143,7 +143,7 @@ def new_blood_test_view(request, clinic_id):
     patient_age = calculate_patient_age(patient)
     current_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     if form.is_valid():
-        form.save
+        form.save()
         blood_test_request = form.save(commit=False)
         blood_test_request.doctor = doctor
         blood_test_request.patient = patient
@@ -162,6 +162,16 @@ class DiagnosisAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(description__istartswith=self.q)
+
+        return qs
+    
+class MedicationAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = Medication.objects.all()
+
+        if self.q:
+            qs = qs.filter(medication__istartswith=self.q)
 
         return qs
     
