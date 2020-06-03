@@ -3,7 +3,7 @@ from general_models.models import Patient, Doctor
 
 
 class Medication(models.Model):
-    medication = models.CharField(max_length=100)
+    medication = models.TextField()
     medication_code = models.IntegerField()
     medication_details = models.TextField(blank=True, null=True)
     medication_yrpa_code = models.IntegerField(blank=True, null=True)
@@ -31,7 +31,7 @@ class Session(models.Model):
     assessment = models.TextField(blank=True, null=True)
     treatment_plan = models.TextField(blank=True, null=True)
     diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE, null=True, related_name='diagnosis')
-    prescriptions = models.ManyToManyField(Medication, related_name='prescriptions')
+    prescriptions = models.ManyToManyField(Medication, blank=True, related_name='prescriptions')
     special_requests = models.TextField(blank=True, null=True)
     height = models.DecimalField(max_digits=3, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)

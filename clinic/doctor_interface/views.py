@@ -90,11 +90,11 @@ def new_session_view(request, clinic_id):
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
     if form.is_valid():
-        form.save()
         session = form.save(commit=False)
         session.doctor = request.user.doctor
         session.patient = patient
         session.time = timezone.now()
+        form.save()
         session.save()
         messages.success(request, f'Session saved!')
         return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
@@ -143,11 +143,11 @@ def new_blood_test_view(request, clinic_id):
     patient_age = calculate_patient_age(patient)
     current_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     if form.is_valid():
-        form.save()
         blood_test_request = form.save(commit=False)
         blood_test_request.doctor = doctor
         blood_test_request.patient = patient
         blood_test_request.time = timezone.now()
+        form.save()
         blood_test_request.save()
         messages.success(request, f'Blood test saved!')
         return redirect('doctor_interface:patient_interface', clinic_id=clinic_id)
@@ -161,7 +161,7 @@ class DiagnosisAutocomplete(autocomplete.Select2QuerySetView):
         qs = Diagnosis.objects.all()
 
         if self.q:
-            qs = qs.filter(description__istartswith=self.q)
+            qs = qs.filter(description__icontains=self.q)
 
         return qs
     
@@ -174,6 +174,7 @@ class MedicationAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(medication__istartswith=self.q)
 
         return qs
+    
     
 def GeneratePDF(request, pk):
         session = get_object_or_404(Session, pk=pk)
