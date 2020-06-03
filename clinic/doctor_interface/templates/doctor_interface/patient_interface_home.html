@@ -78,7 +78,7 @@
         <td>{{ Session.diagnosis }}</td>
         <td>{{ Session.time }}</td>
         <td>{{ Session.doctor }}</td>
-        <td><a href="{% url 'doctor_interface:medication-pdf' Session.pk %}"><i class="fas fa-file-alt"></i> PDF</a></td>
+        <td><a href="{% url 'doctor_interface:medication-pdf' Session.pk %}" target="_blank"><i class="fas fa-file-alt"></i> PDF</a></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -118,6 +118,48 @@
 </div>
 {% endif %}
 <hr>
+<div class="table-title">
+  <h3>Recent Vital Signs</h3>
+</div>
+{% if last_visits %}
+  <table class="table-fill">
+    <thead>
+      <tr>
+        <th>Height</th>
+        <th>Weight</th>
+        <th>Systolic bp</th>
+        <th>Diastolic bp</th>
+        <th>Temperature</th>
+        <th>Pulse</th>
+        <th>Respiratory rate</th>
+        <th>Sp02</th>
+        <th>Glucose</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody class="table-hover">
+      {% for Session in last_visits %}
+      <tr>
+        <td>{{ Session.height }}</td>
+        <td>{{ Session.weight }}</td>
+        <td>{{ Session.systolic_bp }}</td>
+        <td>{{ Session.diastolic_bp }}</td>
+        <td>{{ Session.temperature }}</td>
+        <td>{{ Session.pulse }}</td>
+        <td>{{ Session.respiratory_rate }}</td>
+        <td>{{ Session.sp02 }}</td>
+        <td>{{ Session.glucose }}</td>
+        <td>{{ Session.time }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+  {% else %}
+  <div class="table-title">
+    <p>No previous visits available</p>
+  </div>
+  {% endif %}
+  <hr>
 <div class="table-title">
   <h3>Last Tests</h3>
   <p> </p>
