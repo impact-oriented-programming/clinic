@@ -2,9 +2,8 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 {% block content %}
-
-      <h3>Filter Appointments</h3>
-
+    <div class="content-section">
+      <legend class="border-bottom mb-4">Filter Appointments</legend>
       <form method="GET" action="." autocomplete="off">
         <div class="form-row">
                 <div class="form-group col-md-4">
@@ -185,5 +184,5 @@
                       <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
                 {% endif %}
             {% endif %}
-
+</div>
 {% endblock content %}

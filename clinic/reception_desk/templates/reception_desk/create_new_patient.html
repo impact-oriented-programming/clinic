@@ -5,11 +5,11 @@
         <form method="POST" autocomplete="off">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Please Enter The Patient's Details</legend>
+                <legend class="border-bottom mb-4">Patient Creation</legend>
                 {{ form|crispy }}
             </fieldset>
             <div class="form-group">
-               <input class="btn btn-outline-info" type="submit" value="Sign Up">
+               <input class="btn btn-outline-success" type="submit" value="Create">
             </div>
         </form>
     </div>

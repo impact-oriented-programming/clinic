@@ -5,11 +5,10 @@
         <form method="POST" autocomplete="off">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Make Appointment - Enter The Patient's Details </legend>
+                <legend class="border-bottom mb-4">Make Appointment - Assign Patient </legend>
                 {{ form|crispy }}
             </fieldset>
-             <hr />
-            <legend>Appoitment Details</legend>
+            <legend>Appointment Details</legend>
             <table>
                     <thead>
                       <tr>
@@ -31,7 +30,7 @@
               </table>
              <hr />
             <div class="form-group">
-               <input class="btn btn-outline-info" type="submit" value="Make Appointment">
+               <input class="btn btn-outline-success" type="submit" value="Make Appointment">
             </div>
         </form>
     </div>
