@@ -68,6 +68,7 @@
         <th>Diagnosis</th>
         <th>Date</th>
         <th>Doctor</th>
+        <th>Export Prescriptions</th>
       </tr>
     </thead>
     <tbody class="table-hover">
@@ -77,6 +78,7 @@
         <td>{{ Session.diagnosis }}</td>
         <td>{{ Session.time }}</td>
         <td>{{ Session.doctor }}</td>
+        <td><a href="{% url 'doctor_interface:medication-pdf' Session.pk %}"><i class="fas fa-file-alt"></i> PDF</a></td>
       </tr>
     {% endfor %}
   </tbody>
