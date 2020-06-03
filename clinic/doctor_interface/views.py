@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from django.views.generic import CreateView
+from django.views.generic import View as generic_view
 import general_models.models as gm
+from clinic.utils import render_to_pdf
 import datetime
 from .forms import SessionForm, NewBloodTestForm
 import datetime as dt
@@ -23,17 +25,21 @@ def index_patient(request, clinic_id):
         request.user.doctor
     except:
         return render(request, 'doctor_interface/not_a_doctor.html')
-    patient_filter = patient_from_id_number(clinic_id)
-    if patient_filter is None:
+    patient = patient_from_id_number(clinic_id)
+    if patient is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')
 
-    today = datetime.date.today()
-    born = patient_filter.date_of_birth
-    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    patient_age = calculate_patient_age(patient)
     last_visits = Session.objects.all()
     max_session = min(5, len(last_visits))
-    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
-    context = {'patient': patient_filter, 'last_visits': last_visits, 'age_value': str(patient_age)}
+    last_visits = last_visits.filter(patient=patient).order_by('-time')[:max_session]
+    last_meds = []
+    for session in last_visits:
+        for med in session.prescriptions.all():
+            last_meds.append((med, session.time, session.doctor))
+    max_meds = min(5, len(last_meds))
+    last_meds = last_meds[:max_meds]
+    context = {'patient': patient, 'last_visits': last_visits, 'age_value': str(patient_age), 'last_meds': last_meds}
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
@@ -84,6 +90,7 @@ def new_session_view(request, clinic_id):
     form = SessionForm(request.POST or None)
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
     if form.is_valid():
+        form.save()
         session = form.save(commit=False)
         session.doctor = request.user.doctor
         session.patient = patient
@@ -108,6 +115,7 @@ def session_edit_view(request, clinic_id, pk):
     if request.method == "POST":
         form = SessionForm(request.POST, instance=session)
         if form.is_valid():
+            form.save()
             session = form.save(commit=False)
             session.doctor = request.user.doctor
             session.patient = patient
@@ -132,11 +140,10 @@ def new_blood_test_view(request, clinic_id):
     form = NewBloodTestForm(request.POST or None)
     doctor = request.user
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
-    today = datetime.date.today()
-    born = patient.date_of_birth
-    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    patient_age = calculate_patient_age(patient)
     current_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     if form.is_valid():
+        form.save
         blood_test_request = form.save(commit=False)
         blood_test_request.doctor = doctor
         blood_test_request.patient = patient
@@ -157,3 +164,29 @@ class DiagnosisAutocomplete(autocomplete.Select2QuerySetView):
             qs = qs.filter(description__istartswith=self.q)
 
         return qs
+    
+def GeneratePDF(request, pk):
+        session = get_object_or_404(Session, pk=pk)
+        age = calculate_patient_age(session.patient)
+        prescription_meds = session.prescriptions.all().filter(prescription_required=True)
+        none_prescription_meds = session.prescriptions.all().filter(prescription_required=False)
+        context = {
+             'session': session, 
+             'date': datetime.date.today(),
+             'age_value': str(age),
+             'prescription_meds': prescription_meds,
+             'none_prescription_meds': none_prescription_meds
+        }
+        pdf = render_to_pdf('doctor_interface/pdf/export_medication.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
+    
+    
+####Helper Functions####
+    
+def calculate_patient_age(patient):
+    
+    today = datetime.date.today()
+    born = patient.date_of_birth
+    patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    return patient_age
+    

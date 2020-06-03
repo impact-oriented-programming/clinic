@@ -91,7 +91,7 @@
     <h3>Last Perscriptions</h3>
     <p </p>
   </div>
-  {% if last_visits %}
+  {% if last_meds %}
   <table class="table-fill">
     <thead>
       <tr>
@@ -101,14 +101,12 @@
       </tr>
     </thead>
     <tbody class="table-hover">
-      {% for Session in last_visits %}
-          {% for Medication in Session.prescriptions.all %}
+      {% for tup in last_meds %}
           <tr>
-            <td>{{ Medication }}</td>
-            <td>{{ Session.time }}</td>
-            <td>{{ Session.doctor }}</td>
+            <td>{{ tup.0 }}</td>
+            <td>{{ tup.1 }}</td>
+            <td>{{ tup.2 }}</td>
           </tr>
-          {% endfor %}
           {% endfor %}
   </tbody>
 </table>
