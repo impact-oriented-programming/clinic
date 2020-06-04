@@ -80,7 +80,7 @@
         <td>{{ appointment.room }}</td>
         {% if not appointment.arrived %}
          <td class="text-center"><button
-                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ appointment.date | get_date }}) "
+                onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ appointment.date | get_date }}) "
                 class="btn btn-outline-info">
                 Check In</button></td>
         {% else %}
@@ -134,7 +134,7 @@
     });
   </script>
   <script>
-        function remove_patient_click(appointment_id,patient, date){
+        function set_arrived_click(appointment_id,patient, date){
         swal({
           title: `Are you sure?`,
           text: `Check in ${patient}?
