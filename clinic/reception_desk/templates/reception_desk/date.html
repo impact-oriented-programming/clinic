@@ -4,6 +4,9 @@
 <!doctype html>
 <html lang="en">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -76,17 +79,12 @@
         <td>{{ appointment.start_time }}</td>
         <td>{{ appointment.room }}</td>
         {% if not appointment.arrived %}
-        <td><form method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-danger" type="submit" value="&#10008">
-        </form></td>
+         <td class="text-center"><button
+                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ appointment.date | get_date }}) "
+                class="btn btn-outline-info">
+                Check In</button></td>
         {% else %}
-        <td><form method="POST">
-          {% csrf_token %}
-          <input type="hidden" name="cancel arrived" value="{{ appointment.id }}">
-          <input class="btn btn-outline-success" type="submit" value="&#10004">
-        </form> </td>
+        <td class="text-center" style="color:#28a745"> &#10004 </td>
         {% endif %}
         {% if appointment.done %}
         <td>Done</td>
@@ -135,4 +133,76 @@
         var runAnimation = setInterval(animateScroll, 16);
     });
   </script>
+  <script>
+        function remove_patient_click(appointment_id,patient, date){
+        swal({
+          title: `Are you sure?`,
+          text: `Check in ${patient}?
+           Action can not be reverted!`,
+          type: "info",
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+            swal({
+              title:"Checked in successfully!",
+              type: "success",
+              confirmButtonColor: '#28a745'
+            }).then(function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
+            {'arrived':appointment_id});});
+          }
+          else{}
+        })
+       };
+  </script>
+  <script >
+        function getCookie(name) {
+              var cookieValue = null;
+              if (document.cookie && document.cookie != '') {
+                      var cookies = document.cookie.split(';');
+                      for (var i = 0; i < cookies.length; i++) {
+                              var cookie = (cookies[i]);
+                              // Does this cookie string begin with the name we want?
+                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                      break;
+                              }
+                      }
+              }
+
+              return cookieValue;
+              }
+          </script>
+  <script>
+        function post(path, params) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = path;
+
+        var hiddenField1 = document.createElement("input");
+        hiddenField1.setAttribute("type", "hidden");
+        hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+        hiddenField1.setAttribute("value", getCookie('csrftoken'));
+        form.appendChild(hiddenField1);
+
+        for (const key in params) {
+          if (params.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = params[key];
+
+            form.appendChild(hiddenField);
+          }
+        }
+
+        document.body.appendChild(form);
+        form.submit();
+      }
+      </script>
 </body>

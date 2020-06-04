@@ -142,13 +142,8 @@ def date_view(request, my_date):
 
     if request.method == 'POST':
         appointment_id = request.POST.get('arrived')
-        if appointment_id is not None:
-            appointment = gm.Appointment.objects.all().get(id=appointment_id)
-            appointment.arrived = dt.datetime.now().time()
-        else:
-            appointment_id = request.POST.get('cancel arrived')
-            appointment = gm.Appointment.objects.all().get(id=appointment_id)
-            appointment.arrived = None
+        appointment = gm.Appointment.objects.all().get(id=appointment_id)
+        appointment.arrived = dt.datetime.now().time()
         appointment.save()
         return redirect('reception_desk:date-view', my_date=my_date)
 

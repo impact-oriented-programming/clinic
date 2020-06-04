@@ -16,6 +16,11 @@ def js_not_safe(obj):
     return json.dumps(str(obj))
 
 
+@register.filter
+def get_date(date):
+    return json.dumps(date.strftime("%Y-%m-%d"))
+
+
 @register.simple_tag(takes_context=True)
 def param_replace(context, **kwargs):
     d = context['request'].GET.copy()
