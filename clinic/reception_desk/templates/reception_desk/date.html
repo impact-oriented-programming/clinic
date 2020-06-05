@@ -23,7 +23,6 @@
 
 </head>
 <body>
-
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
 
   <h1 class="title", style="text-align:center"> Date View: {{ wanted_date }}</h1>
@@ -153,7 +152,8 @@
               title:"Checked in successfully!",
               type: "success",
               confirmButtonColor: '#28a745'
-            }).then(function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
+            }).then(
+            function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
             {'arrived':appointment_id});});
           }
           else{}
@@ -200,9 +200,15 @@
             form.appendChild(hiddenField);
           }
         }
-
         document.body.appendChild(form);
+        localStorage.setItem("scroll", window.pageYOffset);
         form.submit();
       }
       </script>
+  <script>if(localStorage.getItem('scroll'))
+        {
+            window.scrollTo(0, parseInt(localStorage.getItem("scroll")));
+            localStorage.removeItem("scroll");
+
+        }</script>
 </body>
