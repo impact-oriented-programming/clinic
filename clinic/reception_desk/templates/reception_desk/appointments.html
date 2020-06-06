@@ -62,7 +62,7 @@
       {% if empty %}
         <h3>No Appointments Were Found</h3>
       {% else %}
-      <table class="table table-sm" style="border:hidden">
+      <table class="table table-sm" id='table' style="border:hidden">
             <thead>
               <tr>
                 <th class="text-center">Doctor</th>
@@ -166,21 +166,21 @@
       </table>
       {% if is_paginated %}
           {% if page_obj.has_previous %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}#table">First</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}#table">Previous</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}#table">Next</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
                 {% endif %}
             {% endif %}
 </div>
