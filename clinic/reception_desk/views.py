@@ -267,7 +267,7 @@ def walk_in_schedule_view(request, doctor_id, room):
             curr_date = dt.datetime.now().today()
             appointment = gm.Appointment.objects.create(doctor=doctor, patient=patient, date=curr_date,
                                                         start_time=curr_time, end_time=curr_date+timedelta(minutes=10),
-                                                        room=room, assigned=True, arrived=True, done=False)
+                                                        room=room, assigned=True, arrived=curr_time, done=False)
             appointment.save()
             messages.success(request, f'Walk-In added for {patient}!')
             return redirect('reception_desk:calendar')
