@@ -276,6 +276,21 @@ def walk_in_schedule_view(request, doctor_id, room):
     context = {"doctor": doctor, 'room': room, "form": form, 'title': "Schedule Walk-In"}
     return render(request, 'reception_desk/walk_in_schedule.html', context)
 
+def delete_appointments_view(request):
+    context = get_del_params(request)
+    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
+    if request.method == "POST":
+        remove_id = request.POST.get('remove_id')
+        if is_valid_param(remove_id):
+            clear_appointment(appointments, remove_id)
+    # appointments = appointments.filter(assigned=True)
+    if is_valid_param(context.get('date')):
+        appointments = appointments.filter(date__exact=context.get('date'))
+    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
+        appointments = [appointment for appointment in appointments if
+                        str(appointment.doctor) == context.get('doctor')]
+    paginate(context, appointments)
+    return render(request, 'reception_desk/delete_appointments.html', context)
 
 ### aid functions ###
 
@@ -302,6 +317,16 @@ def get_params(request):
         context['patient'] = None
     if context.get('from_date') is None:
         context['from_date'] = date.today().strftime('%Y-%m-%d')
+    return context
+
+
+def get_del_params(request):
+    context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'date': request.GET.get('date'),
+               'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page')} # 'assigned': request.GET.get('assigned')}
+    context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
+    # if not is_valid_param(context.get('assigned')):
+    #     context['patient'] = None
+
     return context
 
 
