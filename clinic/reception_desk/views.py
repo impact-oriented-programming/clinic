@@ -190,7 +190,7 @@ class clinic_management(View):
         return render(request, 'reception_desk/clinic_management.html')
 
 
-def appointments_view(request):
+def add_appointment_view(request):
     context = get_params(request)
     appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
     if request.method == "POST":
@@ -216,7 +216,7 @@ def appointments_view(request):
                         appointment.patient.visa_number == context.get('patient') or
                         appointment.patient.clinic_identifying_number == context.get('patient')]
     paginate(context, appointments)
-    return render(request, 'reception_desk/appointments.html', context)
+    return render(request, 'reception_desk/add_appointment.html', context)
 
 
 class AppointmentAssignView(generic.UpdateView):
@@ -230,7 +230,7 @@ class AppointmentAssignView(generic.UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('reception_desk:appointments')
+        return reverse('reception_desk:add-appointment')
 
     def form_valid(self, form):
         id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')

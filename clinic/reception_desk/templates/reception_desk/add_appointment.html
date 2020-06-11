@@ -56,7 +56,7 @@
                 </div>
             </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:appointments' %}"> Reset </a>
+        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:add-appointment' %}"> Reset </a>
       </form>
 
       {% if empty %}
@@ -110,7 +110,7 @@
                           title:"Appointment cancelled!",
                           type: "success",
                           confirmButtonColor: '#28a745'
-                        }).then(function(){ post("{% url 'reception_desk:appointments' %}",
+                        }).then(function(){ post("{% url 'reception_desk:add-appointment' %}",
                         {'remove_id':id});});
                       }
                       else{}
