@@ -370,4 +370,9 @@ def patient_details(request, id_number):
     return render(request, 'reception_desk/view_patient.html', context)
 
 
-
+class Appointments(View):
+    def get(self, request, *args, **kwargs):
+        # if not (request.user.is_authenticated):
+        #   return render(request, 'doctor_interface/not_logged_in.html')
+        # context = {}
+        return render(request, 'reception_desk/appointments.html')
