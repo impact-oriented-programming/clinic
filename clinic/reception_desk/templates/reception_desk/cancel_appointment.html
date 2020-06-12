@@ -2,21 +2,11 @@
 {% load crispy_forms_tags %}
 {% load custom_tags %}
 {% block content %}
-    <div class="content-section">
+
+ <div class="content-section">
       <legend class="border-bottom mb-4">Filter Appointments</legend>
       <form method="GET" action="." autocomplete="off">
         <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="specialty">Specialty</label>
-                    <select class="form-control" id="specialty" name="specialty" />
-                    {% if specialty and specialty != 'All' %}
-                    <option selected placeholder="specialty">{{ specialty }}</option>
-                    {% endif %}
-                    {% for specialty in specialties %}
-                        <option value="{{ specialty }}">{{ specialty }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
                 <div class="form-group col-md-4">
                     <label for="doctor">Doctor</label>
                     <select class="form-control " id ="doctor" name="doctor" />
@@ -27,6 +17,11 @@
                         <option value="{{ doctor }}">{{ doctor }}</option>
                     {% endfor %}
                     </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient" >Patient</label>
+                    <input class="form-control" id="patient" name="patient" placeholder="Clinic or visa number"
+                           {% if patient %} value={{ patient }} {% endif %}/>
                 </div>
         </div>
         <div class="form-row">
@@ -42,10 +37,11 @@
           </div>
         </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:add-appointment' %}"> Reset </a>
+        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:cancel-appointment' %}"> Reset </a>
       </form>
-      {% if empty %}
-        <h3>No Appointments Were Found</h3>
+
+     {% if empty %}
+      <h3>No Appointments Were Found</h3>
       {% else %}
       <table class="table table-sm" id='table' style="border:hidden">
             <thead>
@@ -64,11 +60,82 @@
                 <td class="text-center">{{ appointment.patient }}</td>
                 <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
                 <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
-                <td class="text-center"><a  class="btn btn-outline-success"
-                        href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
-                        Make Appointment</a></td>
+                <td class="text-center"><button
+                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
+                class="btn btn-outline-danger">
+                Cancel Appointment</button></td>
             </tr>
             {% endfor %}
+            <script>
+                    function remove_patient_click(id,patient){
+                    swal({
+                      title: "Are you sure?",
+                      text: `Cancel appointment for ${patient}?`,
+                      type: "warning",
+                      showCancelButton: true,
+                      confirmButtonColor: '#dc3545',
+                      cancelButtonColor: '#6c757d',
+                      confirmButtonText: 'Yes',
+                      cancelButtonText: 'No',
+                      reverseButtons: true
+                    })
+                    .then((result) => {
+                        if (result.value) {
+                        swal({
+                          title:"Appointment cancelled!",
+                          type: "success",
+                          confirmButtonColor: '#28a745'
+                        }).then(function(){ post("{% url 'reception_desk:cancel-appointment' %}",
+                        {'remove_id':id});});
+                      }
+                      else{}
+                    })
+                   };
+                   </script>
+            <script >
+                  function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie != '') {
+                                var cookies = document.cookie.split(';');
+                                for (var i = 0; i < cookies.length; i++) {
+                                        var cookie = jQuery.trim(cookies[i]);
+                                        // Does this cookie string begin with the name we want?
+                                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                                break;
+                                        }
+                                }
+                        }
+                        return cookieValue;
+                        }
+                    </script>
+            <script>
+                  function post(path, params) {
+                  const form = document.createElement('form');
+                  form.method = 'post';
+                  form.action = path;
+
+                  var hiddenField1 = document.createElement("input");
+                  hiddenField1.setAttribute("type", "hidden");
+                  hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
+                  hiddenField1.setAttribute("value", getCookie('csrftoken'));
+                  form.appendChild(hiddenField1);
+
+                  for (const key in params) {
+                    if (params.hasOwnProperty(key)) {
+                      const hiddenField = document.createElement('input');
+                      hiddenField.type = 'hidden';
+                      hiddenField.name = key;
+                      hiddenField.value = params[key];
+
+                      form.appendChild(hiddenField);
+                    }
+                  }
+
+                  document.body.appendChild(form);
+                  form.submit();
+                }
+                </script>
             <script>$(function(){
                         var hash = location.hash.replace('#','');
                         if(hash != ''){
@@ -83,10 +150,10 @@
                     });
                     });
 </script>
-          {% endif %}
           </tbody>
       </table>
-      {% if is_paginated %}
+     {% endif %}
+     {% if is_paginated %}
           {% if page_obj.has_previous %}
                       <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}#table">First</a>
                       <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}#table">Previous</a>
@@ -105,5 +172,6 @@
                       <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
                 {% endif %}
             {% endif %}
-</div>
+     </div>
+
 {% endblock content %}

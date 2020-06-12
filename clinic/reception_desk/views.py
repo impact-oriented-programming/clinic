@@ -191,32 +191,28 @@ class clinic_management(View):
 
 
 def add_appointment_view(request):
-    context = get_params(request)
-    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
+    context = get_params(request, 'Add Appointment')
+    appointments = gm.Appointment.objects.all().filter(assigned=False).order_by('date', 'start_time')
+    appointments = filter_appointments(context, appointments)
+    paginate(context, appointments)
+    return render(request, 'reception_desk/add_appointment.html', context)
+
+
+def cancel_appointment_view(request):
     if request.method == "POST":
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
             clear_appointment(appointments, remove_id)
-    if context.get('assigned') is not None:
-        appointments = appointments.filter(assigned=True)
-    else:
-        appointments = appointments.filter(assigned=False)
-    if is_valid_param(context.get('from_date')):
-        appointments = appointments.filter(date__gte=context.get('from_date'))
-    if is_valid_param(context.get('until_date')):
-        appointments = appointments.filter(date__lte=context.get('until_date'))
-    if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
-        appointments = [appointment for appointment in appointments if
-                        appointment.doctor.specialty == context.get('specialty')]
-    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
-        appointments = [appointment for appointment in appointments if
-                        str(appointment.doctor) == context.get('doctor')]
+    context = get_params(request, 'Cancel Appointment')
+    appointments = gm.Appointment.objects.all().filter(assigned=True).order_by('date', 'start_time')
+    appointments = filter_appointments(context, appointments)
     if is_valid_param(context.get('patient')):
         appointments = [appointment for appointment in appointments if
                         appointment.patient.visa_number == context.get('patient') or
                         appointment.patient.clinic_identifying_number == context.get('patient')]
+    context['appointments'] = appointments
     paginate(context, appointments)
-    return render(request, 'reception_desk/add_appointment.html', context)
+    return render(request, 'reception_desk/cancel_appointment.html', context)
 
 
 class AppointmentAssignView(generic.UpdateView):
@@ -291,18 +287,30 @@ def get_specialities(doctors):
     return sorted(list(specialties))
 
 
-def get_params(request):
-    context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'specialty': request.GET.get('specialty'),
-               'patient': request.GET.get('patient'), 'from_date': request.GET.get('from_date'),
+def get_params(request, title):
+    context = {'title': title, 'doctors': gm.Doctor.objects.all(),
+               'specialty': request.GET.get('specialty'), 'from_date': request.GET.get('from_date'),
                'until_date': request.GET.get('until_date'), 'doctor': request.GET.get('doctor'),
-               'page_number': request.GET.get('page'), 'assigned': request.GET.get('assigned')}
+               'page_number': request.GET.get('page')}
     context['specialties'] = get_specialities(context.get('doctors'))
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
-    if not is_valid_param(context.get('assigned')):
-        context['patient'] = None
     if context.get('from_date') is None:
         context['from_date'] = date.today().strftime('%Y-%m-%d')
     return context
+
+
+def filter_appointments(context, appointments):
+    if is_valid_param(context.get('from_date')):
+        appointments = appointments.filter(date__gte=context.get('from_date'))
+    if is_valid_param(context.get('until_date')):
+        appointments = appointments.filter(date__lte=context.get('until_date'))
+    if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
+        appointments = [appointment for appointment in appointments if
+                        appointment.doctor.specialty == context.get('specialty')]
+    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
+        appointments = [appointment for appointment in appointments if
+                        str(appointment.doctor) == context.get('doctor')]
+    return appointments
 
 
 def paginate(context, appointments):
@@ -360,3 +368,6 @@ def patient_details(request, id_number):
     last_visits = last_visits.filter(patient=patient_filter)[:max_session]
     context = {'patient': patient_filter, 'last_visits': last_visits}  # , "age": str(age)}
     return render(request, 'reception_desk/view_patient.html', context)
+
+
+
