@@ -18,13 +18,13 @@
     {% if user.is_authenticated %}
     <div id="formContent">
       <div class="fadeIn first">
-      <h3 type="text" class="fadeIn second">Clinic Management</h3>
+      <h3 type="text" class="fadeIn second">Appointments</h3>
       <h3></h3>
       </div>
       <p><a class="fadeIn second" href="{% url 'reception_desk:add-appointment' %}">Add Appointment</a>
       <p><a class="fadeIn second" href="{% url 'reception_desk:cancel-appointment' %}">Cancel Appointment</a></p>
       <p><a class="fadeIn second" >Delete Appointment</a></p>
-      <p><a class="fadeIn second" href="{% url 'reception_desk:walk-in' %}">Add Walk-In</a></p>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:walk-in' %}">Walk-In</a></p>
       <p><a class="fadeIn second" href="{% url 'reception_desk:calendar' %}">Go Back to Clinic's Calendar</a></p>
       <p><a class="fadeIn second" href="{% url 'logout' %}">Logout</a></p>
     </div>

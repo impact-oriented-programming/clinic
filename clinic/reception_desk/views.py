@@ -111,7 +111,7 @@ def edit_existing_patient(request):
             return redirect('reception_desk:edit-patient', id_number=id_number)
     else:
         form = PatientInputForm()
-    return render(request, 'reception_desk/edit_existing_patient.html', {'form': form, 'title': 'Edit Patient Input'})
+    return render(request, 'reception_desk/edit_existing_patient.html', {'form': form, 'title': 'Edit Patient'})
 
 
 def doctor_slot_view(request):

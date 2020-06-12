@@ -19,5 +19,5 @@ urlpatterns = [
     path('walk-in/', views.walk_in_view, name='walk-in'),
     path('walk-in-schedule/<doctor_id>/<str:room>', views.walk_in_schedule_view, name='walk-in-schedule'),
     path('cancel-appointment/', views.cancel_appointment_view, name='cancel-appointment'),
-    path('appointments', views.Appointments.as_view(), name='appointments'),
+    path('appointments/', views.Appointments.as_view(), name='appointments'),
 ]

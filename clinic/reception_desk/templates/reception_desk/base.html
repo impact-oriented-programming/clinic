@@ -17,23 +17,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
-    {% if title%}
+    {% if title %}
         <title>{{ title }}</title>
     {% else %}
         <title>Clinic - No Title</title>
     {% endif %}
 </head>
 <body>
-<header class="site-header">
-     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'reception_desk:calendar' %}">Back To Calendar</a>
-            <a class="navbar-brand" href="{% url 'home' %}">Back To Home</a>
-            </div>
-        </div>
-     </nav>
-</header>
-
+<h1 class="title", style="text-align:center"> {{ title }}</h1>
+<hr>
     <main role="main" class="container">
       <div class="row">
         <div class="col-md-8">
@@ -57,10 +49,12 @@
           <div class="content-section">
             <h3>Other Options</h3>
               <div class="list-group-custom">
-                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:create-patient' %}">Create New Patient</a>
-                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:edit-existing-patient' %}">Edit Existing Patient</a>
-                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:add-appointment' %}">Add / Edit Appointment</a>
-                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:doctor-time-slot' %}">Add Available Doctor Slot</a>
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:calendar' %}">Clinic's Calendar</a>
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:appointments' %}">Appointments</a>
+                {% if not title != 'Create New Patient' %}
+                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:edit-existing-patient' %}">Edit Patient</a>
+                {% endif %}
               </div>
           </div>
         </div>
