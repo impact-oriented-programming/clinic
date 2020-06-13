@@ -1,0 +1,39 @@
+{% extends "reception_desk/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" autocomplete="off">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete Appointment </legend>
+                {{ form|crispy }}
+            </fieldset>
+            <legend>Appointment Details</legend>
+            <table>
+                    <thead>
+                      <tr>
+                        <th style="width:25%">Doctor</th>
+                        <th style="width:25%">Patient</th>
+                        <th style="width:25%">Date</th>
+                        <th style="width:25%">Time</th>
+                        <th style="width:25%">Phone</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                  <tbody>
+                    <tr>
+                        <td>{{ object.doctor}}</td>
+                        <td>{{ object.patient }}</td>
+                        <td>{{ object.date | date:"d/m/Y" }}</td>
+                        <td>{{ object.start_time | time:"H:i" }}</td>
+                        <td>{{ object.patient.phone_number }}</td>
+                    </tr>
+                  </tbody>
+              </table>
+             <hr />
+            <div class="form-group">
+               <input class="btn btn-outline-danger" type="submit" value="Delete Appointment">
+            </div>
+        </form>
+    </div>
+{% endblock content %}

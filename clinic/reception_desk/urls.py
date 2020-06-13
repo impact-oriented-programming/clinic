@@ -18,5 +18,6 @@ urlpatterns = [
     path('patient-details/<id_number>', views.patient_details, name='patient-details'),
     path('walk-in/', views.walk_in_view, name='walk-in'),
     path('walk-in-schedule/<doctor_id>/<str:room>', views.walk_in_schedule_view, name='walk-in-schedule'),
-    path('delete-appointments/', views.delete_appointments_view, name='delete-appointments')
+    path('delete-appointments/', views.delete_appointments_view, name='delete-appointments'),
+    path('delete-appointments/<int:pk>/delete/', views.DeleteSingleAppointmentView.as_view(), name='delete-single-appointment')
 ]

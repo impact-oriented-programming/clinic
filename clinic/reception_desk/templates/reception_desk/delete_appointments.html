@@ -24,7 +24,10 @@
                 </div>
         </div>
         <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:delete-appointments' %}"> Reset </a>
+        <a class="btn btn-outline-info" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Reset </a>
+        {% if not empty %}
+        <a class="btn btn-outline-danger" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Delete All </a>
+        {% endif %}
       </form>
 
       {% if empty %}
@@ -47,18 +50,12 @@
                 <td class="text-center">{{ appointment.patient }}</td>
                 <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
                 <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
-                {% if not appointment.assigned %}
-                <td class="text-center"><a  class="btn btn-outline-success"
-                        href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
-                        Make Appointment</a></td>
-                {% else %}
-                <td class="text-center"><button
-                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
-                class="btn btn-outline-danger">
-                Cancel Appointment</button></td>
-                {% endif %}
+                <td class="text-center"><a  class="btn btn-outline-danger"
+                        href="{% url 'reception_desk:delete-single-appointment' pk=appointment.id %}">
+                        Delete Appointment</a></td>
             </tr>
             {% endfor %}
+
             <script>
                     function remove_patient_click(id,patient){
                     swal({

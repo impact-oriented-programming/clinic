@@ -8,7 +8,8 @@ from django.urls import reverse
 from django.utils.safestring import mark_safe
 import calendar
 import datetime as dt
-from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm, patient_from_id_number
+from .forms import CreatePatientForm, DoctorSlotForm, EditPatientForm, PatientInputForm, BoolForm, AppointmentEditForm, \
+    patient_from_id_number
 from django.contrib import messages
 import general_models.models as gm
 from doctor_interface.models import Session
@@ -89,7 +90,7 @@ def create_patient(request):
 def edit_patient(request, id_number):
     patient = patient_from_id_number(id_number)
     if patient is None:
-        return redirect('reception_desk:calendar') #to be changed to patient does not exist page
+        return redirect('reception_desk:calendar')  # to be changed to patient does not exist page
     if request.method == 'POST':
         form = EditPatientForm(request.POST, instance=patient)
         if form.is_valid():
@@ -139,7 +140,6 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
-
     if request.method == 'POST':
         appointment_id = request.POST.get('arrived')
         appointment = gm.Appointment.objects.all().get(id=appointment_id)
@@ -249,7 +249,9 @@ def walk_in_view(request):
     today_shifts = today_appointments.values('doctor', 'room').annotate(start=Min('start_time'), end=Max('end_time'))
     curr_time = dt.datetime.now().time()
     today_relevant_shifts = [shift for shift in today_shifts if shift['start'] < curr_time < shift['end']]
-    doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['room'], today_relevant_shifts[i]['end']] for i in range(len(today_relevant_shifts))}
+    doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['room'],
+                                                                                   today_relevant_shifts[i]['end']] for
+                    i in range(len(today_relevant_shifts))}
     context = {"doctors_dict": doctors_dict, 'title': "Walk-In"}
     return render(request, 'reception_desk/walk_in.html', context)
 
@@ -266,7 +268,8 @@ def walk_in_schedule_view(request, doctor_id, room):
             curr_time = dt.datetime.now().time()
             curr_date = dt.datetime.now().today()
             appointment = gm.Appointment.objects.create(doctor=doctor, patient=patient, date=curr_date,
-                                                        start_time=curr_time, end_time=curr_date+timedelta(minutes=10),
+                                                        start_time=curr_time,
+                                                        end_time=curr_date + timedelta(minutes=10),
                                                         room=room, assigned=True, arrived=curr_time, done=False)
             appointment.save()
             messages.success(request, f'Walk-In added for {patient}!')
@@ -275,6 +278,7 @@ def walk_in_schedule_view(request, doctor_id, room):
         form = PatientInputForm()
     context = {"doctor": doctor, 'room': room, "form": form, 'title': "Schedule Walk-In"}
     return render(request, 'reception_desk/walk_in_schedule.html', context)
+
 
 def delete_appointments_view(request):
     context = get_del_params(request)
@@ -291,6 +295,23 @@ def delete_appointments_view(request):
                         str(appointment.doctor) == context.get('doctor')]
     paginate(context, appointments)
     return render(request, 'reception_desk/delete_appointments.html', context)
+
+
+class DeleteSingleAppointmentView(generic.DeleteView):
+    template_name = 'reception_desk/delete_single_appointment.html'
+
+    def get_object(self):
+        id_ = self.kwargs.get("pk")
+        return get_object_or_404(gm.Appointment, id=id_)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Delete Appointment'
+        return context
+
+    def get_success_url(self):
+        return reverse('reception_desk:delete-appointments')  # CHANGE TO - redirect to previous page (w params)
+
 
 ### aid functions ###
 
@@ -321,12 +342,14 @@ def get_params(request):
 
 
 def get_del_params(request):
-    context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'date': request.GET.get('date'),
-               'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page')} # 'assigned': request.GET.get('assigned')}
+    context = {'title': 'Delete Appointments', 'doctors': gm.Doctor.objects.all(), 'date': request.GET.get('date'),
+               'doctor': request.GET.get('doctor'),
+               'page_number': request.GET.get('page')}  # 'assigned': request.GET.get('assigned')}
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     # if not is_valid_param(context.get('assigned')):
     #     context['patient'] = None
-
+    if context.get('date') is None:
+        context['date'] = date.today().strftime('%Y-%m-%d')
     return context
 
 
@@ -368,7 +391,7 @@ def view_patient(request):
             return redirect('reception_desk:patient-details', id_number=id_number)
     else:
         form = PatientInputForm()
-    context = {"user": user, 'form':form, 'title': 'View Patient'}
+    context = {"user": user, 'form': form, 'title': 'View Patient'}
     return render(request, 'reception_desk/view_patient_form.html', context)
 
 
