@@ -26,7 +26,7 @@
         <button type="submit" class="btn btn-outline-info">Search</button>
         <a class="btn btn-outline-info" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Reset </a>
         {% if not empty %}
-        <a class="btn btn-outline-danger" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Delete All </a>
+        <a class="btn btn-outline-danger" style="margin-left: 10px;" href="{% url 'reception_desk:delete-multiple-appointments' date=date doctor=doctor %}"> Delete All </a>
         {% endif %}
       </form>
 

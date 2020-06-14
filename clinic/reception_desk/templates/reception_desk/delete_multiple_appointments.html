@@ -5,10 +5,10 @@
         <form method="POST" autocomplete="off">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Delete Appointment </legend>
+                <legend class="border-bottom mb-4">Delete Appointments </legend>
                 {{ form|crispy }}
             </fieldset>
-            <legend>Appointment Details</legend>
+            <legend>Appointments Details</legend>
             <table>
                     <thead>
                       <tr>
@@ -21,13 +21,15 @@
                       </tr>
                     </thead>
                   <tbody>
+                    {% for appointment in appointments %}
                     <tr>
-                        <td>{{ object.doctor}}</td>
-                        <td>{{ object.patient }}</td>
-                        <td>{{ object.date | date:"d/m/Y" }}</td>
-                        <td>{{ object.start_time | time:"H:i" }}</td>
-                        <td>{{ object.patient.phone_number }}</td>
+                        <td>{{ appointment.doctor}}</td>
+                        <td>{{ appointment.patient }}</td>
+                        <td>{{ appointment.date | date:"d/m/Y" }}</td>
+                        <td>{{ appointment.start_time | time:"H:i" }}</td>
+                        <td>{{ appointment.patient.phone_number }}</td>
                     </tr>
+                    {%  endfor %}
                   </tbody>
               </table>
              <hr />

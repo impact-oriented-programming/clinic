@@ -281,6 +281,7 @@ def walk_in_schedule_view(request, doctor_id, room):
 
 
 def delete_appointments_view(request):
+    # ADD - restrict deletion only for future appointments
     context = get_del_params(request)
     appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
     if request.method == "POST":
@@ -310,7 +311,24 @@ class DeleteSingleAppointmentView(generic.DeleteView):
         return context
 
     def get_success_url(self):
+        messages.success(self.request, 'Appointment deleted!')
         return reverse('reception_desk:delete-appointments')  # CHANGE TO - redirect to previous page (w params)
+
+
+def delete_multiple_appointments_view(request, date, doctor):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    appointments = gm.Appointment.objects.filter(date__exact=date)
+    if doctor != 'All':
+        doctor = doctor_from_name(doctor)
+        appointments = appointments.filter(doctor=doctor)
+    if request.method == 'POST':  # confirm button is pressed"
+        appointments.delete()
+        messages.success(request, 'All selected appointments were deleted!')
+        return redirect('reception_desk:delete-appointments')
+    context = {"appointments": appointments, 'title': 'Delete Appointments'} # CHANGE TO - redirect to previous page (w params)
+    return render(request, 'reception_desk/delete_multiple_appointments.html', context)
+
 
 
 ### aid functions ###
@@ -374,6 +392,16 @@ def clear_appointment(appointments, remove_id):
         appointment_to_clear.patient = None
         appointment_to_clear.assigned = False
         appointment_to_clear.save()
+
+
+def doctor_from_name(doctors_name):
+    doctor_arr = doctors_name.split()
+    first_name = ' '.join(doctor_arr[:-1])
+    last_name = doctor_arr[-1]
+    doctor = gm.Doctor.objects.filter(user__first_name=first_name, user__last_name=last_name)
+    if doctor.exists():
+        return doctor[0]
+    return None
 
 
 ### end of aid functions ###
