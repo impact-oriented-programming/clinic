@@ -43,11 +43,11 @@
       <td style="width: 33.3%; background: transparent;"><h6>Specialty</h6></td>
       <td  style="width: 33.3%; background: transparent;"><h6> Shift Hours</h6></td>
     </tr>
-    {% for doctor in ddocs.keys %}
+    {% for doctor, shift in dshifts.items %}
     <tr>
       <td style="width: 33.3%; background: transparent;"><a href="#{{doctor.id}}" style = "color: black;">Dr. {{doctor}}</a></td>
       <td style="width: 33.3%; background: transparent;">{{doctor.specialty}}</td>
-      <td style="width: 33.3%; background: transparent;">08:00 - 16:00</td>
+      <td style="width: 33.3%; background: transparent;">{{shift}}</td>
     </tr>
     {% endfor %}
   </table>

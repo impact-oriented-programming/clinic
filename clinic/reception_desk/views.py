@@ -157,17 +157,33 @@ def date_view(request, my_date):
     except:
         return render(request, 'reception_desk/date_error.html')  # case the given date is not valid
     # list all the appointments of that given day
-    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
-    appointment_list = appointment_list.filter(assigned=True)
+    appointment_list_total = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
+    appointment_list = appointment_list_total.filter(assigned=True)
+    # list all doctors
+    docs = sorted(set(appointment.doctor for appointment in appointment_list_total))
+    
+    dshifts = OrderedDict()
+    for doc in docs:
+        dshifts[doc]=""
+    
+    for doc in docs:
+        my_appointments = appointment_list_total.filter(doctor = doc)
+        my_start = my_appointments[0].start_time
+        my_end = my_appointments[len(my_appointments)-1].end_time
+        
+        my_str = str(my_start)[:5] + " - " + str(my_end)[:5]
+        dshifts[doc] = my_str
+    
+    #today_shifts = appointment_list_total.values('doctor', 'room').annotate(start=Min('start_time'), end=Max('end_time'))
+    #dshifts = {gm.Doctor.objects.get(id=today_shifts[i]['doctor']): (str(today_shifts[i]['start']) + " " +str(today_shifts[i]['end'])) for i in range(len(today_shifts))}
+
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in appointment_list))
-    # list all doctors
-    docs = sorted(set(appointment.doctor for appointment in appointment_list))
     # crate a dictionary of room-->appointments list in that room
     drooms = OrderedDict()
     for room in rooms:
         drooms[room] = []
-
+    # crate a dictionary of doctor->appointments list of that doctor
     ddocs = OrderedDict()
     for doc in docs:
         ddocs[doc] = []
@@ -175,8 +191,8 @@ def date_view(request, my_date):
     for appointment in appointment_list:
         drooms[appointment.room].append(appointment)
         ddocs[appointment.doctor].append(appointment)
-
-    context = {'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
+    
+    context = {'dshifts':dshifts,'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
 
     return render(request, 'reception_desk/date.html', context)
