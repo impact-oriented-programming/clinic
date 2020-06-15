@@ -199,12 +199,12 @@ def add_appointment_view(request):
 
 
 def cancel_appointment_view(request):
+    appointments = gm.Appointment.objects.all().filter(assigned=True).order_by('date', 'start_time')
     if request.method == "POST":
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
             clear_appointment(appointments, remove_id)
     context = get_params(request, 'Cancel Appointment')
-    appointments = gm.Appointment.objects.all().filter(assigned=True).order_by('date', 'start_time')
     appointments = filter_appointments(context, appointments)
     if is_valid_param(context.get('patient')):
         appointments = [appointment for appointment in appointments if
