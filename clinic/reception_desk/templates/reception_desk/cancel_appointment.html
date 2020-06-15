@@ -61,95 +61,11 @@
                 <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
                 <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
                 <td class="text-center"><button
-                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
+                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ request.path | js_not_safe}})"
                 class="btn btn-outline-danger">
                 Cancel Appointment</button></td>
             </tr>
             {% endfor %}
-            <script>
-                    function remove_patient_click(id,patient){
-                    swal({
-                      title: "Are you sure?",
-                      text: `Cancel appointment for ${patient}?`,
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonColor: '#dc3545',
-                      cancelButtonColor: '#6c757d',
-                      confirmButtonText: 'Yes',
-                      cancelButtonText: 'No',
-                      reverseButtons: true
-                    })
-                    .then((result) => {
-                        if (result.value) {
-                        swal({
-                          title:"Appointment cancelled!",
-                          type: "success",
-                          confirmButtonColor: '#28a745'
-                        }).then(function(){ post("{% url 'reception_desk:cancel-appointment' %}",
-                        {'remove_id':id});});
-                      }
-                      else{}
-                    })
-                   };
-                   </script>
-            <script >
-                  function getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie != '') {
-                                var cookies = document.cookie.split(';');
-                                for (var i = 0; i < cookies.length; i++) {
-                                        var cookie = jQuery.trim(cookies[i]);
-                                        // Does this cookie string begin with the name we want?
-                                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                break;
-                                        }
-                                }
-                        }
-                        return cookieValue;
-                        }
-                    </script>
-            <script>
-                  function post(path, params) {
-                  const form = document.createElement('form');
-                  form.method = 'post';
-                  form.action = path;
-
-                  var hiddenField1 = document.createElement("input");
-                  hiddenField1.setAttribute("type", "hidden");
-                  hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
-                  hiddenField1.setAttribute("value", getCookie('csrftoken'));
-                  form.appendChild(hiddenField1);
-
-                  for (const key in params) {
-                    if (params.hasOwnProperty(key)) {
-                      const hiddenField = document.createElement('input');
-                      hiddenField.type = 'hidden';
-                      hiddenField.name = key;
-                      hiddenField.value = params[key];
-
-                      form.appendChild(hiddenField);
-                    }
-                  }
-
-                  document.body.appendChild(form);
-                  form.submit();
-                }
-                </script>
-            <script>$(function(){
-                        var hash = location.hash.replace('#','');
-                        if(hash != ''){
-                            localStorage.setItem("scroll", window.pageYOffset);
-                            location.hash = '';
-                        }
-                        $(window).bind('hashchange',function(event){
-                        var hash = location.hash.replace('#','');
-                        if(hash == '') {
-                        window.scrollTo(0, parseInt(localStorage.getItem("scroll")));
-                        localStorage.removeItem("scroll");}
-                    });
-                    });
-</script>
           </tbody>
       </table>
      {% endif %}
@@ -172,6 +88,7 @@
                       <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
                 {% endif %}
             {% endif %}
-     </div>
+      <script>$(function(){remove_id_name()});</script>
+ </div>
 
 {% endblock content %}
