@@ -22,6 +22,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 # from django.contrib.auth.models import User
+from clinic.utils import render_to_pdf
 
 
 class CalendarView(generic.ListView):
@@ -326,10 +327,20 @@ def delete_multiple_appointments_view(request, date, doctor):
         appointments.delete()
         messages.success(request, 'All selected appointments were deleted!')
         return redirect('reception_desk:delete-appointments')
-    context = {"appointments": appointments, 'title': 'Delete Appointments'} # CHANGE TO - redirect to previous page (w params)
+    context = {"appointments": appointments, 'title': 'Delete Appointments', 'date': date, 'doctor': doctor} # CHANGE TO - redirect to previous page (w params)
     return render(request, 'reception_desk/delete_multiple_appointments.html', context)
 
 
+def delete_appointments_pdf_view(request, date, doctor):
+    if not request.user.is_authenticated:
+        return render(request, 'doctor_interface/not_logged_in.html')
+    appointments = gm.Appointment.objects.filter(date__exact=date)
+    if doctor != 'All':
+        doctor = doctor_from_name(doctor)
+        appointments = appointments.filter(doctor=doctor)
+    context = {"appointments": appointments}
+    pdf = render_to_pdf('reception_desk/pdf/export_appointments.html', context)
+    return HttpResponse(pdf, content_type='application/pdf')
 
 ### aid functions ###
 
