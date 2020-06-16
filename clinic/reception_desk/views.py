@@ -282,19 +282,15 @@ def walk_in_schedule_view(request, doctor_id, room):
 
 
 def delete_appointments_view(request):
-    # ADD - restrict deletion only for future appointments
     context = get_del_params(request)
-    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
-    if request.method == "POST":
-        remove_id = request.POST.get('remove_id')
-        if is_valid_param(remove_id):
-            clear_appointment(appointments, remove_id)
-    # appointments = appointments.filter(assigned=True)
-    if is_valid_param(context.get('date')):
-        appointments = appointments.filter(date__exact=context.get('date'))
-    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
-        appointments = [appointment for appointment in appointments if
-                        str(appointment.doctor) == context.get('doctor')]
+    appointments = []
+    sel_date = context.get('date')
+    sel_doctor = context.get('doctor')
+    if is_valid_param(sel_date) and datetime.datetime.strptime(sel_date, '%Y-%m-%d').date() >= date.today():
+        appointments = gm.Appointment.objects.filter(date__exact=sel_date).order_by('date', 'start_time')
+        if is_valid_param(sel_doctor) and sel_doctor != 'All':
+            appointments = [appointment for appointment in appointments if
+                            str(appointment.doctor) == sel_doctor]
     paginate(context, appointments)
     return render(request, 'reception_desk/delete_appointments.html', context)
 
@@ -372,13 +368,8 @@ def get_params(request):
 
 def get_del_params(request):
     context = {'title': 'Delete Appointments', 'doctors': gm.Doctor.objects.all(), 'date': request.GET.get('date'),
-               'doctor': request.GET.get('doctor'),
-               'page_number': request.GET.get('page')}  # 'assigned': request.GET.get('assigned')}
+               'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page')}
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
-    # if not is_valid_param(context.get('assigned')):
-    #     context['patient'] = None
-    if context.get('date') is None:
-        context['date'] = date.today().strftime('%Y-%m-%d')
     return context
 
 
@@ -407,9 +398,9 @@ def clear_appointment(appointments, remove_id):
 
 def doctor_from_name(doctors_name):
     doctor_arr = doctors_name.split()
-    first_name = ' '.join(doctor_arr[:-1])
+    first_name = doctor_arr[0]
     last_name = doctor_arr[-1]
-    doctor = gm.Doctor.objects.filter(user__first_name=first_name, user__last_name=last_name)
+    doctor = gm.Doctor.objects.filter(user__first_name__contains=first_name, user__last_name__contains=last_name)
     if doctor.exists():
         return doctor[0]
     return None
