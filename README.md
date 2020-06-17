@@ -36,7 +36,7 @@ Includes two main modules:
   ```
 4. Add medical data to the DB:
   ```
-  TO DO : add scripts here
+ python manage.py add_medical_db
   ```
 
 ## Usage:
