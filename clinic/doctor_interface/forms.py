@@ -1,5 +1,5 @@
 from django import forms
-from .models import Session, BloodTestRequest, Diagnosis, Medication
+from .models import Session, Diagnosis, Medication, BloodTestRequest, BloodTest
 from dal import autocomplete
 
 
@@ -9,10 +9,10 @@ class SessionForm(forms.ModelForm):
         queryset=Diagnosis.objects.all(),
         widget=autocomplete.ModelSelect2(url='doctor_interface:diagnosis-autocomplete')
     )
-    """prescriptions = forms.ModelChoiceField(
+    prescriptions = forms.ModelMultipleChoiceField(
         queryset=Medication.objects.all(),
         widget=autocomplete.ModelSelect2Multiple(url='doctor_interface:medication-autocomplete')
-    )"""
+    )
     
     class Meta:
         model = Session
@@ -36,7 +36,12 @@ class SessionForm(forms.ModelForm):
         
 class NewBloodTestForm(forms.ModelForm):
 
+    blood_tests = forms.ModelMultipleChoiceField(
+        queryset=BloodTest.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(url='doctor_interface:blood-autocomplete')
+    )
+    
     class Meta:
         model = BloodTestRequest
         fields = ['blood_tests',
-                  ]
+                ]

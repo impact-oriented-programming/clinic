@@ -44,12 +44,13 @@ class Session(models.Model):
     glucose = models.IntegerField(blank=True, null=True)
     
 class BloodTest(models.Model):
-    blood_test = models.TextField()
-    blood_test_code = models.IntegerField()
-    price = models.IntegerField()
+   blood_test = models.TextField()
+   blood_test_code = models.IntegerField()
+   price = models.IntegerField()
+   group = models.TextField()
     
-    def __str__(self):
-        return self.blood_test
+   def __str__(self):
+       return self.blood_test
     
 class BloodTestRequest(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)

@@ -1,0 +1,111 @@
+13|Multidiagnostic panel|70|Chemistry|
+14|Multidiagnostic panel|70|Chemistry|
+21|Chemistry pane(20 tests)|60|Chemistry|
+204|Glucose|15|Chemistry|
+644|HBA1C|50|Chemistry|
+260|Kidney Function Panel|40|Chemistry|
+201|Creatinine Serum|15|Chemistry|
+205|Urea|15|Chemistry|
+226|Sodium|15|Chemistry|
+227|Potassium|15|Chemistry|
+228|Chloride|15|Chemistry|
+206|Uric Acid|15|Chemistry|
+250|Liver function|40|Chemistry|
+215|SGOT(AST)|15|Chemistry| 
+216|SGPT (ALT)|15|Chemistry|
+213|Alkaline Phosphatase|15|Chemistry|
+212|Total Bilirubin|15|Chemistry|
+230|Bilirubin Direct|15|Chemistry|
+231|Gamma GT|15|Chemistry|
+220|Amylase|15|Chemistry|
+224|CPK|15|Chemistry|
+229|CK-MB|15|Chemistry|
+203|Phosphorous|15|Chemistry|
+208|Total Protein|15|Chemistry|
+209|Albumin|15|Chemistry|
+214|LDH|15|Chemistry|
+531|Ferritin|50|Chemistry|
+518|Vitamin B12|60|Chemistry|
+519|Folic Acid|60|Chemistry|
+520|Vitamin B12, FolicAcid|100|Chemistry|
+240|Lipid panel|50|Chemistry|
+207|Cholesterol total|15|Chemistry|
+217|Triglycerides|15|Chemistry|
+218|HDL cholesterol|15|Chemistry|
+258|Magnesium|80|Chemistry|
+202|Calcium|15|Chemistry|
+136|Troponin|65|Chemistry|
+216|SGPT|15|Chemistry|
+232|Iron Panel|40|Chemistry|
+644|Hemoglobin A1C|50|Chemistry|
+211|Albumin/Globulin Ratio|15|Chemistry|
+604|Hydantoin|175|Drug Level|
+590|Thyroid Panel|100|Endocrinology|
+593|TSH|50|Endocrinology|
+592|FT4|50|Endocrinology|
+591|T3 Total|50|Endocrinology|
+5921|Free T3|34|Endocrinology|
+500|HCG|50|Endocrinology|
+510|Estradiol|50|Endocrinology|
+511|Progesterone|50|Endocrinology|
+514|FSH|50|Endocrinology|
+513|Luteinizing Hormone|50|Endocrinology|
+512|Prolactin|50|Endocrinology|
+515|Testosterone|50|Endocrinology|
+517|Cortisol|50|Endocrinology|
+526|DHEA-S|60|Endocrinology|
+577|PTH-I|40|Endocrinology|
+580|Insulin Level|50|Endocrinology|
+300|Urinalysis|25|Urine|
+330|Urinalysis C+S|80|Urine|
+331|Urine C+S|60|Urine|
+2678|Albumin/Creatine in Urine|32|Urine|
+411|Hepatitis A Profile|100|Virology|
+412|Hepatitis B Profile|150|Virology|
+415|Hepatitis B Surface Ab|40|Virology|
+420|Hepatitis BS AG|40|Virology|
+422|HCV AB|75|Virology|
+440|Rubella AB IgG|60|Virology|
+448|Rubella IgM|60|Virology|
+452|CMB IGG&IGM|100|Virology|
+453|EBV VCA IGG, IGM, EBNA|100|Virology|
+418|Hepatitis Be Ab|150|Virology|
+419|Hepatitis Be Ag|150|Virology|
+444|HIV Type 1&2, Ab+P24|120|Virology|
+451|Varicella Quant. IgG|330|Virology|
+456|Herpes Ab Type 1 IgG|100|Virology|
+457|Herpes Ab Type 1 IgM|100|Virology|
+458|CMV IgG|70|Virology|
+459|CMV IgM|70|Virology|
+4510|Varicella Quant. IgM|350|Virology|
+723|Indirect Coombs|56|Immunology|
+271|C3|40|Immunology|
+272|C4|40|Immunology|
+438|ANF|75|Immunology|
+620|Immunoglobulins|60|Immunology|
+621|IGA Quant|40|Immunology|
+624|IGM Quant|40|Immunology|
+404|RF (latex)|70|Immunology|
+622|IGD Quant|40|Immunology|
+341|Stool C + S|60|Stool|
+342|Stool Occult Blood|40|Stool|
+343|Stool Ova +Parasites|50|Stool|
+346|Clostridium Diff. Tox A B|40|Stool|
+331|Urine C+S|60|Bacteriology + parasites|
+449|Toxoplasma IgM|60|Bacteriology + parasites|
+450|Toxoplasmosis IGG|60|Bacteriology + parasites|
+353|Culture and Sensitivity|70|Bacteriology + parasites|
+1452|Malaria Panel|175|Bacteriology + parasites|
+406|Syphilis AB|95|Bacteriology + parasites|
+439|Anti Streptolysin O|40|Bacteriology + parasites|
+100|CBC|40|Hematology|
+1997|Courier|45|Hematology|
+700|Type+RH|60|Hematology|
+722|Direct Coombs|60|Hematology|
+407|CRP (HS)|50|Hematology|
+4070|CRP|50|Hematology|
+570|Prostate Specific Ag|40|Cancer Markers|
+506|Alpha Fetoprotein marker|50|Cancer Markers|
+571|CA15-3|50|Cancer Markers|
+572|CA 19-9|50|Cancer Markers|
+524|CEA|60|Cancer Markers|

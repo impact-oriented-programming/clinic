@@ -10,7 +10,7 @@ import datetime
 from .forms import SessionForm, NewBloodTestForm
 import datetime as dt
 from .forms import SessionForm
-from .models import Session, Diagnosis, Medication
+from .models import Session, Diagnosis, Medication, BloodTest
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
@@ -138,7 +138,7 @@ def new_blood_test_view(request, clinic_id):
     except:
         return render(request, 'doctor_interface/not_a_doctor.html')
     form = NewBloodTestForm(request.POST or None)
-    doctor = request.user
+    doctor = request.user.doctor
     patient = gm.Patient.objects.get(clinic_identifying_number=clinic_id)
     patient_age = calculate_patient_age(patient)
     current_time = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
@@ -172,6 +172,16 @@ class MedicationAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(medication__istartswith=self.q)
+
+        return qs
+    
+class BloodTestAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+
+        qs = BloodTest.objects.all()
+
+        if self.q:
+            qs = qs.filter(blood_test__istartswith=self.q)
 
         return qs
     

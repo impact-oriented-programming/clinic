@@ -1,4 +1,4 @@
-
+{% load crispy_forms_tags %}
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
+    <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
@@ -17,6 +18,10 @@
         <title>Blood Test Request: {{ patient.first_name }} {{ patient.last_name }}</title>
 
 </head>
+
+{{ form.media }}
+
+
 <body>
 
 
@@ -40,8 +45,7 @@
                 <div> <label class="">Order From: Terem Clinic</label>
                 <div> <label for="id_chief_complaint" class="">Ordering Physician: {{ doctor.first_name }} {{doctor.last_name}}</label>
                 <hr>
-                <div id="div_id_blood_tests" class="form-group"> <label for="id_blood_tests" class="">Tests Ordered</label>
-                    <div class=""> <textarea name="blood_tests" cols="40" rows="1" class="textarea form-control" id="id_blood_tests"></textarea> </div> </div>
+                {{ form|crispy }}
                 </table></fieldset>
             <div class="form-group">
                <input class="btn btn-outline-info" type="submit" value="Save">

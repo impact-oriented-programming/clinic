@@ -1,5 +1,10 @@
 from django.contrib import admin
 from .models import Medication, Diagnosis, Session, BloodTest, BloodTestRequest
+global db_counter
+db_counter = 0
+
+
+
 
 class Custoimize_Medication(admin.ModelAdmin):
     list_display = ('__str__', 'medication_code', 'medication_details', 'prescription_required' )
@@ -22,3 +27,6 @@ admin.site.register(Diagnosis, Custoimize_Diagnosis)
 admin.site.register(Session, Custoimize_Sessions)
 admin.site.register(BloodTest, Custoimize_BloodTest)
 admin.site.register(BloodTestRequest, Custoimize_BloodTestRequest)
+
+
+    
