@@ -6,25 +6,25 @@ class Command(BaseCommand):
     help = 'Loads medical datebase including diagnosis, medication and blood tests.'
     
     def add_arguments(self, parser):
-        parser.add_argument('data_type', nargs='+', type=str)
-    
-    def handle(self, *args, **options):
+        parser.add_argument('-b', action='store_true',help='Upload blood tests DB only',)
+        parser.add_argument('-m', action='store_true',help='Upload medication DB only',)
+        parser.add_argument('-d', action='store_true',help='Upload diagnosis tests DB only',)
         
-        for data_type in options['data_type']:
-            if data_type == 'all':
-                self.add_blood_tests()
-                self.add_medications()
-                self.add_diagnosis()
-            elif data_type == 'blood_tests':
-                self.add_blood_tests()
-            elif data_type == 'medication':
-                self.add_medications()
-            elif data_type == 'diagnosis':
-                self.add_diagnosis()
-            else:
-                raise CommandError('"%s" is not a valid command' % data_type)
-            self.stdout.write(self.style.SUCCESS('Successfully uploaded %s datebase!' % data_type))
-
+    def handle(self, *args, **options):
+        if options['b']:
+            self.add_blood_tests()
+            self.stdout.write(self.style.SUCCESS('Successfully uploaded blood test datebase!'))
+        elif options['m']:
+            self.add_medications()
+            self.stdout.write(self.style.SUCCESS('Successfully uploaded medication datebase!'))
+        elif options['d']:
+            self.add_diagnosis()
+            self.stdout.write(self.style.SUCCESS('Successfully uploaded diagnosis datebase!'))
+        else:
+            self.add_blood_tests()
+            self.add_medications()
+            self.add_diagnosis()
+            self.stdout.write(self.style.SUCCESS('Successfully uploaded medical datebase!'))
             
         
         
