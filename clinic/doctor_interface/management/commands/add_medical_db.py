@@ -4,14 +4,28 @@ import os
 
 class Command(BaseCommand):
     help = 'Loads medical datebase including diagnosis, medication and blood tests.'
-
+    
+    def add_arguments(self, parser):
+        parser.add_argument('data_type', nargs='+', type=str)
+    
     def handle(self, *args, **options):
-            
-            self.add_blood_tests()
-            self.add_medications()
-            self.add_diagnosis()
+        
+        for data_type in options['data_type']:
+            if data_type == 'all':
+                self.add_blood_tests()
+                self.add_medications()
+                self.add_diagnosis()
+            elif data_type == 'blood_tests':
+                self.add_blood_tests()
+            elif data_type == 'medication':
+                self.add_medications()
+            elif data_type == 'diagnosis':
+                self.add_diagnosis()
+            else:
+                raise CommandError('"%s" is not a valid command' % data_type)
+            self.stdout.write(self.style.SUCCESS('Successfully uploaded %s datebase!' % data_type))
 
-            self.stdout.write(self.style.SUCCESS('Successfully uploaded medical datebase!'))
+            
         
         
     #Helper Functions    

@@ -32,7 +32,7 @@
   <tbody class="table-hover">
     {% for Session in last_visits %}
     <tr>
-      <td><a href="{% url 'doctor_interface:edit-session' patient.clinic_identifying_number Session.pk %}"><i class="fas fa-file-alt"></i> View Details</a></td>
+      <td><a href="{% url 'doctor_interface:edit-session' patient.clinic_identifying_number Session.pk %}" target="_blank"><i class="fas fa-file-alt"></i> View Details</a></td>
       <td>{{ Session.diagnosis }}</td>
       <td>{{ Session.time }}</td>
       <td>{{ Session.doctor }}</td>
