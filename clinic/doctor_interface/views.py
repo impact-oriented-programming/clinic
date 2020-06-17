@@ -29,26 +29,7 @@ def index_patient(request, clinic_id):
     if patient is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')
 
-    patient_age = calculate_patient_age(patient)
-    last_visits = Session.objects.all().filter(patient=patient).order_by('-time')
-    max_session = min(5, len(last_visits))
-    last_visits = last_visits[:max_session]
-    last_meds = []
-    for session in last_visits:
-        for med in session.prescriptions.all():
-            last_meds.append((med, session.time, session.doctor))
-    max_meds = min(5, len(last_meds))
-    last_meds = last_meds[:max_meds]
-    last_blood = BloodTestRequest.objects.all().filter(patient=patient).order_by('-time')
-    max_blood = min(5, len(last_blood))
-    last_blood = last_blood[:max_blood]
-    context = {
-            'patient': patient,
-            'last_visits': last_visits,
-            'age_value': str(patient_age),
-            'last_meds': last_meds,
-            'last_blood': last_blood
-               }
+    context = create_patient_context(patient)
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
@@ -231,3 +212,25 @@ def calculate_patient_age(patient):
     patient_age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
     return patient_age
     
+def create_patient_context(patient):
+    patient_age = calculate_patient_age(patient)
+    last_visits = Session.objects.all().filter(patient=patient).order_by('-time')
+    max_session = min(5, len(last_visits))
+    last_visits = last_visits[:max_session]
+    last_meds = []
+    for session in last_visits:
+        for med in session.prescriptions.all():
+            last_meds.append((med, session.time, session.doctor))
+    max_meds = min(5, len(last_meds))
+    last_meds = last_meds[:max_meds]
+    last_blood = BloodTestRequest.objects.all().filter(patient=patient).order_by('-time')
+    max_blood = min(5, len(last_blood))
+    last_blood = last_blood[:max_blood]
+    context = {
+            'patient': patient,
+            'last_visits': last_visits,
+            'age_value': str(patient_age),
+            'last_meds': last_meds,
+            'last_blood': last_blood
+               }
+    return context

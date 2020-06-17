@@ -18,6 +18,9 @@ from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+import sys
+sys.path.append('..')
+from doctor_interface.views import create_patient_context
 
 
 # from django.contrib.auth.models import User
@@ -375,14 +378,11 @@ def patient_details(request, id_number):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
 
-    patient_filter = patient_from_id_number(id_number)
-    if patient_filter is None:
+    patient = patient_from_id_number(id_number)
+    if patient is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')  # TODO - fix return button to calendar
 
-    last_visits = Session.objects.all()
-    max_session = min(5, len(last_visits))
-    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
-    context = {'patient': patient_filter, 'last_visits': last_visits}  # , "age": str(age)}
+    context = create_patient_context(patient)
     return render(request, 'reception_desk/view_patient.html', context)
 
 
