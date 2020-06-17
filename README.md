@@ -37,6 +37,8 @@ Includes two main modules:
 4. Add medical data to the DB:
   ```
  python manage.py add_medical_db
+ 
+ Optinal argument: -m/-d/-b (upload medication/diagnosis/blood test db only, respectively)
   ```
 
 ## Usage:
