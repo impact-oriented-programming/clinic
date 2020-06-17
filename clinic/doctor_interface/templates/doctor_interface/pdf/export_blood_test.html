@@ -1,0 +1,77 @@
+{% load custom_tags %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Blood Test Request for: {{ session.patient.first_name }} {{ session.patient.last_name }}</title>
+        <style type="text/css">
+            body {
+                font-weight: 200;
+                font-size: 14px;
+            }
+            .header {
+                font-size: 20px;
+                font-weight: 100;
+                text-align: center;
+                color: #0000FF;
+            }
+            .title {
+                font-size: 22px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px; 
+            }
+            .subTitle {
+                font-size: 18px;
+                font-weight: 100;
+               /* text-align: right;*/
+               padding: 10px 20px 0px 20px;
+               color: #800000; 
+            }
+            .title span {
+                color: #007cae;
+            }
+            .details {
+                padding: 10px 20px 0px 20px;
+                text-align: left !important;
+                /*margin-left: 40%;*/
+            }
+            .hrItem {
+                border: none;
+                height: 1px;
+                /* Set the hr color */
+                color: #333; /* old IE */
+                background-color: #fff; /* Modern Browsers */
+            }
+        </style>
+    </head>
+    <body>
+        <div class='wrapper'>
+            <div class='header'>
+                <p class='title'> Blood Test Request</p>
+            </div>
+        <div>
+        <div class='details'>
+            <font size="-1">Name: {{ blood_test_request.patient.first_name }} {{ blood_test_request.patient.last_name }}</font><br/>
+            <font size="-1">Visa/Id Number: {{ blood_test_request.patient.visa_number }}</font><br/>
+            <font size="-1">Date Of Birth: {{ blood_test_request.patient.date_of_birth}} (Age: {{age_value}})</font><br/>
+            <font size="-1">Gender: {{ blood_test_request.patient.gender }}</font><br/>
+            <font size="-1">Order From: Terem Clinic</font><br/>
+            <font size="-1">Ordering Physician: {{ blood_test_request.doctor }}</font>
+            <hr class='hrItem' />
+        </div>
+        {% if blood_test_request.blood_tests.all %}
+        <p class='subTitle'>Blood Tests </p>
+        <div class='details'>
+            {% for test in blood_test_request.blood_tests.all %}
+                {{test.blood_test_code}} {{ test }} <br/>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <br/><br/><br/>
+        <div class='details'>
+           <pre>Doctor Signature: {{ blood_test_request.doctor }}                             {{ date }}</pre>
+           ____________________
+        </div>
+    </body>
+</html>

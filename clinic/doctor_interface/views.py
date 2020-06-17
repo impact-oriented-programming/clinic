@@ -10,7 +10,7 @@ import datetime
 from .forms import SessionForm, NewBloodTestForm
 import datetime as dt
 from .forms import SessionForm
-from .models import Session, Diagnosis, Medication, BloodTest
+from .models import Session, Diagnosis, Medication, BloodTest, BloodTestRequest
 from django.utils import timezone
 import django.contrib.auth
 from django.contrib import messages
@@ -30,16 +30,25 @@ def index_patient(request, clinic_id):
         return render(request, 'doctor_interface/error_patient_not_found.html')
 
     patient_age = calculate_patient_age(patient)
-    last_visits = Session.objects.all()
+    last_visits = Session.objects.all().filter(patient=patient).order_by('-time')
     max_session = min(5, len(last_visits))
-    last_visits = last_visits.filter(patient=patient).order_by('-time')[:max_session]
+    last_visits = last_visits[:max_session]
     last_meds = []
     for session in last_visits:
         for med in session.prescriptions.all():
             last_meds.append((med, session.time, session.doctor))
     max_meds = min(5, len(last_meds))
     last_meds = last_meds[:max_meds]
-    context = {'patient': patient, 'last_visits': last_visits, 'age_value': str(patient_age), 'last_meds': last_meds}
+    last_blood = BloodTestRequest.objects.all().filter(patient=patient).order_by('-time')
+    max_blood = min(5, len(last_blood))
+    last_blood = last_blood[:max_blood]
+    context = {
+            'patient': patient,
+            'last_visits': last_visits,
+            'age_value': str(patient_age),
+            'last_meds': last_meds,
+            'last_blood': last_blood
+               }
     return render(request, 'doctor_interface/patient_interface_home.html', context)
 
 
@@ -186,7 +195,7 @@ class BloodTestAutocomplete(autocomplete.Select2QuerySetView):
         return qs
     
     
-def GeneratePDF(request, pk):
+def GenerateMedsPDF(request, pk):
         session = get_object_or_404(Session, pk=pk)
         age = calculate_patient_age(session.patient)
         prescription_meds = session.prescriptions.all().filter(prescription_required=True)
@@ -199,6 +208,17 @@ def GeneratePDF(request, pk):
              'none_prescription_meds': none_prescription_meds
         }
         pdf = render_to_pdf('doctor_interface/pdf/export_medication.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
+    
+def GenerateBloodTestPDF(request, pk):
+        blood_test_request = get_object_or_404(BloodTestRequest, pk=pk)
+        age = calculate_patient_age(blood_test_request.patient)
+        context = {
+             'blood_test_request': blood_test_request, 
+             'date': datetime.date.today(),
+             'age_value': str(age),
+        }
+        pdf = render_to_pdf('doctor_interface/pdf/export_blood_test.html', context)
         return HttpResponse(pdf, content_type='application/pdf')
     
     

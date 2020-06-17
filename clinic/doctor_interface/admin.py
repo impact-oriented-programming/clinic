@@ -1,7 +1,5 @@
 from django.contrib import admin
 from .models import Medication, Diagnosis, Session, BloodTest, BloodTestRequest
-global db_counter
-db_counter = 0
 
 
 

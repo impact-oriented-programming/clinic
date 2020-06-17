@@ -119,12 +119,35 @@
 {% endif %}
 <hr>
 <div class="table-title">
-<h3>Last Tests</h3>
-<p> </p>
+<h3>Last Blood Tests</h3>
 </div>
+{% if last_blood %}
+<table class="table-fill">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Doctor</th>
+      <th>Export Request</th>
+      <th>Results</th>
+    </tr>
+  </thead>
+  <tbody class="table-hover">
+    {% for request in last_blood %}
+    <tr>
+      <td>{{ request.time }}</td>
+      <td>{{ request.doctor }}</td>
+      <td><a href="{% url 'doctor_interface:blood-pdf' request.pk %}" target="_blank"><i class="fas fa-file-alt"></i> PDF</a></td>
+      <td><i class="fas fa-file-alt"></i> NA</a></td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+{% else %}
 <div class="table-title">
 <p>No previous tests available</p>
 </div>
+{% endif %}
 <hr>
 <!-- Fades in the button when you scroll down -->
 <script>
