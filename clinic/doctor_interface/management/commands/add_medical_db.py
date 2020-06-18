@@ -102,12 +102,12 @@ class Command(BaseCommand):
 
     def add_diagnosis(self):
 
-        diag_file = open('./doctor_interface/medical_db/icd10cm_codes_2019.txt', 'r')
+        file = open('./doctor_interface/medical_db/icd10cm_codes_2019.txt', 'r')
 
-        for line in diag_file.readlines():
+        for line in file.readlines():
             diag_code = line.split()[0]
             diag_desc = ' '.join(line.split()[1:])
-            diag = Diagnosis(diagnosis=diag_desc, diagnosis_code=diag_code)
+            diag = Diagnosis(description=diag_desc, diagnosis_code=diag_code)
             diag.save()
     
-        diag_file.close()
+        file.close()
