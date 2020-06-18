@@ -29,6 +29,7 @@ Includes two main modules:
   pip install django-autocomplete-light
   pip install --pre xhtml2pdf
   pip install xhtml2pdf
+  pip install pandas
   ```
 3. Create a new, empty DB (the repository does not include one):
   ```
