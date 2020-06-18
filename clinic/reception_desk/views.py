@@ -315,6 +315,8 @@ def get_params(request, title):
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     if context.get('from_date') is None:
         context['from_date'] = date.today().strftime('%Y-%m-%d')
+    if title == 'Cancel Appointment':
+        context['patient'] = request.GET.get('patient')
     return context
 
 
