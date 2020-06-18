@@ -77,7 +77,7 @@
 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
+                        <a  class="btn btn-info custom mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
                         <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% endif %}
