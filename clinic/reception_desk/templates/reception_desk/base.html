@@ -46,9 +46,6 @@
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:calendar' %}">Clinic's Calendar</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
                 <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:appointments' %}">Appointments</a>
-                {% if not title != 'Create New Patient' %}
-                <a class="list-group-item list-group-item-action" href="{% url 'reception_desk:edit-existing-patient' %}">Edit Patient</a>
-                {% endif %}
               </div>
           </div>
         </div>
