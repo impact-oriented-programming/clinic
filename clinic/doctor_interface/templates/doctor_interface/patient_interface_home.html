@@ -4,6 +4,8 @@
 <html lang="en">
 
 <head>
+  <!-- include our js scripts -->
+  <script src="{% static 'reception_desk/scripts.js' %}"></script>
   <!-- Sweet alerts 2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
@@ -22,179 +24,14 @@
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="http://localhost:8000/doctor_interface/">Go back to doctor interface</a>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:blood-test' patient.clinic_identifying_number %}">+ Ask for blood test</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' patient.clinic_identifying_number %}">+ Session</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' patient.clinic_identifying_number %}" target="_blank">+ Session</a>
   </div>
 
   {% if messages %}
-      <script>function alert_msg(msg){
-              swal({
-                title: "Success!",
-                text: `${msg}`,
-                type: "success",
-                confirmButtonColor: '#28a745'
-              })}
-              </script>
           {% for message in messages %}
       <script>alert_msg({{ message | js_safe }});</script>
           {% endfor %}
     {% endif %}
     {% block content %}{% endblock %}
-
-  <div class="table-title">
-  <h3>Patient Details</h3>
-  <table style="border:0px; width: 100%;">
-    <tr>
-      <td style="width: 33.3%; background: transparent;">Name: {{ patient.first_name }} {{ patient.last_name }}</td>
-      <td  style="width: 33.3%; background: transparent;">Clinic ID: {{ patient.clinic_identifying_number}}</td>
-      <td style="width: 33.3%; background: transparent;">Visa Number: {{ patient.visa_number }}</td>
-    </tr>
-    <tr>
-      <td style="width: 33.3%; background: transparent;">Date Of Birth: {{ patient.date_of_birth}} (Age: {{age_value}})</td>
-      <td style="width: 33.3%; background: transparent;">Gender: {{ patient.gender }}</td>
-      <td style="width: 33.3%; background: transparent;">Origin Country: {{ patient.origin_country }}</td>
-    </tr>
-  </table>
-  </div>
-  <hr>
-  <div class="table-title">
-    <h3>Last Visits</h3>
-    <p>click on session to see full details</p>
-  </div>
-  {% if last_visits %}
-  <table class="table-fill">
-    <thead>
-      <tr>
-        <th>Session Details</th>
-        <th>Diagnosis</th>
-        <th>Date</th>
-        <th>Doctor</th>
-        <th>Export Prescriptions</th>
-      </tr>
-    </thead>
-    <tbody class="table-hover">
-      {% for Session in last_visits %}
-      <tr>
-        <td><a href="{% url 'doctor_interface:edit-session' patient.clinic_identifying_number Session.pk %}"><i class="fas fa-file-alt"></i> View Details</a></td>
-        <td>{{ Session.diagnosis }}</td>
-        <td>{{ Session.time }}</td>
-        <td>{{ Session.doctor }}</td>
-        <td><a href="{% url 'doctor_interface:medication-pdf' Session.pk %}" target="_blank"><i class="fas fa-file-alt"></i> PDF</a></td>
-      </tr>
-    {% endfor %}
-  </tbody>
-  </table>
-  {% else %}
-  <div class="table-title">
-    <p>No previous visits available</p>
-  </div>
-  {% endif %}
-  <hr>
-  <div class="table-title">
-    <h3>Last Perscriptions</h3>
-    <p </p>
-  </div>
-  {% if last_meds %}
-  <table class="table-fill">
-    <thead>
-      <tr>
-        <th>Prescription</th>
-        <th>Date</th>
-        <th>Doctor</th>
-      </tr>
-    </thead>
-    <tbody class="table-hover">
-      {% for tup in last_meds %}
-          <tr>
-            <td>{{ tup.0 }}</td>
-            <td>{{ tup.1 }}</td>
-            <td>{{ tup.2 }}</td>
-          </tr>
-          {% endfor %}
-  </tbody>
-</table>
-{% else %}
-<div class="table-title">
-  <p>No previous prescriptions available</p>
-</div>
-{% endif %}
-<hr>
-<div class="table-title">
-  <h3>Recent Vital Signs</h3>
-</div>
-{% if last_visits %}
-  <table class="table-fill">
-    <thead>
-      <tr>
-        <th>Height</th>
-        <th>Weight</th>
-        <th>Systolic bp</th>
-        <th>Diastolic bp</th>
-        <th>Temperature</th>
-        <th>Pulse</th>
-        <th>Respiratory rate</th>
-        <th>Sp02</th>
-        <th>Glucose</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody class="table-hover">
-      {% for Session in last_visits %}
-      <tr>
-        <td>{{ Session.height }}</td>
-        <td>{{ Session.weight }}</td>
-        <td>{{ Session.systolic_bp }}</td>
-        <td>{{ Session.diastolic_bp }}</td>
-        <td>{{ Session.temperature }}</td>
-        <td>{{ Session.pulse }}</td>
-        <td>{{ Session.respiratory_rate }}</td>
-        <td>{{ Session.sp02 }}</td>
-        <td>{{ Session.glucose }}</td>
-        <td>{{ Session.time }}</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-  </table>
-  {% else %}
-  <div class="table-title">
-    <p>No previous visits available</p>
-  </div>
-  {% endif %}
-  <hr>
-<div class="table-title">
-  <h3>Last Tests</h3>
-  <p> </p>
-</div>
-<div class="table-title">
-  <p>No previous tests available</p>
-</div>
-<hr>
-<!-- Fades in the button when you scroll down -->
-<script>
-  var link = document.getElementById("back-to-top");
-  var amountScrolled = 250;
-
-  window.addEventListener('scroll', function(e) {
-      if ( window.pageYOffset > amountScrolled ) {
-          link.classList.add('show');
-      } else {
-          link.className = 'back-to-top';
-      }
-  });
-
-<!-- Scroll to Top -->
-  link.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      var distance = 0 - window.pageYOffset;
-      var increments = distance/(500/16);
-      function animateScroll() {
-          window.scrollBy(0, increments);
-          if (window.pageYOffset <= document.body.offsetTop) {
-              clearInterval(runAnimation);
-          }
-      };
-      // Loop the animation function
-      var runAnimation = setInterval(animateScroll, 16);
-  });
-</script>
+    {% include 'doctor_interface\patient_details_block.html' %}
 </body>

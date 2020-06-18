@@ -19,6 +19,9 @@ from collections import OrderedDict
 from django.views import View
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+import sys
+sys.path.append('..')
+from doctor_interface.views import create_patient_context
 
 
 # from django.contrib.auth.models import User
@@ -91,7 +94,7 @@ def create_patient(request):
 def edit_patient(request, id_number):
     patient = patient_from_id_number(id_number)
     if patient is None:
-        return redirect('reception_desk:calendar')  # to be changed to patient does not exist page
+        return redirect('reception_desk:calendar') #to be changed to patient does not exist page
     if request.method == 'POST':
         form = EditPatientForm(request.POST, instance=patient)
         if form.is_valid():
@@ -113,7 +116,7 @@ def edit_existing_patient(request):
             return redirect('reception_desk:edit-patient', id_number=id_number)
     else:
         form = PatientInputForm()
-    return render(request, 'reception_desk/edit_existing_patient.html', {'form': form, 'title': 'Edit Patient Input'})
+    return render(request, 'reception_desk/edit_existing_patient.html', {'form': form, 'title': 'Edit Patient'})
 
 
 def doctor_slot_view(request):
@@ -141,6 +144,7 @@ def add_delta_to_time(time, delta):
 
 
 def date_view(request, my_date):
+
     if request.method == 'POST':
         appointment_id = request.POST.get('arrived')
         appointment = gm.Appointment.objects.all().get(id=appointment_id)
@@ -158,17 +162,33 @@ def date_view(request, my_date):
     except:
         return render(request, 'reception_desk/date_error.html')  # case the given date is not valid
     # list all the appointments of that given day
-    appointment_list = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
-    appointment_list = appointment_list.filter(assigned=True)
+    appointment_list_total = gm.Appointment.objects.filter(date=wanted_date).order_by("start_time")
+    appointment_list = appointment_list_total.filter(assigned=True)
+    # list all doctors
+    docs = sorted(set(appointment.doctor for appointment in appointment_list_total))
+
+    dshifts = OrderedDict()
+    for doc in docs:
+        dshifts[doc]=""
+
+    for doc in docs:
+        my_appointments = appointment_list_total.filter(doctor = doc)
+        my_start = my_appointments[0].start_time
+        my_end = my_appointments[len(my_appointments)-1].end_time
+
+        my_str = str(my_start)[:5] + " - " + str(my_end)[:5]
+        dshifts[doc] = my_str
+
+    #today_shifts = appointment_list_total.values('doctor', 'room').annotate(start=Min('start_time'), end=Max('end_time'))
+    #dshifts = {gm.Doctor.objects.get(id=today_shifts[i]['doctor']): (str(today_shifts[i]['start']) + " " +str(today_shifts[i]['end'])) for i in range(len(today_shifts))}
+
     # list all rooms
     rooms = sorted(set(appointment.room for appointment in appointment_list))
-    # list all doctors
-    docs = sorted(set(appointment.doctor for appointment in appointment_list))
     # crate a dictionary of room-->appointments list in that room
     drooms = OrderedDict()
     for room in rooms:
         drooms[room] = []
-
+    # crate a dictionary of doctor->appointments list of that doctor
     ddocs = OrderedDict()
     for doc in docs:
         ddocs[doc] = []
@@ -177,7 +197,7 @@ def date_view(request, my_date):
         drooms[appointment.room].append(appointment)
         ddocs[appointment.doctor].append(appointment)
 
-    context = {'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
+    context = {'dshifts':dshifts,'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
 
     return render(request, 'reception_desk/date.html', context)
@@ -191,33 +211,29 @@ class clinic_management(View):
         return render(request, 'reception_desk/clinic_management.html')
 
 
-def appointments_view(request):
-    context = get_params(request)
-    appointments = gm.Appointment.objects.all().order_by('date', 'start_time')
+def add_appointment_view(request):
+    context = get_params(request, 'Add Appointment')
+    appointments = gm.Appointment.objects.all().filter(assigned=False).order_by('date', 'start_time')
+    appointments = filter_appointments(context, appointments)
+    paginate(context, appointments)
+    return render(request, 'reception_desk/add_appointment.html', context)
+
+
+def cancel_appointment_view(request):
+    appointments = gm.Appointment.objects.all().filter(assigned=True).order_by('date', 'start_time')
     if request.method == "POST":
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
             clear_appointment(appointments, remove_id)
-    if context.get('assigned') is not None:
-        appointments = appointments.filter(assigned=True)
-    else:
-        appointments = appointments.filter(assigned=False)
-    if is_valid_param(context.get('from_date')):
-        appointments = appointments.filter(date__gte=context.get('from_date'))
-    if is_valid_param(context.get('until_date')):
-        appointments = appointments.filter(date__lte=context.get('until_date'))
-    if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
-        appointments = [appointment for appointment in appointments if
-                        appointment.doctor.specialty == context.get('specialty')]
-    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
-        appointments = [appointment for appointment in appointments if
-                        str(appointment.doctor) == context.get('doctor')]
+    context = get_params(request, 'Cancel Appointment')
+    appointments = filter_appointments(context, appointments)
     if is_valid_param(context.get('patient')):
         appointments = [appointment for appointment in appointments if
                         appointment.patient.visa_number == context.get('patient') or
                         appointment.patient.clinic_identifying_number == context.get('patient')]
+    context['appointments'] = appointments
     paginate(context, appointments)
-    return render(request, 'reception_desk/appointments.html', context)
+    return render(request, 'reception_desk/cancel_appointment.html', context)
 
 
 class AppointmentAssignView(generic.UpdateView):
@@ -231,7 +247,7 @@ class AppointmentAssignView(generic.UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('reception_desk:appointments')
+        return reverse('reception_desk:add-appointment')
 
     def form_valid(self, form):
         id_number = form.cleaned_data.get('clinic_identifying_or_visa_number')
@@ -251,8 +267,7 @@ def walk_in_view(request):
     curr_time = dt.datetime.now().time()
     today_relevant_shifts = [shift for shift in today_shifts if shift['start'] < curr_time < shift['end']]
     doctors_dict = {gm.Doctor.objects.get(id=today_relevant_shifts[i]['doctor']): [today_relevant_shifts[i]['room'],
-                                                                                   today_relevant_shifts[i]['end']] for
-                    i in range(len(today_relevant_shifts))}
+                    today_relevant_shifts[i]['end']] for i in range(len(today_relevant_shifts))}
     context = {"doctors_dict": doctors_dict, 'title': "Walk-In"}
     return render(request, 'reception_desk/walk_in.html', context)
 
@@ -352,17 +367,17 @@ def get_specialities(doctors):
     return sorted(list(specialties))
 
 
-def get_params(request):
-    context = {'title': 'Appointments', 'doctors': gm.Doctor.objects.all(), 'specialty': request.GET.get('specialty'),
-               'patient': request.GET.get('patient'), 'from_date': request.GET.get('from_date'),
+def get_params(request, title):
+    context = {'title': title, 'doctors': gm.Doctor.objects.all(),
+               'specialty': request.GET.get('specialty'), 'from_date': request.GET.get('from_date'),
                'until_date': request.GET.get('until_date'), 'doctor': request.GET.get('doctor'),
-               'page_number': request.GET.get('page'), 'assigned': request.GET.get('assigned')}
+               'page_number': request.GET.get('page')}
     context['specialties'] = get_specialities(context.get('doctors'))
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
-    if not is_valid_param(context.get('assigned')):
-        context['patient'] = None
     if context.get('from_date') is None:
         context['from_date'] = date.today().strftime('%Y-%m-%d')
+    if title == 'Cancel Appointment':
+        context['patient'] = request.GET.get('patient')
     return context
 
 
@@ -371,6 +386,20 @@ def get_del_params(request):
                'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page'), 'today': str(date.today())}
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     return context
+
+
+def filter_appointments(context, appointments):
+    if is_valid_param(context.get('from_date')):
+        appointments = appointments.filter(date__gte=context.get('from_date'))
+    if is_valid_param(context.get('until_date')):
+        appointments = appointments.filter(date__lte=context.get('until_date'))
+    if is_valid_param(context.get('specialty')) and context.get('specialty') != "All":
+        appointments = [appointment for appointment in appointments if
+                        appointment.doctor.specialty == context.get('specialty')]
+    if is_valid_param(context.get('doctor')) and context.get('doctor') != 'All':
+        appointments = [appointment for appointment in appointments if
+                        str(appointment.doctor) == context.get('doctor')]
+    return appointments
 
 
 def paginate(context, appointments):
@@ -429,12 +458,17 @@ def patient_details(request, id_number):
     if not (request.user.is_authenticated):
         return render(request, 'doctor_interface/not_logged_in.html')
 
-    patient_filter = patient_from_id_number(id_number)
-    if patient_filter is None:
+    patient = patient_from_id_number(id_number)
+    if patient is None:
         return render(request, 'doctor_interface/error_patient_not_found.html')  # TODO - fix return button to calendar
 
-    last_visits = Session.objects.all()
-    max_session = min(5, len(last_visits))
-    last_visits = last_visits.filter(patient=patient_filter)[:max_session]
-    context = {'patient': patient_filter, 'last_visits': last_visits}  # , "age": str(age)}
+    context = create_patient_context(patient)
     return render(request, 'reception_desk/view_patient.html', context)
+
+
+class Appointments(View):
+    def get(self, request, *args, **kwargs):
+        # if not (request.user.is_authenticated):
+        #   return render(request, 'doctor_interface/not_logged_in.html')
+        # context = {}
+        return render(request, 'reception_desk/appointments.html')

@@ -1,187 +1,37 @@
-{% extends "reception_desk/base.html" %}
-{% load crispy_forms_tags %}
-{% load custom_tags %}
-{% block content %}
-    <div class="content-section">
-      <legend class="border-bottom mb-4">Filter Appointments</legend>
-      <form method="GET" action="." autocomplete="off">
-        <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="specialty">Specialty</label>
-                    <select class="form-control" id="specialty" name="specialty" />
-                    {% if specialty and specialty != 'All' %}
-                    <option selected placeholder="specialty">{{ specialty }}</option>
-                    {% endif %}
-                    {% for specialty in specialties %}
-                        <option value="{{ specialty }}">{{ specialty }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="doctor">Doctor</label>
-                    <select class="form-control " id ="doctor" name="doctor" />
-                     {% if doctor and doctor != 'All' %}
-                    <option selected placeholder="doctor">{{ doctor }}</option>
-                    {% endif %}
-                    {% for doctor in doctors %}
-                        <option value="{{ doctor }}">{{ doctor }}</option>
-                    {% endfor %}
-                    </select>
-                </div>
-                {% if assigned %}
-                <div class="form-group col-md-4">
-                    <label for="patient" >Patient</label>
-                    <input class="form-control" id="patient" name="patient" placeholder="Clinic or visa number"
-                           {% if patient %} value={{ patient }} {% endif %}/>
-                </div>
-                {% endif %}
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-2 col-lg-4">
-            <label for="from_date">From</label>
-            <input type="date" class="form-control" id="from_date" name="from_date"
-            {% if from_date %} value="{{ from_date }}" {% endif %}>
-          </div>
-          <div class="form-group col-md-2 col-lg-4">
-            <label for="until_date">Until</label>
-            <input type="date" class="form-control" id="until_date" name="until_date"
-            {% if until_date %} value={{ until_date }} {% endif %}>
-          </div>
-        </div>
-          <div class="form-group">
-                <div class="form-check ">
-                    <input class="form-check-input" type="checkbox" id="assigned" name="assigned" value=True
-                {% if assigned %} checked {% endif %}>
-                    <label class="form-check-label" for="assigned">Assigned</label>
-                </div>
-            </div>
-        <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:appointments' %}"> Reset </a>
-      </form>
 
-      {% if empty %}
-        <h3>No Appointments Were Found</h3>
-      {% else %}
-      <table class="table table-sm" style="border:hidden">
-            <thead>
-              <tr>
-                <th class="text-center">Doctor</th>
-                <th class="text-center">Patient</th>
-                <th class="text-center">Date</th>
-                <th class="text-center">Time</th>
-                <th class="text-center">Action</th>
-              </tr>
-            </thead>
-          <tbody>
-            {% for appointment in page_obj.object_list %}
-            <tr>
-                <td class="text-center">{{ appointment.doctor}}</td>
-                <td class="text-center">{{ appointment.patient }}</td>
-                <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
-                <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
-                {% if not appointment.assigned %}
-                <td class="text-center"><a  class="btn btn-outline-success"
-                        href="{% url 'reception_desk:appointment-assign' pk=appointment.id %}">
-                        Make Appointment</a></td>
-                {% else %}
-                <td class="text-center"><button
-                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }})"
-                class="btn btn-outline-danger">
-                Cancel Appointment</button></td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-            <script>
-                    function remove_patient_click(id,patient){
-                    swal({
-                      title: "Are you sure?",
-                      text: `Cancel appointment for ${patient}?`,
-                      type: "warning",
-                      showCancelButton: true,
-                      confirmButtonColor: '#dc3545',
-                      cancelButtonColor: '#6c757d',
-                      confirmButtonText: 'Yes',
-                      cancelButtonText: 'No',
-                      reverseButtons: true
-                    })
-                    .then((result) => {
-                        if (result.value) {
-                        swal({
-                          title:"Appointment cancelled!",
-                          type: "success",
-                          confirmButtonColor: '#28a745'
-                        }).then(function(){ post("{% url 'reception_desk:appointments' %}",
-                        {'remove_id':id});});
-                      }
-                      else{}
-                    })
-                   };
-                   </script>
-            <script >
-                  function getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie != '') {
-                                var cookies = document.cookie.split(';');
-                                for (var i = 0; i < cookies.length; i++) {
-                                        var cookie = jQuery.trim(cookies[i]);
-                                        // Does this cookie string begin with the name we want?
-                                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                                break;
-                                        }
-                                }
-                        }
-                        return cookieValue;
-                        }
-                    </script>
-            <script>
-                  function post(path, params) {
-                  const form = document.createElement('form');
-                  form.method = 'post';
-                  form.action = path;
+{% load static %}
+<!doctype html>
+<html lang="en">
 
-                  var hiddenField1 = document.createElement("input");
-                  hiddenField1.setAttribute("type", "hidden");
-                  hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
-                  hiddenField1.setAttribute("value", getCookie('csrftoken'));
-                  form.appendChild(hiddenField1);
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="{% static 'style_homepage.css'%}">
+  <title>Appointments</title>
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+</head>
+<body>
+  <main>
+    {% block content %}
+    <div class="wrapper fadeInDown">
+    {% if user.is_authenticated %}
+    <div id="formContent">
+      <div class="fadeIn first">
+      <h3 type="text" class="fadeIn second">Appointments</h3>
+      <h3></h3>
+      </div>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:add-appointment' %}">Add Appointment</a>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:cancel-appointment' %}">Cancel Appointment</a></p>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:walk-in' %}">Walk-In</a></p>
+      <p><a class="fadeIn second" href="{% url 'reception_desk:calendar' %}">Go Back to Clinic's Calendar</a></p>
+      <p><a class="fadeIn second" href="{% url 'logout' %}">Logout</a></p>
+    </div>
+    {% else %}
 
-                  for (const key in params) {
-                    if (params.hasOwnProperty(key)) {
-                      const hiddenField = document.createElement('input');
-                      hiddenField.type = 'hidden';
-                      hiddenField.name = key;
-                      hiddenField.value = params[key];
-
-                      form.appendChild(hiddenField);
-                    }
-                  }
-
-                  document.body.appendChild(form);
-                  form.submit();
-                }
-                </script>
-          {% endif %}
-          </tbody>
-      </table>
-      {% if is_paginated %}
-          {% if page_obj.has_previous %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
-                {% endif %}
-
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
-                    {% endif %}
-                {% endfor %}
-
-                {% if page_obj.has_next %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
-                {% endif %}
-            {% endif %}
-</div>
-{% endblock content %}
+    {% endif %}
+  </div>
+    {% endblock %}
+  </main>
+</body>
+</html>

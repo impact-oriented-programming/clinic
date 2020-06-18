@@ -5,9 +5,11 @@
 <html lang="en">
 
 <head>
-   <!-- Sweet alerts 2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+  <!-- include our js scripts -->
+  <script src="{% static 'reception_desk/scripts.js' %}"></script>
+  <!-- Sweet alerts 2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,14 +28,6 @@
   <h1 class="title", style="text-align:center; color:#366d6b"> Clinic's Calendar</h1>
 
     {% if messages %}
-      <script>function alert_msg(msg){
-              swal({
-                title: "Success!",
-                text: `${msg}`,
-                type: "success",
-                confirmButtonColor: '#28a745'
-              })}
-              </script>
           {% for message in messages %}
       <script>alert_msg({{ message | js_safe }});</script>
           {% endfor %}
@@ -41,7 +35,7 @@
     {% block content %}{% endblock %}
 
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn-style btn btn-info" href="{% url 'reception_desk:appointments' %}">Add / Edit Appointment</a>
+    <a class="btn-style btn btn-info" href="{% url 'reception_desk:appointments' %}">Appointments</a>
     <a class="btn-style btn btn-info" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
     <a class="btn-style btn btn-info" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
   </div>
@@ -49,7 +43,6 @@
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn btn-info left" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
     <a class="btn btn-info" style="border: 1px solid  #254b4a; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
-    <a class="btn btn-info" style="border: 1px solid  #254b4a; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:walk-in' %}">Walk in</a>
     <a class="btn btn-info right" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}

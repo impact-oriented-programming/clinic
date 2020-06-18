@@ -4,10 +4,11 @@
 <!doctype html>
 <html lang="en">
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
-
 <head>
+  <!-- Sweet alerts 2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+  <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -23,16 +24,16 @@
 
 </head>
 <body>
-
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
 
   <h1 class="title", style="text-align:center"> Date View: {{ wanted_date }}</h1>
   <hr>
   <div class="btn-group" style="width: 99%">
-    <a class="btn btn-info" style="background-color:transparent;color: #283955; width:20%; border: 1px solid  #718fbd; margin: 0 auto;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
+    <a class="btn btn-outline-info" style="width:20%; border: 1px solid  #718fbd; margin: 0 auto;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
   </div>
   <hr>
 
+  {% if appointment_list %}
   <div class="table-title">
   <h3>Doctor's Details</h3>
   <p>Click on doctor's name to jump to the wanted appointments list</p>
@@ -42,17 +43,17 @@
       <td style="width: 33.3%; background: transparent;"><h6>Specialty</h6></td>
       <td  style="width: 33.3%; background: transparent;"><h6> Shift Hours</h6></td>
     </tr>
-    {% for doctor in ddocs.keys %}
+    {% for doctor, shift in dshifts.items %}
     <tr>
       <td style="width: 33.3%; background: transparent;"><a href="#{{doctor.id}}" style = "color: black;">Dr. {{doctor}}</a></td>
       <td style="width: 33.3%; background: transparent;">{{doctor.specialty}}</td>
-      <td style="width: 33.3%; background: transparent;">08:00 - 16:00</td>
+      <td style="width: 33.3%; background: transparent;">{{shift}}</td>
     </tr>
     {% endfor %}
   </table>
   </div>
   <hr>
-
+  {% endif %}
 
 
   {% if appointment_list %}
@@ -153,7 +154,8 @@
               title:"Checked in successfully!",
               type: "success",
               confirmButtonColor: '#28a745'
-            }).then(function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
+            }).then(
+            function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
             {'arrived':appointment_id});});
           }
           else{}
@@ -200,9 +202,15 @@
             form.appendChild(hiddenField);
           }
         }
-
         document.body.appendChild(form);
+        localStorage.setItem("scroll", window.pageYOffset);
         form.submit();
       }
       </script>
+  <script>if(localStorage.getItem('scroll'))
+        {
+            window.scrollTo(0, parseInt(localStorage.getItem("scroll")));
+            localStorage.removeItem("scroll");
+
+        }</script>
 </body>

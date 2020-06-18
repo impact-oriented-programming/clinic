@@ -1,0 +1,94 @@
+{% extends "reception_desk/base.html" %}
+{% load crispy_forms_tags %}
+{% load custom_tags %}
+{% block content %}
+
+ <div class="content-section">
+      <legend class="border-bottom mb-4">Filter Appointments</legend>
+      <form method="GET" action="." autocomplete="off">
+        <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="doctor">Doctor</label>
+                    <select class="form-control " id ="doctor" name="doctor" />
+                     {% if doctor and doctor != 'All' %}
+                    <option selected placeholder="doctor">{{ doctor }}</option>
+                    {% endif %}
+                    {% for doctor in doctors %}
+                        <option value="{{ doctor }}">{{ doctor }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="patient" >Patient</label>
+                    <input class="form-control" id="patient" name="patient" placeholder="Clinic or visa number"
+                           {% if patient %} value={{ patient }} {% endif %}/>
+                </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-2 col-lg-4">
+            <label for="from_date">From</label>
+            <input type="date" class="form-control" id="from_date" name="from_date"
+            {% if from_date %} value="{{ from_date }}" {% endif %}>
+          </div>
+          <div class="form-group col-md-2 col-lg-4">
+            <label for="until_date">Until</label>
+            <input type="date" class="form-control" id="until_date" name="until_date"
+            {% if until_date %} value={{ until_date }} {% endif %}>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-outline-info">Search</button>
+        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:cancel-appointment' %}"> Reset </a>
+      </form>
+
+     {% if empty %}
+      <h3>No Appointments Were Found</h3>
+      {% else %}
+      <table class="table table-sm" id='table' style="border:hidden">
+            <thead>
+              <tr>
+                <th class="text-center">Doctor</th>
+                <th class="text-center">Patient</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Time</th>
+                <th class="text-center">Action</th>
+              </tr>
+            </thead>
+          <tbody>
+            {% for appointment in page_obj.object_list %}
+            <tr>
+                <td class="text-center">{{ appointment.doctor}}</td>
+                <td class="text-center">{{ appointment.patient }}</td>
+                <td class="text-center">{{ appointment.date | date:"d/m/Y" }}</td>
+                <td class="text-center">{{ appointment.start_time | time:"H:i" }}</td>
+                <td class="text-center"><button
+                onclick="remove_patient_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ request.path | js_not_safe}})"
+                class="btn btn-outline-danger">
+                Cancel Appointment</button></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+      </table>
+     {% endif %}
+     {% if is_paginated %}
+          {% if page_obj.has_previous %}
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}#table">First</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}#table">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <a  class="btn btn-info custom mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}#table">Next</a>
+                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
+                {% endif %}
+            {% endif %}
+      <script>$(function(){remove_id_name()});</script>
+ </div>
+
+{% endblock content %}
