@@ -8,7 +8,7 @@
         <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="date">Date</label>
-                    <input type="date" class="form-control" id="date" name="date"
+                    <input type="date" min={{today}} class="form-control" id="date" name="date"
                     {% if date %} value="{{ date }}" {% endif %}>
                 </div>
                 <div class="form-group col-md-4">

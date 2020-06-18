@@ -286,7 +286,7 @@ def delete_appointments_view(request):
     appointments = []
     sel_date = context.get('date')
     sel_doctor = context.get('doctor')
-    if is_valid_param(sel_date) and datetime.datetime.strptime(sel_date, '%Y-%m-%d').date() >= date.today():
+    if is_valid_param(sel_date):
         appointments = gm.Appointment.objects.filter(date__exact=sel_date).order_by('date', 'start_time')
         if is_valid_param(sel_doctor) and sel_doctor != 'All':
             appointments = [appointment for appointment in appointments if
@@ -368,7 +368,7 @@ def get_params(request):
 
 def get_del_params(request):
     context = {'title': 'Delete Appointments', 'doctors': gm.Doctor.objects.all(), 'date': request.GET.get('date'),
-               'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page')}
+               'doctor': request.GET.get('doctor'), 'page_number': request.GET.get('page'), 'today': str(date.today())}
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     return context
 
