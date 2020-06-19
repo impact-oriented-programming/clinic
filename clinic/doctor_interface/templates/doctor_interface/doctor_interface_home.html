@@ -1,5 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="en">
 
@@ -9,6 +10,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+
+  <script src="{% static 'reception_desk/scripts.js' %}"></script>
 
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
@@ -51,7 +54,12 @@
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
         <td>{{ appointment.arrived }}</td>
-        <td>{{curr_time}} Minutes</td>
+        <td>
+          {% if not appointment.done %}
+          <div id="{{appointment.id}}"></div>
+          <script>startTime({{ appointment.arrived | get_hour }}, {{appointment.arrived | get_minute }},{{ appointment.id | js_safe }});</script>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
       {% else %}

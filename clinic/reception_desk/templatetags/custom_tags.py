@@ -21,6 +21,15 @@ def get_date(date):
     return json.dumps(date.strftime("%Y-%m-%d"))
 
 
+@register.filter
+def get_hour(arrived):
+    return json.dumps(int(arrived.hour))
+
+
+@register.filter
+def get_minute(arrived):
+    return json.dumps(int(arrived.minute))
+
 @register.simple_tag(takes_context=True)
 def param_replace(context, **kwargs):
     d = context['request'].GET.copy()
