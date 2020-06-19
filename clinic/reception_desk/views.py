@@ -371,7 +371,7 @@ def get_params(request, title):
     context = {'title': title, 'doctors': gm.Doctor.objects.all(),
                'specialty': request.GET.get('specialty'), 'from_date': request.GET.get('from_date'),
                'until_date': request.GET.get('until_date'), 'doctor': request.GET.get('doctor'),
-               'page_number': request.GET.get('page')}
+               'page_number': request.GET.get('page'), 'today': str(date.today())}
     context['specialties'] = get_specialities(context.get('doctors'))
     context['doctors'] = ['All'] + sorted([str(doctor) for doctor in context['doctors']])
     if context.get('from_date') is None:
