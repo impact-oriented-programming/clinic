@@ -104,10 +104,8 @@ function startTime(hour,minute, id) {
    m += 60;
   }
   var s = today.getSeconds();
-  m = checkTime(m);
-  s = checkTime(s);
   document.getElementById(id).innerHTML =
-  h + ":" + m + ":" + s;
+  h*60 + m + " Minutes";
   setTimeout(startTime.bind(null, hour, minute, id), 500);
 }
 function checkTime(i) {

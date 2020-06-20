@@ -53,7 +53,7 @@
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.arrived }}</td>
+        <td>{{ appointment.arrived | time:"H:i" }}</td>
         <td>
           {% if not appointment.done %}
           <div id="{{appointment.id}}"></div>
@@ -89,7 +89,7 @@
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.patient.clinic_identifying_number%}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.start_time }}</td>
+        <td>{{ appointment.start_time | time:"H:i" }}</td>
       </tr>
       {% endfor %}
       {% else %}

@@ -77,7 +77,7 @@
       <tr>
         <td><a href="{% url 'reception_desk:patient-details' appointment.patient.clinic_identifying_number%}" target="_blank" style="color:black;">{{ appointment.patient}}</a></td>
         <td>{{ appointment.patient.visa_number}}</td>
-        <td>{{ appointment.start_time }}</td>
+        <td>{{ appointment.start_time | time:"H:i" }}</td>
         <td>{{ appointment.room }}</td>
         {% if not appointment.arrived %}
          <td class="text-center"><button
