@@ -17,15 +17,16 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/styles.css'%}">
+  <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
   <title>Clinic Calendar</title>
 </head>
 <body>
   <div class="clearfix">
-    <a class="btn btn-info left border-style" href="{% url 'logout' %}">Logout</a>
-    <a class="btn btn-info right border-style" href="{% url 'home'%}">Home Page</a>
+    <a class="btn btn-outline-info left border-style" href="{% url 'logout' %}">Logout</a>
+    <a class="btn btn-outline-info  right border-style" href="{% url 'home'%}">Home Page</a>
   </div>
-  <h1 class="title", style="text-align:center; color:#366d6b"> Clinic's Calendar</h1>
+  <h1 class="title", style="text-align:center; color:#718fbd"> Clinic's Calendar</h1>
 
     {% if messages %}
           {% for message in messages %}
@@ -35,15 +36,15 @@
     {% block content %}{% endblock %}
 
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn-style btn btn-info" href="{% url 'reception_desk:appointments' %}">Appointments</a>
-    <a class="btn-style btn btn-info" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
-    <a class="btn-style btn btn-info" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
+    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:appointments' %}">Appointments</a>
+    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
+    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
   </div>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-info" style="border: 1px solid  #254b4a; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
-    <a class="btn btn-info right" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-outline-info left" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-outline-info" style="border: 1px solid  #254b4a; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
+    <a class="btn btn-outline-info right" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
 
