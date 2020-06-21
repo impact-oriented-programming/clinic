@@ -42,9 +42,9 @@
   </div>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-outline-info left" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-outline-info" style="border: 1px solid  #254b4a; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
-    <a class="btn btn-outline-info right" style="border: 1px solid  #254b4a; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-outline-info left" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-outline-info" style="border: 1px solid  #182232; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
+    <a class="btn btn-outline-info right" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
 
