@@ -7,10 +7,11 @@ from . import views
 app_name = 'doctor_interface'
 urlpatterns = [
     path('', views.index , name='homepage'),
-    path('patient_interface/<clinic_id>', views.index_patient, name='patient_interface'),
-    path('patient_interface/<str:clinic_id>/new-session', views.new_session_view, name='new-session'),
-    path('patient_interface/<str:clinic_id>/<int:pk>/edit-session', views.session_edit_view, name='edit-session'),
-    path('patient_interface/<str:clinic_id>/blood-test', views.new_blood_test_view, name='blood-test'),
+    path('patient_interface/<int:appointment_pk>', views.index_patient, name='patient_interface'),
+    path('patient_interface/<int:appointment_pk>/new-session', views.new_session_view, name='new-session'),
+    path('patient_interface/session/<int:pk>', views.SessionDetailView.as_view(), name='session-detail'),
+    # path('patient_interface/<str:clinic_id>/<int:pk>/edit-session', views.session_edit_view, name='edit-session'),
+    path('patient_interface/<int:appointment_pk>/blood-test', views.new_blood_test_view, name='blood-test'),
     url(r'^diagnosis-autocomplete/$', views.DiagnosisAutocomplete.as_view(), name='diagnosis-autocomplete'),
     url(r'^medication-autocomplete/$', views.MedicationAutocomplete.as_view(), name='medication-autocomplete'),
     url(r'^blood-autocomplete/$', views.BloodTestAutocomplete.as_view(), name='blood-autocomplete'),

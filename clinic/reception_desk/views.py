@@ -130,7 +130,7 @@ def doctor_slot_view(request):
             appointment = gm.Appointment.objects.create(doctor=slot_instance.doctor, patient=None,
                                                         date=slot_instance.date, start_time=start,
                                                         end_time=add_delta_to_time(start, delta),
-                                                        room=slot_instance.room, assigned=False, done=False)
+                                                        room=slot_instance.room, assigned=False, done=None)
             appointment.save()
             start = add_delta_to_time(start, delta)
         messages.success(request, f'Doctor time slot added successfully!')
@@ -286,7 +286,7 @@ def walk_in_schedule_view(request, doctor_id, room):
             appointment = gm.Appointment.objects.create(doctor=doctor, patient=patient, date=curr_date,
                                                         start_time=curr_time,
                                                         end_time=curr_date + timedelta(minutes=10),
-                                                        room=room, assigned=True, arrived=curr_time, done=False)
+                                                        room=room, assigned=True, arrived=curr_time, done=None)
             appointment.save()
             messages.success(request, f'Walk-In added for {patient}!')
             return redirect('reception_desk:calendar')

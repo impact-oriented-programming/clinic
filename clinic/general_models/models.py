@@ -58,7 +58,7 @@ class Appointment(models.Model):
     room = models.CharField(max_length=30, null=True)
     assigned = models.BooleanField(default=False)  # is there a patient?
     arrived = models.TimeField(null=True, default= None)  # did the patient arrive to the reception desk at the scheduled day?
-    done = models.BooleanField(default=False)  # is the session done?
+    done = models.TimeField(null=True, default= None)  # is the session done?
     def arrived_bool(self):
         if self.arrived:
             return True

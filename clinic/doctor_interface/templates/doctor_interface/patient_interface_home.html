@@ -23,8 +23,8 @@
 
   <div class="btn-group clearfix" style="width: 99%">
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="http://localhost:8000/doctor_interface/">Go back to doctor interface</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:blood-test' patient.clinic_identifying_number %}">+ Ask for blood test</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' patient.clinic_identifying_number %}" target="_blank">+ Session</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:blood-test' appointment.pk %}">+ Ask for blood test</a>
+    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' appointment.pk %}" target="_parent">+ Session</a>
   </div>
 
   {% if messages %}

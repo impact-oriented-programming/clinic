@@ -15,8 +15,40 @@
 </div>
 <hr>
 <div class="table-title">
+  <h3>Future Appointments</h3>
+</div>
+{% if future_appointments %}
+<table class="table-fill">
+  <thead>
+    <tr>
+      <th>Specialty</th>
+      <th>Doctor</th>
+      <th>Date</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody class="table-hover">
+    {% for app in future_appointments %}
+    <tr>
+      <td>{{ app.doctor.specialty }}</td>
+      <td>{{ app.doctor }}</td>
+      <td>{{ app.date }}</td>
+      <td>{{ app.start_time }}</td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>
+{% else %}
+<div class="table-title">
+  <p>No future appointments are scheduled </p>
+</div>
+{% endif %}
+<hr>
+<div class="table-title">
   <h3>Last Visits</h3>
+  {% if last_visits %}
   <p>click on session to see full details</p>
+  {% endif %}
 </div>
 {% if last_visits %}
 <table class="table-fill">
@@ -32,7 +64,7 @@
   <tbody class="table-hover">
     {% for Session in last_visits %}
     <tr>
-      <td><a href="{% url 'doctor_interface:edit-session' patient.clinic_identifying_number Session.pk %}" target="_blank"><i class="fas fa-file-alt"></i> View Details</a></td>
+      <td><a href="{% url 'doctor_interface:session-detail' Session.pk %}" target="_blank"><i class="fas fa-file-alt"></i> View Details</a></td>
       <td>{{ Session.diagnosis }}</td>
       <td>{{ Session.time }}</td>
       <td>{{ Session.doctor }}</td>

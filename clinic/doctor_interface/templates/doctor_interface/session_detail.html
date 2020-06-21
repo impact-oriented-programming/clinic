@@ -1,0 +1,92 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+  <title>Session Details: {{ session.patient.first_name }} {{ session.patient.last_name }}</title>
+
+</head>
+<body>
+  <div class="table-title">
+    <h2 style="color: #283955;">Session Details</h2>
+  </div>
+  <table class="table-fill">
+  <thead>
+    <tr>
+      <th>Patient</th>
+      <th>Doctor</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody class="table-hover">
+    <tr>
+      <td>{{ session.patient }}</td>
+      <td>{{ session.doctor }}</td>
+      <td>{{ session.time }}</td>
+    </tr>
+</tbody>
+</table>
+<hr>
+<div class="table-title">
+    <h3>Diagnosis</h3>
+</div>
+<div class="table-title">
+    <p>{{ session.diagnosis }}</p>
+</div>
+<hr>
+<div class="table-title">
+    <h3>Prescriptions</h3>
+</div>
+{% if session.prescriptions is None %}
+<div class="table-title">
+    <p>{{ session.prescriptions }}</p>
+</div>
+{% else %}
+<div class="table-title">
+<p>No prescriptions were given</p>
+</div>
+{% endif %}
+<hr>
+<div class="table-title">
+<h3>Vital Signs</h3>
+</div>
+<table class="table-fill">
+  <thead>
+    <tr>
+      <th>Height</th>
+      <th>Weight</th>
+      <th>Systolic bp</th>
+      <th>Diastolic bp</th>
+      <th>Temperature</th>
+      <th>Pulse</th>
+      <th>Respiratory rate</th>
+      <th>Sp02</th>
+      <th>Glucose</th>
+    </tr>
+  </thead>
+  <tbody class="table-hover">
+    <tr>
+      <td>{{ session.height }}</td>
+      <td>{{ session.weight }}</td>
+      <td>{{ session.systolic_bp }}</td>
+      <td>{{ session.diastolic_bp }}</td>
+      <td>{{ session.temperature }}</td>
+      <td>{{ session.pulse }}</td>
+      <td>{{ session.respiratory_rate }}</td>
+      <td>{{ session.sp02 }}</td>
+      <td>{{ session.glucose }}</td>
+    </tr>
+</tbody>
+</table>
+<hr>
+</body>
+</html>
