@@ -77,11 +77,9 @@ legend{
 
 .btn-outline-info:hover,
 .btn-outline-info:active,
-.btn-outline-info:visited,
 .btn-outline-info:focus,
 .btn-info.custom:hover,
 .btn-info.custom:active,
-.btn-info.custom:visited,
 .btn-info.custom:focus{
   color: white !important;
   background-color: #718fbd !important;

@@ -56,6 +56,7 @@ def index(request):
             app_not_arrived.append(app)
         else:
             app_arrived.append(app)
+    app_arrived.sort(key=lambda x: x.arrived, reverse=False)
     curr_time = dt.datetime.now().time()
     # for browse patient:
     if request.method == 'POST':

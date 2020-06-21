@@ -1,5 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load custom_tags %}
 <!doctype html>
 <html lang="en">
 
@@ -9,6 +10,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
+
+  <script src="{% static 'reception_desk/scripts.js' %}"></script>
 
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
@@ -52,8 +55,13 @@
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk%}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.arrived }}</td>
-        <td>{{curr_time}} Minutes</td>
+        <td>{{ appointment.arrived | time:"H:i" }}</td>
+        <td>
+          {% if not appointment.done %}
+          <div id="{{appointment.id}}"></div>
+          <script>startTime({{ appointment.arrived | get_hour }}, {{appointment.arrived | get_minute }},{{ appointment.id | js_safe }});</script>
+          {% endif %}
+        </td>
       </tr>
       {% endfor %}
       {% else %}
@@ -68,13 +76,13 @@
     <h3 style="color: #283955;">Later Today</h3>
   </div>
   {% if app_not_arrived %}
-  <table class="table-fill">
+  <table class="table-fill" style="width:99.9%;">
     <thead>
       <tr>
-        <th>Patient</th>
-        <th>Clinic ID</th>
-        <th>Visa Number</th>
-        <th>Time Scheduled</th>
+        <th style="width:25%;">Patient</th>
+        <th style="width:25%;">Clinic ID</th>
+        <th style="width:25%;">Visa Number</th>
+        <th style="width:25%;">Time Scheduled</th>
       </tr>
     </thead>
     <tbody class="table-hover">
@@ -83,7 +91,7 @@
         <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk %}">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.start_time }}</td>
+        <td>{{ appointment.start_time | time:"H:i" }}</td>
       </tr>
       {% endfor %}
       {% else %}

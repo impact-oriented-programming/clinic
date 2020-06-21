@@ -93,3 +93,22 @@ function remove_patient_click(id,patient,path){
               }
             })
            };
+
+function startTime(hour,minute, id) {
+  var arrived = new Date(0, 0, 0, hour, minute, 0);
+  var today = new Date();
+  var h = today.getHours() - arrived.getHours();
+  var m = today.getMinutes() - arrived.getMinutes();
+  if (m<0){
+   h -= 1;
+   m += 60;
+  }
+  var s = today.getSeconds();
+  document.getElementById(id).innerHTML =
+  h*60 + m + " Minutes";
+  setTimeout(startTime.bind(null, hour, minute, id), 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
