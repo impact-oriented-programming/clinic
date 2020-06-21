@@ -15,11 +15,9 @@
 </head>
 <body>
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
-
-  <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'reception_desk:view-patient' %}">Search Another Patient</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;"  href="{% url 'reception_desk:calendar' %}" >Back To Clinic's Calendar</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'logout' %}" >Logout</a>
+  <hr>
+  <div class="btn-group" style="width: 99%">
+      <button class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd; margin: 0 auto;" type="button" onclick="window.open('', '_self', ''); window.close();">Close Tab</button>
   </div>
   <hr>
   <h1 class="title", style="text-align:center">View Patient: {{ patient.first_name}} {{patient.last_name}}</h1>

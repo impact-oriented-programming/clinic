@@ -22,7 +22,7 @@
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
 
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="http://localhost:8000/doctor_interface/">Go back to doctor interface</a>
+    <button class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" type="button" onclick="window.open('', '_self', ''); window.close();">Close Tab</button>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:blood-test' appointment.pk %}">+ Ask for blood test</a>
     <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' appointment.pk %}" target="_parent">+ Session</a>
   </div>

@@ -39,23 +39,23 @@
     <h3 style="color: #283955;">Waiting Patients</h3>
   </div>
   {% if app_arrived %}
-  <table class="table-fill">
+  <table class="table-fill" style="width:99.9%;">
     <thead>
       <tr>
-        <th>Patient</th>
-        <th>Clinic ID</th>
-        <th>Visa Number</th>
-        <th>Time Arrived</th>
-        <th>Time Waiting</th>
+        <th style="width:20%;">Patient</th>
+        <th style="width:20%;">Clinic ID</th>
+        <th style="width:20%;">Visa Number</th>
+        <th style="width:20%;">Time Scheduled</th>
+        <th style="width:20%;">Time Waiting</th>
       </tr>
     </thead>
     <tbody class="table-hover">
       {% for appointment in app_arrived %}
       <tr>
-        <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk%}">{{ appointment.patient }}</a></td>
+        <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk%}" target="_blank">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
-        <td>{{ appointment.arrived | time:"H:i" }}</td>
+        <td>{{ appointment.start_time | time:"H:i" }}</td>
         <td>
           {% if not appointment.done %}
           <div id="{{appointment.id}}"></div>
@@ -88,7 +88,7 @@
     <tbody class="table-hover">
       {% for appointment in app_not_arrived %}
       <tr>
-        <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk %}">{{ appointment.patient }}</a></td>
+        <td><a href="{% url 'doctor_interface:patient_interface' appointment.pk %}" target="_blank">{{ appointment.patient }}</a></td>
         <td>{{ appointment.patient.clinic_identifying_number }}</td>
         <td>{{ appointment.patient.visa_number }}</td>
         <td>{{ appointment.start_time | time:"H:i" }}</td>
@@ -112,7 +112,7 @@
     <h3 style="color: #283955;">Browse Patients</h3>
     <!--<p style="color: #283955;">Enter patient clinic ID or visa number:</p>-->
     <div class="content-section">
-        <form method="POST">
+        <form method="POST" target="_blank">
             {% csrf_token %}
             <fieldset class="form-group">
                 {{ form|crispy }}
