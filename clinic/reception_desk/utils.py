@@ -26,7 +26,7 @@ class Calendar(HTMLCalendar):
  
         if day != 0:
             if(date.today() == date(int(self.year), int(self.month), my_day)): # catch today to change it's background color
-                return f"<td style='background:#366d6b; color:white;'><span class='date'>{day}</span><ul> {d} </ul></td>"
+                return f"<td style='background:#718fbd; color:white;'><span class='date'>{day}</span><ul> {d} </ul></td>"
             return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
         return '<td></td>'
     # formats a week as a tr
