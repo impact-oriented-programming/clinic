@@ -5,6 +5,9 @@
 <html lang="en">
 
 <head>
+
+     <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Sweet alerts 2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
@@ -168,7 +171,7 @@
               if (document.cookie && document.cookie != '') {
                       var cookies = document.cookie.split(';');
                       for (var i = 0; i < cookies.length; i++) {
-                              var cookie = (cookies[i]);
+                              var cookie = jQuery.trim(cookies[i]);
                               // Does this cookie string begin with the name we want?
                               if (cookie.substring(0, name.length + 1) == (name + '=')) {
                                       cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
