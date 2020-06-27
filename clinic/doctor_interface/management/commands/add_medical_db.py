@@ -32,6 +32,7 @@ class Command(BaseCommand):
     #Helper Functions    
     def add_blood_tests(self):
         
+        self.stdout.write(self.style.SUCCESS('Adding blood tests to data base.....'))
         file = open('./doctor_interface/medical_db/blood_tests.txt', 'r')
 
         for line in file.readlines():
@@ -44,13 +45,16 @@ class Command(BaseCommand):
             test.save()
 
         file.close()
-
+        self.stdout.write(self.style.SUCCESS('SUCCESS!'))
     def add_medications(self):
+        
+        self.stdout.write(self.style.SUCCESS('Adding medication to data base.....'))
         self.add_prescription_medications()
         self.add_no_prescription_medications()
-
+        self.stdout.write(self.style.SUCCESS('SUCCESS!'))
+        
     def add_prescription_medications(self):
-
+        
         presc_med = pd.read_excel('./doctor_interface/medical_db/PrescriptionsMed.xlsx', header=None, skiprows=2).T
 
         med_presc_dic = presc_med.to_dict("list")
@@ -101,7 +105,8 @@ class Command(BaseCommand):
             ctr += 1
 
     def add_diagnosis(self):
-
+        
+        self.stdout.write(self.style.SUCCESS('Adding diagnosis to data base.....'))
         file = open('./doctor_interface/medical_db/icd10cm_codes_2019.txt', 'r')
 
         for line in file.readlines():
@@ -111,3 +116,4 @@ class Command(BaseCommand):
             diag.save()
     
         file.close()
+        self.stdout.write(self.style.SUCCESS('SUCCESS!'))
