@@ -46,9 +46,11 @@
 <div class="table-title">
     <h3>Prescriptions</h3>
 </div>
-{% if session.prescriptions is None %}
+{% if session.prescriptions %}
 <div class="table-title">
-    <p>{{ session.prescriptions }}</p>
+    {% for med in session.prescriptions.all %}
+    <p>{{ med }}</p>
+    {% endfor %}
 </div>
 {% else %}
 <div class="table-title">
