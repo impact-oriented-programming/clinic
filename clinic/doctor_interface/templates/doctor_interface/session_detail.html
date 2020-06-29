@@ -46,7 +46,7 @@
 <div class="table-title">
     <h3>Prescriptions</h3>
 </div>
-{% if session.prescriptions %}
+{% if session.prescriptions.all %}
 <div class="table-title">
     {% for med in session.prescriptions.all %}
     <p>{{ med }}</p>

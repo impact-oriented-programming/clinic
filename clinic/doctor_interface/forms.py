@@ -10,7 +10,7 @@ class SessionForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(url='doctor_interface:diagnosis-autocomplete')
     )
     prescriptions = forms.ModelMultipleChoiceField(
-        queryset=Medication.objects.all(),
+        queryset=Medication.objects.all(), required=False,
         widget=autocomplete.ModelSelect2Multiple(url='doctor_interface:medication-autocomplete')
     )
     
