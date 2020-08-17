@@ -149,7 +149,7 @@ def date_view(request, my_date):
         appointment_id = request.POST.get('arrived')
         appointment = gm.Appointment.objects.all().get(id=appointment_id)
         appointment.arrived = dt.datetime.now().time()
-        #appointment.save()
+        appointment.save()
         messages.success(request, f'Checked in successfully!')
         return redirect('reception_desk:date-view', my_date=my_date)
 
@@ -227,6 +227,7 @@ def cancel_appointment_view(request):
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
             clear_appointment(appointments, remove_id)
+            messages.success(request, 'Appointment cancelled!')
     context = get_params(request, 'Cancel Appointment')
     appointments = filter_appointments(context, appointments)
     if is_valid_param(context.get('patient')):

@@ -106,12 +106,8 @@ function remove_patient_click(id,patient,path){
             })
             .then((result) => {
                 if (result.value) {
-                swal({
-                  title:"Appointment cancelled!",
-                  type: "success",
-                  confirmButtonColor: '#28a745'
-                }).then(function(){ post(`${path}`,
-                {'remove_id':id});});
+                post(`${path}`,
+                {'remove_id':id});
               }
             })
            };
