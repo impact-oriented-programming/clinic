@@ -16,15 +16,16 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
   <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
   <title>{{ patient.first_name }} {{ patient.last_name }}</title>
 </head>
 <body>
   <a href="#" id="back-to-top" class="back-to-top" style="display: inline;"><img src="{% static 'images/totop_blue.png' %}" ></a>
 
   <div class="btn-group clearfix" style="width: 99%">
-    <button class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" type="button" onclick="window.open('', '_self', ''); window.close();">Close Tab</button>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:blood-test' appointment.pk %}">+ Ask for blood test</a>
-    <a class="btn btn-info left clearfix" style="width:33.3%; border: 1px solid  #718fbd;" href="{% url 'doctor_interface:new-session' appointment.pk %}" target="_parent">+ Session</a>
+    <button class="btn btn-info custom_clear left clearfix" style="width:33.3%;" type="button" onclick="window.open('', '_self', ''); window.close();">Close Tab</button>
+    <a class="btn btn-info left custom_clear clearfix" style="width:33.3%;" href="{% url 'doctor_interface:blood-test' appointment.pk %}">+ Ask for blood test</a>
+    <a class="btn btn-info left custom_clear clearfix" style="width:33.3%;" href="{% url 'doctor_interface:new-session' appointment.pk %}" target="_parent">+ Session</a>
   </div>
 
   {% if messages %}

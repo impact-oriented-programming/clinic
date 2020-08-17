@@ -23,8 +23,8 @@
 </head>
 <body>
   <div class="clearfix">
-    <a class="btn btn-outline-info left border-style" href="{% url 'logout' %}">Logout</a>
-    <a class="btn btn-outline-info  right border-style" href="{% url 'home'%}">Home Page</a>
+    <a class="btn btn-outline-info custom left border-style" href="{% url 'logout' %}">Logout</a>
+    <a class="btn btn-outline-info custom  right border-style" href="{% url 'home'%}">Home Page</a>
   </div>
   <h1 class="title", style="text-align:center; color:#718fbd"> Clinic's Calendar</h1>
 
@@ -36,15 +36,15 @@
     {% block content %}{% endblock %}
 
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:appointments' %}">Appointments</a>
-    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
-    <a class="btn-style btn btn-outline-info" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
+    <a class="btn-style btn btn-outline-info custom" href="{% url 'reception_desk:appointments' %}">Appointments</a>
+    <a class="btn-style btn btn-outline-info custom" href="{% url 'reception_desk:view-patient' %}">View Patient</a>
+    <a class="btn-style btn btn-outline-info custom" href="{% url 'reception_desk:clinic-management' %}">Clinic Management</a>
   </div>
   <hr>
   <div class="btn-group clearfix" style="width: 99%">
-    <a class="btn btn-outline-info left" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
-    <a class="btn btn-outline-info" style="border: 1px solid  #182232; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
-    <a class="btn btn-outline-info right" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
+    <a class="btn btn-outline-info custom left" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ prev_month }}"> Previous Month </a>
+    <a class="btn btn-outline-info custom" style="border: 1px solid  #182232; margin: 0 auto; width: 20%;" href="{% url 'reception_desk:date-view' today_date %}">Today</a>
+    <a class="btn btn-outline-info right custom" style="border: 1px solid  #182232; width: 20%;" href="{% url 'reception_desk:calendar' %}?{{ next_month }}"> Next Month </a>
   </div>
   {{ calendar }}
 

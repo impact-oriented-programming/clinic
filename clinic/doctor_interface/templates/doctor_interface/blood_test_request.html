@@ -11,7 +11,7 @@
     <!-- Bootstrap CSS -->
     <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'reception_desk/main.css' %}">
 
     <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'doctor_interface/style_interface.css'%}">
@@ -48,7 +48,7 @@
                 {{ form|crispy }}
                 </table></fieldset>
             <div class="form-group">
-               <input class="btn btn-outline-info" type="submit" value="Save">
+               <input class="btn btn-outline-info custom" type="submit" value="Save">
             </div>
         </form>
     </div>

@@ -65,31 +65,41 @@ legend{
    text-transform:uppercase;
 }
 
-.btn-outline-info {
-  color: #283955 !important;
-  border-color: #718fbd !important;
+.btn-outline-info.custom {
+  color: #283955;
+  border-color: #718fbd;
 }
 
 .btn-info.custom {
-  background-color: #718fbd !important;
-  border-color: #718fbd !important;
+  background-color: #718fbd ;
+  border-color: #718fbd ;
 }
 
-.btn-outline-info:hover,
-.btn-outline-info:active,
-.btn-outline-info:focus,
+.btn-info.custom_clear {
+  background-color: white ;
+  border-color: #718fbd ;
+}
+
+.btn-outline-info.custom:hover,
+.btn-outline-info.custom:active,
+.btn-outline-info.custom:focus,
 .btn-info.custom:hover,
 .btn-info.custom:active,
-.btn-info.custom:focus{
+.btn-info.custom:focus,
+.btn-info.custom_clear:hover,
+.btn-info.custom_clear:active,
+.btn-info.custom_clear:focus{
   color: white !important;
   background-color: #718fbd !important;
   border-color: #718fbd !important;
 }
 
-.btn-outline-info:focus:active,
-.btn-outline-info:focus,
+.btn-outline-info.custom:focus:active,
+.btn-outline-info.custom:focus,
 .btn-info.custom:focus:active,
-.btn-info.custom:focus{
+.btn-info.custom:focus,
+.btn-info.custom_clear:focus:active,
+.btn-info.custom_clear:focus{
     -webkit-box-shadow: 0 0 0 3px rgba(113, 143, 189, 0.4) !important;
 }
 

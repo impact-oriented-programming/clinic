@@ -41,8 +41,8 @@
             {% if until_date %} value={{ until_date }} {% endif %}>
           </div>
         </div>
-        <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="float: right;" href="{% url 'reception_desk:add-appointment' %}"> Reset </a>
+        <button type="submit" class="btn btn-outline-info custom">Search</button>
+        <a class="btn btn-outline-info custom" style="float: right;" href="{% url 'reception_desk:add-appointment' %}"> Reset </a>
       </form>
       {% if empty %}
         <h3>No Appointments Were Found</h3>
@@ -74,21 +74,21 @@
       </table>
       {% if is_paginated %}
           {% if page_obj.has_previous %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}#table">First</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}#table">Previous</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=1 %}#table">First</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.previous_page_number %}#table">Previous</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
                         <a  class="btn btn-info custom mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
+                        <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=num %}#table">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}#table">Next</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.next_page_number %}#table">Next</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}#table">Last</a>
                 {% endif %}
             {% endif %}
         <script>$(function(){remove_id_name()});</script>

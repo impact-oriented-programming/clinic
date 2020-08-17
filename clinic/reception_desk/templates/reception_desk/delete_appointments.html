@@ -23,8 +23,8 @@
                     </select>
                 </div>
         </div>
-        <button type="submit" class="btn btn-outline-info">Search</button>
-        <a class="btn btn-outline-info" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Reset </a>
+        <button type="submit" class="btn btn-outline-info custom">Search</button>
+        <a class="btn btn-outline-info custom" style="margin-left: 10px;" href="{% url 'reception_desk:delete-appointments' %}"> Reset </a>
         {% if not empty %}
         <a class="btn btn-outline-danger" style="margin-left: 10px;" href="{% url 'reception_desk:delete-multiple-appointments' date=date doctor=doctor %}"> Delete All </a>
         {% endif %}
@@ -133,21 +133,21 @@
       </table>
       {% if is_paginated %}
           {% if page_obj.has_previous %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=1 %}">First</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=1 %}">First</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
                 {% endif %}
 
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
-                        <a  class="btn btn-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                        <a  class="btn btn-info custom mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
                     {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                        <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
+                        <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=num %}">{{ num }}</a>
                     {% endif %}
                 {% endfor %}
 
                 {% if page_obj.has_next %}
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
-                      <a  class="btn btn-outline-info mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+                      <a  class="btn btn-outline-info custom mb-4" href="?{% param_replace page=page_obj.paginator.num_pages %}">Last</a>
                 {% endif %}
             {% endif %}
 </div>
