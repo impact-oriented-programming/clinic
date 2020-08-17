@@ -222,7 +222,7 @@ def add_appointment_view(request):
 
 
 def cancel_appointment_view(request):
-    appointments = gm.Appointment.objects.all().filter(assigned=True).order_by('date', 'start_time')
+    appointments = gm.Appointment.objects.all().filter(assigned=True).filter(arrived=None).order_by('date', 'start_time')
     if request.method == "POST":
         remove_id = request.POST.get('remove_id')
         if is_valid_param(remove_id):
