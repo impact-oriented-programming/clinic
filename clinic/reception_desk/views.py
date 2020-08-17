@@ -149,10 +149,12 @@ def date_view(request, my_date):
         appointment_id = request.POST.get('arrived')
         appointment = gm.Appointment.objects.all().get(id=appointment_id)
         appointment.arrived = dt.datetime.now().time()
-        appointment.save()
+        #appointment.save()
+        messages.success(request, f'Checked in successfully!')
         return redirect('reception_desk:date-view', my_date=my_date)
 
     # first parse wanted date from given my_date string of form yyyy-mm-dd
+
     wanted_year = int(my_date[0:4])
     wanted_month = int(my_date[5:7])
     wanted_day = int(my_date[8:10])

@@ -25,6 +25,28 @@ function remove_id_name(){
             });
             };
 
+function set_arrived_click(appointment_id,patient,path){
+        swal({
+          title: `Are you sure?`,
+          text: `Check in ${patient}?
+           Action can not be reverted!`,
+          type: "info",
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No',
+          reverseButtons: true
+        })
+        .then((result) => {
+            if (result.value) {
+            post(`${path}`,
+            {'arrived':appointment_id});
+          }
+          else{}
+        })
+       };
+
 // Creates and sends a post form from params, sends to path
 function post(path, params) {
               const form = document.createElement('form');

@@ -5,9 +5,10 @@
 <html lang="en">
 
 <head>
-
-     <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- include our js scripts -->
+  <script src="{% static 'reception_desk/scripts.js' %}"></script>
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Sweet alerts 2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
@@ -84,7 +85,8 @@
         <td>{{ appointment.room }}</td>
         {% if not appointment.arrived %}
          <td class="text-center"><button
-                onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},{{ appointment.date | get_date }}) "
+                onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},
+                {{ request.path | js_not_safe}} )"
                 class="btn btn-outline-info">
                 Check In</button></td>
         {% else %}
@@ -137,83 +139,18 @@
         var runAnimation = setInterval(animateScroll, 16);
     });
   </script>
-  <script>
-        function set_arrived_click(appointment_id,patient, date){
-        swal({
-          title: `Are you sure?`,
-          text: `Check in ${patient}?
-           Action can not be reverted!`,
-          type: "info",
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#dc3545',
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
-          reverseButtons: true
-        })
-        .then((result) => {
-            if (result.value) {
-            swal({
-              title:"Checked in successfully!",
-              type: "success",
-              confirmButtonColor: '#28a745'
-            }).then(
-            function(){ post("{% url 'reception_desk:date-view' my_date='123' %}".replace('123', `${date}`),
-            {'arrived':appointment_id});});
-          }
-          else{}
-        })
-       };
-  </script>
-  <script >
-        function getCookie(name) {
-              var cookieValue = null;
-              if (document.cookie && document.cookie != '') {
-                      var cookies = document.cookie.split(';');
-                      for (var i = 0; i < cookies.length; i++) {
-                              var cookie = jQuery.trim(cookies[i]);
-                              // Does this cookie string begin with the name we want?
-                              if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                      break;
-                              }
-                      }
-              }
-
-              return cookieValue;
-              }
-          </script>
-  <script>
-        function post(path, params) {
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = path;
-
-        var hiddenField1 = document.createElement("input");
-        hiddenField1.setAttribute("type", "hidden");
-        hiddenField1.setAttribute("name", 'csrfmiddlewaretoken');
-        hiddenField1.setAttribute("value", getCookie('csrftoken'));
-        form.appendChild(hiddenField1);
-
-        for (const key in params) {
-          if (params.hasOwnProperty(key)) {
-            const hiddenField = document.createElement('input');
-            hiddenField.type = 'hidden';
-            hiddenField.name = key;
-            hiddenField.value = params[key];
-
-            form.appendChild(hiddenField);
-          }
-        }
-        document.body.appendChild(form);
-        localStorage.setItem("scroll", window.pageYOffset);
-        form.submit();
-      }
-      </script>
   <script>if(localStorage.getItem('scroll'))
         {
             window.scrollTo(0, parseInt(localStorage.getItem("scroll")));
             localStorage.removeItem("scroll");
 
         }</script>
+  <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+            <script>alert_msg({{ message | js_safe }});</script>
+                {% endfor %}
+            {% endif %}
+          {% block content %}{% endblock %}
+  </div>
 </body>
