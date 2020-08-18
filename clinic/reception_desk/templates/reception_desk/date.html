@@ -90,7 +90,7 @@
             <td class="text-center"><button
                   onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},
                   {{ request.path | js_not_safe}} )"
-                  class="btn btn-outline-info custom">
+                  class="btn btn-outline-info custom" {% if future_date %} disabled {% endif %}>
                   Check In</button></td>
             {% endif %}
         {% else %}
