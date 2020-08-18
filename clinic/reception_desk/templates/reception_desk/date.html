@@ -84,11 +84,15 @@
         <td>{{ appointment.start_time | time:"H:i" }}</td>
         <td>{{ appointment.room }}</td>
         {% if not appointment.arrived %}
-         <td class="text-center"><button
-                onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},
-                {{ request.path | js_not_safe}} )"
-                class="btn btn-outline-info custom">
-                Check In</button></td>
+            {% if past_date %}
+            <td class="text-center" style="color:red"> &#10005 </td>
+            {% else %}
+            <td class="text-center"><button
+                  onclick="set_arrived_click({{ appointment.id }},{{ appointment.patient | js_not_safe }},
+                  {{ request.path | js_not_safe}} )"
+                  class="btn btn-outline-info custom">
+                  Check In</button></td>
+            {% endif %}
         {% else %}
         <td class="text-center" style="color:#28a745"> &#10004 </td>
         {% endif %}
@@ -96,6 +100,8 @@
         <td>Done</td>
         {% elif appointment.arrived %}
         <td>Waiting in line</td>
+        {% elif past_date %}
+        <td></td>
         {% else %}
         <td></td>
         {% endif %}

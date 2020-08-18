@@ -201,7 +201,8 @@ def date_view(request, my_date):
 
     context = {'dshifts':dshifts,'drooms': drooms, 'ddocs': ddocs, 'wanted_date': wanted_date,
                'appointment_list': appointment_list}
-
+    if wanted_date < date.today():
+        context['past_date'] = True
     return render(request, 'reception_desk/date.html', context)
 
 
